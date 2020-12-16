@@ -1,0 +1,123 @@
+[[jcohy-document]]
+= jcohy 文档
+
+[[jcohy-module]]
+== 模块说明
+
+[[jcohy-module-tbl]]
+.模块说明
+|===
+| 模块           | 说明
+
+| jcohy-api     | api
+
+| jcohy-commoon | 公共组件
+
+| jcohy-logging | 日志模块
+
+| jcohy-auth    | 认证模块
+
+| jcohy-main    | 主程序
+|===
+
+[[jcohy-mysql]]
+== mysql 连接参数说明
+
+[[jcohy-mysql-params-tbl]]
+.mysql 连接参数说明
+|===
+| 参数 | 值 | 说明
+
+| useSSL     | false      | 与服务器进行通信时使用SSL（真／假）
+
+| useUnicode | true | 处理字符串时，驱动程序是否应使用Unicode字符编码
+
+| characterEncoding    | utf-8   | 如果 "useUnicode" 被设置为 "真"，处理字符串时，驱动程序应使用什么字符编码？
+
+| zeroDateTimeBehavior   |   null  | 当驱动程序遇到全由0组成的DATETIME值时，应出现什么？
+
+| transformedBitIsBoolean   | true  | 如果驱动程序将TINYINT(1)转换为不同的类型，驱动程序是否应使用BOOLEAN取代BIT
+
+| tinyInt1isBit   | false   | 驱动程序是否应将数据类型TINYINT(1)当作BIT类型对待？创建表时，服务器会执行BIT -> TINYINT(1)操作。
+
+| allowMultiQueries   | true  | 在一条语句中，允许使用“;”来分隔多条查询
+
+| allowPublicKeyRetrieval   | true   | 允许客户端从服务器获取公钥
+|===
+
+[[jcohy-promise]]
+== 项目约束
+
+. 所有的包命名都以 `com.jcohy.framework` 开头。
+. controller 重要方法加上 `@ConsoleLog` 注解。
+. 所有涉及到的枚举类迁移至 `jcohy-common` 模块 `com.jcohy.framework.enums` 包下，可根据需求在此包下再创建包
+. 所有涉及到的枚举类迁移至 `jcohy-common` 模块 `com.jcohy.framework.exception` 包下，可根据需求在此包下再创建包
+. 注释的统一。严格使用 javadoc 支持的注解。类注释模板如下:
++
+====
+[source,java]
+----
+/**
+ * Copyright: Copyright (c) 2020 <a href="http://www.jcohy.com" target="_blank">jcohy.com</a>
+ *
+ * <p> Description:
+ *
+ * @author  jiac
+ * @version 1.0.0 ${DATE}:${TIME}
+ * @since  1.0.0
+ */
+----
+
+`@since` 表示此功能第一次出现的版本
+
+`@version` 表示 当前版本+时间
+
+注意注解后面需要加上空格
+====
+
+[[jcohy-run]]
+== 项目运行
+
+. 创建 jcohy 数据库
+. 修改 `jcohy-main` 模块下的 `application.yml` 数据库,redis 等配置信息
+. `./gradlew bootrun`
+
+== 版本依赖
+
+[[jcohy-version-dependency-tbl]]
+.版本依赖
+|===
+| groupId           | artifactId     | 版本号     |  说明
+
+|    org.flywaydb  |  flyway-core     | 6.0.8 |    ..
+|===
+
+[[jcohy-build-tbl]]
+== 文档构建
+
+* 构建参考文档
+
+[source,shell]
+----
+./gradlew clean asciidoctor
+----
+
+构建的文档在 `build/docs/ref-docs` 目录下。
+
+* 构建 API 文档
+
+[source,shell]
+----
+./gradlew clean api
+----
+
+构建的文档在 `build/docs/javadoc` 目录下。
+
+* 打包 API 文档和参考文档
+
+[source,shell]
+----
+./gradlew clean docsZip
+----
+
+构建的文档在 `build/distributions` 目录下。

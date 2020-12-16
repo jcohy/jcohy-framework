@@ -1,0 +1,37 @@
+pluginManagement {
+	repositories {
+		maven { url "http://maven.aliyun.com/repository/gradle-plugin" }
+		mavenCentral()
+		gradlePluginPortal()
+		maven {
+			url "https://repo.spring.io/plugins-release"
+		}
+	}
+}
+
+//rootProject.children.each {project ->
+//    project.buildFileName = "${project.name}.gradle"
+//}
+
+rootProject.name = "jcohy-framework"
+
+include "jcohy-framework-project:jcohy-framework-utils"
+//include "jcohy-framework-project:jcohy-framework-common"
+//include "jcohy-framework-project:jcohy-framework-auto"
+//include "jcohy-framework-project:jcohy-framework-test"
+include "jcohy-framework-project:jcohy-framework-bom"
+//include "jcohy-framework-project:jcohy-framework-launch"
+include "jcohy-framework-site"
+//include "jcohy-framework-project:jcohy-framework-jwt"
+//include "jcohy-framework-project:jcohy-framework-log"
+//
+include "jcohy-framework-starters:jcohy-starter-jpa"
+//include "jcohy-framework-starters:jcohy-starter-redis"
+//include "jcohy-framework-starters:jcohy-starter-oss"
+//include "jcohy-framework-starters:jcohy-starter-sms"
+//include "jcohy-framework-starters:jcohy-starter-jpay"
+//include "jcohy-framework-starters:jcohy-starter-swagger"
+//include "jcohy-framework-starters:jcohy-starter-rabbit"
+//include 'jcohy-framework-project:jcohy-framework-boot'
+//findProject(':jcohy-framework-project:jcohy-framework-boot')?.name = 'jcohy-framework-boot'
+

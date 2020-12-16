@@ -1,0 +1,32 @@
+[[jcohy-module-rabbit]]
+== jcohy-starter-rabbitmq
+
+[[jcohy-module-rabbit-use]]
+=== 使用
+
+1、添加依赖
+
+[source,yml]
+----
+compile "com.jcohy.framework:jcohy-starter-rabbitmq:${jcohyVersion}"
+----
+
+2、可以通过 yml 配置文件创建相应的 Queue，Exchange，Binding 等 bean
+
+[source,yml]
+----
+jcohy:
+  rabbits:
+    -
+      queueName: test01
+      exchange: test01
+      routingKey: "*.test01"
+    -
+      queueName: test02
+      exchange: test02
+      routingKey: "*.test02"
+    -
+      queueName: test03
+      exchange: test03
+      routingKey: "*.test03"
+----
