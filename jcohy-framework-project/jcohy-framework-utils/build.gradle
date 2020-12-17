@@ -1,3 +1,6 @@
+plugins {
+	id "com.jochy.framework.maven-repository"
+}
 dependencies {
 //    implementation 'com.google.auto.service:auto-service:1.0-rc7'
 //
