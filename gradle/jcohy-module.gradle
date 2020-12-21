@@ -10,11 +10,12 @@ configurations {
 }
 
 dependencies {
-	compile "org.springframework.boot:spring-boot-starter-aop"
-	compile "org.springframework.retry:spring-retry"
-	testCompile "org.springframework.boot:spring-boot-starter-test"
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+//	compile "org.springframework.boot:spring-boot-starter-aop"
+//	compile "org.springframework.retry:spring-retry"
+//	testCompile "org.springframework.boot:spring-boot-starter-test"
+//	developmentOnly("org.springframework.boot:spring-boot-devtools")
+//	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	testCompile "org.junit.jupiter:junit-jupiter-engine"
 }
 
 tasks.withType(JavaCompile) {

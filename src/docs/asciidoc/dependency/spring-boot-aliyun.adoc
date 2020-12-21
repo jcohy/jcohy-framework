@@ -1,0 +1,67 @@
+|===
+| Group ID | Artifact ID | Version
+
+| com.alibaba.spring
+| spring-context-support
+| 1.0.6
+
+| com.aliyun
+| aliyun-java-sdk-core
+| 4.5.0
+
+| com.alibaba.cloud
+| alicloud-context
+| 1.0.5
+
+| com.aliyun
+| aliyun-java-sdk-edas
+| 2.44.0
+
+| com.alibaba.edas
+| schedulerX-client
+| 2.1.6
+
+| com.aliyun.mns
+| aliyun-sdk-mns
+| 1.1.8.6
+
+| com.aliyun
+| aliyun-java-sdk-dysmsapi
+| 1.1.0
+
+| com.aliyun
+| aliyun-java-sdk-r-kvstore
+| 2.1.5
+
+| com.aliyun.oss
+| aliyun-sdk-oss
+| 3.1.0
+
+| com.aliyun
+| aliyun-java-sdk-rds
+| 2.4.4
+
+| com.alibaba.cloud
+| aliyun-context-spring-boot-starter
+| 1.0.0
+
+| com.alibaba.cloud
+| aliyun-oss-spring-boot-starter
+| 1.0.0
+
+| com.alibaba.cloud
+| aliyun-rds-spring-boot-starter
+| 1.0.0
+
+| com.alibaba.cloud
+| aliyun-schedulerx-spring-boot-starter
+| 1.0.0
+
+| com.alibaba.cloud
+| aliyun-sms-spring-boot-starter
+| 1.0.0
+
+| com.alibaba.cloud
+| aliyun-redis-spring-boot-starter
+| 1.0.0
+|===
