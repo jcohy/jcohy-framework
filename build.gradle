@@ -1,9 +1,10 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 plugins {
 	id 'org.springframework.boot' version '2.3.7.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-//	id 'org.asciidoctor.jvm.convert' version '2.4.0'
+	id 'org.asciidoctor.jvm.convert' version '2.4.0'
 	id "com.gorylenko.gradle-git-properties" version "2.2.2"
-//	id "org.asciidoctor.jvm.pdf" version "2.3.0"
+	id "org.asciidoctor.jvm.pdf" version "2.3.0"
 	id 'de.undercouch.download' version '4.0.0'
 }
 
@@ -106,9 +107,9 @@ configure(allprojects) { abjects ->
 	}
 }
 
-//configure([rootProject] + javaProjects) { project ->
-//
-//}
+configure([rootProject] + javaProjects) { project ->
+
+}
 
 
 configure(moduleProjects) { project ->

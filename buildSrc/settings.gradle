@@ -1,18 +1,18 @@
-pluginManagement {
-	repositories {
-		maven { url "http://maven.aliyun.com/repository/gradle-plugin" }
-		maven { url "https://maven.aliyun.com/repository/spring-plugin" }
-		mavenCentral()
-		gradlePluginPortal()
-		maven {
-			url "https://repo.spring.io/plugins-release"
-		}
-	}
-	resolutionStrategy {
-		eachPlugin {
-			if (requested.id.id == "io.spring.javaformat") {
-				useModule "io.spring.javaformat:spring-javaformat-gradle-plugin:${requested.version}"
-			}
-		}
-	}
-}
+//pluginManagement {
+//	repositories {
+//		maven { url "http://maven.aliyun.com/repository/gradle-plugin" }
+//		maven { url "https://maven.aliyun.com/repository/spring-plugin" }
+//		mavenCentral()
+//		gradlePluginPortal()
+//		maven {
+//			url "https://repo.spring.io/plugins-release"
+//		}
+//	}
+//	resolutionStrategy {
+//		eachPlugin {
+//			if (requested.id.id == "io.spring.javaformat") {
+//				useModule "io.spring.javaformat:spring-javaformat-gradle-plugin:${requested.version}"
+//			}
+//		}
+//	}
+//}
