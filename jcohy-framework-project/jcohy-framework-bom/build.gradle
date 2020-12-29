@@ -1,27 +1,27 @@
-buildscript {
-	repositories {
-		maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-		maven { url "https://plugins.gradle.org/m2/" }
-		maven { url "http://repo.spring.io/plugins-release" }
-	}
-	dependencies {
-		classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
-		classpath "org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16"
-	}
-}
-apply plugin: "io.spring.dependency-management"
-apply from: "${rootDir}/gradle/publications.gradle"
-
+//buildscript {
+//	repositories {
+//		maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+//		maven { url "https://plugins.gradle.org/m2/" }
+//		maven { url "http://repo.spring.io/plugins-release" }
+//	}
+//	dependencies {
+//		classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
+//		classpath "org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16"
+//	}
+//}
+//apply plugin: "io.spring.dependency-management"
+//apply from: "${rootDir}/gradle/publications.gradle"
+//
 //dependencyManagement {
 //	dependencies {
-//		// mica
-//		dependency "com.jcohy.framework:jcohy-framework-auto:${VERSION}"
-//		dependency "com.jcohy.framework:jcohy-framework-site:${VERSION}"
-//		dependency "com.jcohy.framework:jcohy-framework-launch:${VERSION}"
-//		dependency "com.jcohy.framework:jcohy-framework-utils:${VERSION}"
-//		dependency "com.jcohy.framework:jcohy-starter-jpa:${VERSION}"
-//		dependency "com.jcohy.framework:jcohy-starter-rabbit:${VERSION}"
-//		dependency "com.jcohy.framework:jcohy-starter-redis:${VERSION}"
+//		// jcohy
+////		dependency "com.jcohy.framework:jcohy-framework-auto:${VERSION}"
+////		dependency "com.jcohy.framework:jcohy-framework-site:${VERSION}"
+////		dependency "com.jcohy.framework:jcohy-framework-launch:${VERSION}"
+////		dependency "com.jcohy.framework:jcohy-framework-utils:${VERSION}"
+////		dependency "com.jcohy.framework:jcohy-starter-jpa:${VERSION}"
+////		dependency "com.jcohy.framework:jcohy-starter-rabbit:${VERSION}"
+////		dependency "com.jcohy.framework:jcohy-starter-redis:${VERSION}"
 //
 //
 //		// commons

@@ -18,6 +18,9 @@ ext {
 	//================= framework =================
 	set('aliyunSpringBootVersion', "1.0.0")
 	set('springCloudAlibabaVersion', "2.2.2.RELEASE")
+
+	//================= utils =================
+	set('GuavaVersion', "30.0-jre")
 }
 
 configure(allprojects) { abjects ->
@@ -35,13 +38,11 @@ configure(allprojects) { abjects ->
 			mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
 		}
 
-//		dependencies {
+		dependencies {
 //			dependency "com.github.oshi:oshi-core:${oshiVersion}"
-//			dependency "com.google.guava:guava:${GuavaVersion}"
-//			dependency "org.apache.commons:commons-lang3:${commonsLang3Version}"
+			dependency "com.google.guava:guava:${GuavaVersion}"
 //			dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
 //			dependency "io.swagger:swagger-models:${swaggerModelsVersion}"
-//			dependency "cn.hutool:hutool-all:${hutoolVersion}"
 //			dependency "com.alibaba:easyexcel:${easyexcelVersion}"
 //			dependency "net.sf.barcode4j:barcode4j:${barcode4jVersion}"
 //			dependencySet("io.protostuff:${protostuffVersion}") {
@@ -80,7 +81,7 @@ configure(allprojects) { abjects ->
 //			dependency "org.junit.platform:junit-platform-commons:${junitPlatformCommonsVersion}"
 //			dependency "org.assertj:assertj-core:${assertjCoreVersion}"
 //			dependency "com.aliyun.oss:aliyun-sdk-oss:${aliyunSdkVersion}"
-//		}
+		}
 	}
 
 	repositories {

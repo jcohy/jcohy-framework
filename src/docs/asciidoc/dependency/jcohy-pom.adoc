@@ -3,7 +3,7 @@
 
 | `com.google.guava`
 | `guava`
-| 26.0-jre
+| 30.0-jre
 
 | `io.springfox`
 | `springfox-swagger2`
