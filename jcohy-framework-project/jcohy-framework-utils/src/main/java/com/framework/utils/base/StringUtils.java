@@ -136,7 +136,7 @@ public class StringUtils {
 	}
 
 	/**
-	 * 返回输入字符序列的副本，其中所有大写 ASCII 字符均已转换为小写。 所有其他字符均被复制而没有修改。
+	 * 返回输入字符串的副本，其中所有大写 ASCII 字符均已转换为小写。 所有其他字符均被复制而没有修改。
 	 * @param str 给定字符串
 	 * @return 转换后的结果
 	 */
@@ -144,11 +144,29 @@ public class StringUtils {
 		return Ascii.toLowerCase(str);
 	}
 
+	/**
+	 * 返回输入字符序列的副本，其中所有小写 ASCII 字符均已转换为大写。 所有其他字符均被复制而没有修改。
+	 * @param cs 给定字符序列
+	 * @return 转换后的结果
+	 */
+	public static String toUpperCase(final CharSequence cs){
+		return Ascii.toUpperCase(cs);
+	}
+
+	/**
+	 * 返回输入字符串的副本，其中所有小写 ASCII 字符均已转换为大写。 所有其他字符均被复制而没有修改。
+	 * @param str 给定字符串
+	 * @return 转换后的结果
+	 */
+	public static String toUpperCase(final String str){
+		return Ascii.toUpperCase(str);
+	}
+
 	//---------------------------------------------------------------------
 	// truncate
 	//---------------------------------------------------------------------
 	/**
-	 * 将给定的字符序列截断为给定的最大长度。如果序列的长度大于 {@code maxLength}，则返回的字符串的长度将精确为 {@code maxLength} 个字符，
+	 * 将给定的字符序列截断为给定的最大长度。如果序列的长度大于 {@code maxLength}，则返回的字符串的长度为 {@code maxLength} 个字符，
 	 * 并以给定的  {@code truncationIndicator} 结尾。否则，序列将以字符串形式返回，且内容不变。
 	 * <p>Examples:
 	 *

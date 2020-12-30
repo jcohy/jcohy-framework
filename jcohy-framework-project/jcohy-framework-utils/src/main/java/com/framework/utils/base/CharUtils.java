@@ -13,6 +13,9 @@ import com.google.common.base.Ascii;
  */
 public class CharUtils {
 
+	/** A bit mask which selects the bit encoding ASCII character case. */
+	private static final char CASE_MASK = 0x20;
+
 	//---------------------------------------------------------------------
 	// predicate
 	//---------------------------------------------------------------------
@@ -54,5 +57,15 @@ public class CharUtils {
 	 */
 	public static char toUpperCase(char c){
 		return Ascii.toUpperCase(c);
+	}
+
+	/**
+	 * 无论大小写如何，均返回字符 {@code c} 的非负索引值。 即，'a'/'A' 返回 0，而 'z'/'Z' 返回25。
+	 * 非字母字符返回的值等于或大于26。
+	 * @param c 给定字符
+	 * @return 返回索引值
+	 */
+	public static int getAlphaIndex(char c){
+		return (char) ((c | CASE_MASK) - 'a');
 	}
 }
