@@ -35,6 +35,11 @@ public class Chars {
 	/** Tab. */
 	public static final char TAB = '\t';
 
+	/** DOT. */
+	public static final char DOT = '.';
+
+	/** COLON. */
+	public static final char COLON = ':';
 	/**
 	 * 将数字转换为大写的十六进制字符或无效的空字符。
 	 *

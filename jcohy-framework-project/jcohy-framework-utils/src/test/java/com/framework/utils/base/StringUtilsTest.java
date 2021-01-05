@@ -205,14 +205,6 @@ class StringUtilsTest {
 		assertEquals("null [5, 6]", StringUtils.lenientFormat(null, 5, 6));
 		assertEquals("null", StringUtils.lenientFormat("%s", (Object) null));
 		assertEquals("(Object[])null", StringUtils.lenientFormat("%s", (Object[]) null));
-
-//		assertThat(StringUtils.lenientFormat("boiler %s plate", new ThrowsOnToString()))
-//				.matches(
-//						"boiler <com\\.framework\\.utils\\.base\\.StringUtilsTest\\$ThrowsOnToString@[0-9a-f]+ "
-//								+ "threw java\\.lang\\.UnsupportedOperationException> plate");
-//
-//		assertThat(StringUtils.lenientFormat("boiler %s plate", new ThrowsOnToString()))
-//				.matches("boiler <.*> plate");
 	}
 
 	@Test
@@ -324,10 +316,23 @@ class StringUtilsTest {
 		assertFalse(StringUtils.validSurrogatePairAt("\uD8ABx", 0));
 	}
 
-	private static class ThrowsOnToString {
-		@Override
-		public String toString() {
-			throw new UnsupportedOperationException();
-		}
+	@Test
+	void trimAllWhitespace() {
+	}
+
+	@Test
+	void trimLeadingWhitespace() {
+	}
+
+	@Test
+	void trimTrailingWhitespace() {
+	}
+
+	@Test
+	void trimLeadingCharacter() {
+	}
+
+	@Test
+	void trimTrailingCharacter() {
 	}
 }
