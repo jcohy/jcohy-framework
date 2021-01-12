@@ -9,16 +9,13 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import com.google.common.base.Ascii;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -35,89 +32,11 @@ import static java.util.logging.Level.WARNING;
  * @version 1.0.0 2020/12/17:12:08
  * @since 1.0.0
  */
-public class StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 	private static final String[] EMPTY_STRING_ARRAY = {};
 
-	//---------------------------------------------------------------------
-	// check test 检查校验测试
-	//---------------------------------------------------------------------
-	/**
-	 * 检查 CharSequence 是否为空 ("") 或 null.
-	 *
-	 * <pre>
-	 * Strings.isEmpty(null)      = true
-	 * Strings.isEmpty("")        = true
-	 * Strings.isEmpty(" ")       = false
-	 * Strings.isEmpty("bob")     = false
-	 * Strings.isEmpty("  bob  ") = false
-	 * </pre>
-	 *
-	 * @param str CharSequence
-	 * @return {@code true} if the CharSequence is empty or null
-	 */
-	public static boolean isEmpty(@Nullable final String str) {
-		return (str == null || str.isEmpty());
-	}
 
-	/**
-	 * 判断某字符串是否为空或长度为 0 或由空白符(whitespace) 构成
-	 *
-	 * <pre>
-	 * Strings.isBlack(null)      = true
-	 * Strings.isBlack("")        = true
-	 * Strings.isBlack(" ")       = true
-	 * Strings.isBlack("bob")     = false
-	 * Strings.isBlack("  bob  ") = false
-	 * </pre>
-	 *
-	 * @param str 给定 字符串
-	 * @return {@code true} 字符串 为空 或 长度为 0 或 由空白符(whitespace) 构成
-	 */
-	public static boolean isBlack(@Nullable final String str) {
-		return str == null || str.trim().isEmpty();
-	}
-
-	/**
-	 * 与 {@link StringUtils#isEmpty(String)} 相反
-	 * @param str 给定 字符串
-	 * @return {@code false} 字符串 为空 或 长度为 0 或 由空白符(whitespace) 构成
-	 */
-	public static boolean isNotEmpty(@Nullable final String str){
-		return !isEmpty(str);
-	}
-
-	/**
-	 * 与 {@link StringUtils#isBlack(String)} 相反
-	 * @param str 给定 字符串
-	 * @return {@code false} 字符串 为空 或 长度为 0 或 由空白符(whitespace) 构成
-	 */
-	public static boolean isNotBlack(@Nullable final String str){
-		return !isBlack(str);
-	}
-
-	/**
-	 * 判断 {@code s1} 和 {@code s2} 是否相等，忽略大小写。
-	 *
-	 * <p>此方法比 {@link String#equalsIgnoreCase} 快的多。如果已知至少一个参数仅包含 ASCII 字符，则应优先使用此方法。
-	 *
-	 * <p> 但是请注意，此方法的行为并不总是与以下表达式相同：
-	 *
-	 * <ul>
-	 *   <li>{@code string.toUpperCase().equals("UPPER CASE ASCII")}
-	 *   <li>{@code string.toLowerCase().equals("lower case ascii")}
-	 * </ul>
-	 *
-	 * <p> 由于某些非 ASCII 字符的大小写折叠（在  {@link String#equalsIgnoreCase} 中不会发生）。但是，在几乎所有使用 ASCII 字符串的情况下，
-	 * 作者都可能希望此方法提供的行为，而不是 {@code toUpperCase()} 和 {@code toLowerCase()} 的微妙且有时令人惊讶的行为。
-	 *
-	 * @param s1 字符串1
-	 * @param s2 字符串2
-	 * @return {@code true} 如果两个字符序列相等
-	 */
-	public static boolean equalsIgnoreCase(CharSequence s1, CharSequence s2){
-		return Ascii.equalsIgnoreCase(s1,s2);
-	}
 
 	public static boolean validSurrogatePairAt(CharSequence string, int index) {
 		return index >= 0
@@ -126,28 +45,7 @@ public class StringUtils {
 				&& Character.isLowSurrogate(string.charAt(index + 1));
 	}
 
-	/**
-	 * 测试给定的 {@code String }字符串是否以给定的 {@code prefix} 前缀 开头，忽略大小写
-	 * @param str 原始字符串
-	 * @param prefix 要匹配的前缀
-	 * @return {@code true} 以 {@code String} 以 {@code prefix} 开头
-	 */
-	public static boolean startsWithIgnoreCase(@Nullable String str, @Nullable String prefix) {
-		return (str != null && prefix != null && str.length() >= prefix.length() &&
-				str.regionMatches(true, 0, prefix, 0, prefix.length()));
-	}
 
-	/**
-	 * 测试给定的 {@code String }字符串是否以给定的 {@code suffix} 后缀 开头，忽略大小写
-	 * @param str  原始字符串
-	 * @param suffix 要匹配的后缀
-	 * @return {@code true} 以 {@code String} 以 {@code suffix} 结尾
-	 * @see java.lang.String#endsWith
-	 */
-	public static boolean endsWithIgnoreCase(@Nullable String str, @Nullable String suffix) {
-		return (str != null && suffix != null && str.length() >= suffix.length() &&
-				str.regionMatches(true, str.length() - suffix.length(), suffix, 0, suffix.length()));
-	}
 
 	/**
 	 * 测试指定字符串是否与指定索引处的子串相匹配
@@ -172,94 +70,16 @@ public class StringUtils {
 
 
 	//---------------------------------------------------------------------
-	// calculation 计算
+	// Stripping
 	//---------------------------------------------------------------------
-	/**
-	 * 计算子串在给定字符串中出现的次数
-	 * @param str 给定字符串
-	 * @param sub 子串
-	 * @return 出现的次数
-	 */
-	public static int countOccurrencesOf(String str,String sub){
-		if(isEmpty(str) || isEmpty(sub)){
-			return 0;
-		}
-
-		int count = 0;
-		int pos = 0;
-		int idx;
-		while((idx = str.indexOf(sub,pos)) != -1){
-			++ count;
-			pos = idx + sub.length();
-		}
-		return count;
-	}
-
-
-	//---------------------------------------------------------------------
-	// trim 去除空格，指定字符
-	//---------------------------------------------------------------------
-	/**
-	 * 删除给定 {@code String} 前面和后面的空白字符
-	 * @param str 给定 字符串
-	 * @return 去除空白符后的 {@code String}
-	 * @see java.lang.Character#isWhitespace
-	 */
-	public static String trimWhitespace(String str){
-		if(isEmpty(str)){
-			return str;
-		}
-
-		int beginIndex = 0;
-		int endIndex = str.length()-1;
-
-		while(beginIndex <= endIndex && Character.isWhitespace(str.charAt(beginIndex))){
-			beginIndex++;
-		}
-
-		while (endIndex > beginIndex && Character.isWhitespace(str.charAt(endIndex))){
-			endIndex --;
-		}
-		return str.substring(beginIndex,endIndex+1);
-	}
-
-	/**
-	 * 删除字符串中的所有空白字符
-	 * @param str 给定字符串
-	 * @return {@code string} 删除后的字符串
-	 * @see java.lang.Character#isWhitespace
-	 */
-	public static String trimAllWhitespace(String str){
-		if(isEmpty(str)){
-			return str;
-		}
-
-		int len = str.length();
-		StringBuilder sb = new StringBuilder(len);
-		for(int i = 0; i < len; i++){
-			char c = str.charAt(i);
-			if(!Character.isWhitespace(c)){
-				sb.append(c);
-			}
-		}
-		return sb.toString();
-	}
-
 	/**
 	 * 删除字符串前面的空白字符
 	 * @param str 原始字符串
 	 * @return {@code string} 删除后的字符串
 	 * @see java.lang.Character#isWhitespace
 	 */
-	public static String trimLeadingWhitespace(String str){
-		if(isEmpty(str)){
-			return str;
-		}
-		StringBuilder sb = new StringBuilder(str);
-		while (sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
-			sb.deleteCharAt(0);
-		}
-		return sb.toString();
+	public static String stripStart(String str){
+		return stripStart(str,null);
 	}
 
 	/**
@@ -268,92 +88,14 @@ public class StringUtils {
 	 * @return {@code string} 删除后的字符串
 	 * @see java.lang.Character#isWhitespace
 	 */
-	public static String trimTrailingWhitespace(String str){
-		if(isEmpty(str)){
-			return str;
-		}
-		StringBuilder sb = new StringBuilder(str);
-		while (sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
-			sb.deleteCharAt(sb.length() - 1);
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * 删除字符串中以 {@code leadingCharacter} 开头的字符
-	 * @param str 原始字符串
-	 * @param leadingCharacter 要删除的字符
-	 * @return 删除后的字符串
-	 */
-	public static String trimLeadingCharacter(String str, char leadingCharacter){
-		if (isEmpty(str)) {
-			return str;
-		}
-
-		StringBuilder sb = new StringBuilder(str);
-		while (sb.length() > 0 && sb.charAt(0) == leadingCharacter) {
-			sb.deleteCharAt(0);
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * 删除字符串中以 {@code leadingCharacter} 结尾的字符
-	 * @param str 原始字符串
-	 * @param trailingCharacter 要删除的字符
-	 * @return 删除后的字符串
-	 */
-	public static String trimTrailingCharacter(String str, char trailingCharacter){
-		if (isEmpty(str)) {
-			return str;
-		}
-
-		StringBuilder sb = new StringBuilder(str);
-		while (sb.length() > 0 && sb.charAt(sb.length() - 1) == trailingCharacter) {
-			sb.deleteCharAt(sb.length() - 1);
-		}
-		return sb.toString();
+	public static String stripEnd(String str){
+		return stripEnd(str,null);
 	}
 
 
 	//---------------------------------------------------------------------
 	// transform 转换
 	//---------------------------------------------------------------------
-	/**
-	 * 返回输入字符序列的副本，其中所有大写 ASCII 字符均已转换为小写。 所有其他字符均被复制而没有修改。
-	 * @param cs 给定字符序列
-	 * @return 转换后的结果
-	 */
-	public static String toLowerCase(final CharSequence cs){
-		return Ascii.toLowerCase(cs);
-	}
-
-	/**
-	 * 返回输入字符串的副本，其中所有大写 ASCII 字符均已转换为小写。 所有其他字符均被复制而没有修改。
-	 * @param str 给定字符串
-	 * @return 转换后的结果
-	 */
-	public static String toLowerCase(final String str){
-		return Ascii.toLowerCase(str);
-	}
-
-	/**
-	 * 返回输入字符序列的副本，其中所有小写 ASCII 字符均已转换为大写。 所有其他字符均被复制而没有修改。
-	 * @param cs 给定字符序列
-	 * @return 转换后的结果
-	 */
-	public static String toUpperCase(final CharSequence cs){
-		return Ascii.toUpperCase(cs);
-	}
-
-	/**
-	 * 返回输入字符串的副本，其中所有小写 ASCII 字符均已转换为大写。 所有其他字符均被复制而没有修改。
-	 * @param str 给定字符串
-	 * @return 转换后的结果
-	 */
-	public static String toUpperCase(final String str){
-		return Ascii.toUpperCase(str);
-	}
 
 	/**
 	 * 首字母大写
@@ -450,22 +192,35 @@ public class StringUtils {
 	 * @return 返回结果
 	 */
 	public static String truncate(CharSequence seq, int maxLength, String truncationIndicator){
-		return Ascii.truncate(seq,maxLength,truncationIndicator);
+		checkNotNull(seq);
+
+		// length to truncate the sequence to, not including the truncation indicator
+		int truncationLength = maxLength - truncationIndicator.length();
+
+		// in this worst case, this allows a maxLength equal to the length of the truncationIndicator,
+		// meaning that a string will be truncated to just the truncation indicator itself
+		checkArgument(
+				truncationLength >= 0,
+				"maxLength (%s) must be >= length of the truncation indicator (%s)",
+				maxLength,
+				truncationIndicator.length());
+
+		if (seq.length() <= maxLength) {
+			String string = seq.toString();
+			if (string.length() <= maxLength) {
+				return string;
+			}
+			// if the length of the toString() result was > maxLength for some reason, truncate that
+			seq = string;
+		}
+
+		return new StringBuilder(maxLength)
+				.append(seq, 0, truncationLength)
+				.append(truncationIndicator)
+				.toString();
 	}
 
-	/**
-	 * 返回 {@code cs1} 和 {@code cs2} 最长的字符前缀。也即
-	 * {@code a.toString().startsWith(prefix) && b.toString().startsWith(prefix)}
-	 *
-	 * <p>请注意不要拆分  Unicode 代理对（surrogate pair）
-	 *
-	 * @param cs1 字符序列1
-	 * @param cs2 字符序列2
-	 * @return 最长字符前缀,如果没有共同的前缀，则返回空字符串
-	 */
-	public static String commonPrefix(CharSequence cs1,CharSequence cs2){
-		return Strings.commonPrefix(cs1,cs2);
-	}
+
 
 	/**
 	 * 返回 {@code cs1} 和 {@code cs2} 最长的字符后缀。也即
@@ -478,7 +233,19 @@ public class StringUtils {
 	 * @return 最长字符后缀,如果没有共同的后缀，则返回空字符串
 	 */
 	public static String commonSuffix(CharSequence cs1,CharSequence cs2){
-		return Strings.commonSuffix(cs1,cs2);
+		checkNotNull(cs1);
+		checkNotNull(cs2);
+
+		int maxSuffixLength = Math.min(cs1.length(), cs2.length());
+		int s = 0;
+		while (s < maxSuffixLength && cs1.charAt(cs1.length() - s - 1) == cs2.charAt(cs2.length() - s - 1)) {
+			s++;
+		}
+		if (validSurrogatePairAt(cs1, cs1.length() - s - 1)
+				|| validSurrogatePairAt(cs2, cs2.length() - s - 1)) {
+			s--;
+		}
+		return cs1.subSequence(cs1.length() - s, cs1.length()).toString();
 	}
 
 
@@ -506,7 +273,7 @@ public class StringUtils {
 	 * @return 返回格式化后的字符串
 	 */
 	public static String lenientFormat(
-			@Nullable String template, @Nullable Object @Nullable ... args) {
+			@Nullable String template, @Nullable Object... args) {
 		// null -> "null"
 		template = String.valueOf(template);
 
@@ -573,146 +340,14 @@ public class StringUtils {
 		return qualifiedName.substring(qualifiedName.lastIndexOf(separator) + 1);
 	}
 
-	//---------------------------------------------------------------------
-	// padding 填充
-	//---------------------------------------------------------------------
-	/**
-	 * 返回一个长度至少为 {@code minLength} 的字符串，该字符串由  {@code string}  组成。如果长度不够，则使用 {@code padChar} 前缀填充
-	 *
-	 * <ul>
-	 *   <li>{@code padStart("7", 3, '0')} returns {@code "007"}
-	 *   <li>{@code padStart("2010", 3, '0')} returns {@code "2010"}
-	 * </ul>
-	 *
-	 * <p>请参阅 {@link java.util.Formatter} 以获取更多的格式化功能
-	 * @param string 显示在结果末尾的字符串
-	 * @param minLength 结果字符串的最小长度。可以为零或负数，在这种情况下，始终返回输入字符串。
-	 * @param padChar 在结果的开头插入字符，直到达到最小长度
-	 * @return 填充字符串
-	 */
-	public static String padStart(String string, int minLength, char padChar) {
-		checkNotNull(string);
-		if (string.length() >= minLength) {
-			return string;
-		}
-		return String.valueOf(padChar).repeat(minLength - string.length())
-				+ string;
-	}
-
-	/**
-	 * 返回一个长度至少为 {@code minLength} 的字符串，该字符串由  {@code string}  组成。如果长度不够，则使用 {@code padChar} 字符追加填充
-	 *
-	 * <ul>
-	 *   <li>{@code padEnd("4.", 5, '0')} returns {@code "4.000"}
-	 *   <li>{@code padEnd("2010", 3, '!')} returns {@code "2010"}
-	 * </ul>
-	 *
-	 * <p>请参阅 {@link java.util.Formatter} 以获取更多的格式化功能
-	 * @param string 显示在结果开头的字符串
-	 * @param minLength 结果字符串的最小长度。可以为零或负数，在这种情况下，始终返回输入字符串。
-	 * @param padChar 追加到结果末尾的字符，直到达到最小长度
-	 * @return 填充字符串
-	 */
-	public static String padEnd(String string, int minLength, char padChar) {
-		checkNotNull(string);
-		if (string.length() >= minLength) {
-			return string;
-		}
-		return string
-				+ String.valueOf(padChar).repeat(minLength - string.length());
-	}
-
-
-	//---------------------------------------------------------------------
-	// repeat 重复
-	//---------------------------------------------------------------------
-	/**
-	 * 将指定字符串 {@code string} 重复 {@code count} 次返回。
-	 *
-	 * 例如, {@code repeat("hey", 3)} 将返回 {@code "heyheyhey"}.
-	 *
-	 * @param string 任何非空字符串
-	 * @param count 重复的次数； 非负整数
-	 * @return 将 {@code string} 重复 {@code count} 次数的字符串 (如果 {@code count}  为零，则为空字符串)
-	 * @throws IllegalArgumentException 如果 {@code count} 非法
-	 */
-	public static String repeat(String string, int count) {
-		checkNotNull(string);
-
-		if (count <= 1) {
-			checkArgument(count >= 0, "invalid count: %s", count);
-			return (count == 0) ? "" : string;
-		}
-
-		// IF YOU MODIFY THE CODE HERE, you must update StringsRepeatBenchmark
-		final int len = string.length();
-		final long longSize = (long) len * (long) count;
-		final int size = (int) longSize;
-		if (size != longSize) {
-			throw new ArrayIndexOutOfBoundsException("Required array size too large: " + longSize);
-		}
-
-		final char[] array = new char[size];
-		string.getChars(0, len, array, 0);
-		int n;
-		for (n = len; n < size - n; n <<= 1) {
-			System.arraycopy(array, 0, array, n, n);
-		}
-		System.arraycopy(array, 0, array, n, size - n);
-		return new String(array);
-	}
-
-
-	//---------------------------------------------------------------------
-	// replace 替换
-	//---------------------------------------------------------------------
-	/**
-	 * 将一个字符串 {@code inString } 中出现的所有子字符串 {@code oldPattern } 替换为另一个子字符串 {@code newPattern }。
-	 * @param inString {@code String} 原始字符串
-	 * @param oldPattern {@code String} 替换的字符串
-	 * @param newPattern {@code String} 要插入的字符串
-	 * @return a {@code String} 返回替换后的字符串
-	 */
-	public static String replace(String inString, String oldPattern, @Nullable String newPattern) {
-		if (isEmpty(inString) || isEmpty(oldPattern) || newPattern == null) {
-			return inString;
-		}
-
-		int index = inString.indexOf(oldPattern);
-		if( index == -1){
-			return inString;
-		}
-
-		int capacity = inString.length();
-		if(newPattern.length() > oldPattern.length()){
-			capacity += 16;
-		}
-
-		StringBuilder sb = new StringBuilder(capacity);
-
-		// 旧字符串中的 position
-		int pos = 0;
-		int patLen = oldPattern.length();
-		while (index >= 0) {
-			sb.append(inString, pos, index);
-			sb.append(newPattern);
-			pos = index + patLen;
-			index = inString.indexOf(oldPattern, pos);
-		}
-
-		// append any characters to the right of a match
-		sb.append(inString, pos, inString.length());
-		return sb.toString();
-	}
-
 	/**
 	 * 删除所有的子串
 	 * @param inString 原始字符串
-	 * @param pattern 待删除的子串
+	 * @param subString 待删除的子串
 	 * @return 删除子串后的字符串
 	 */
-	public static String delete(String inString, String pattern) {
-		return replace(inString, pattern, "");
+	public static String delete(String inString, String subString) {
+		return replace(inString,subString,"");
 	}
 
 	/**

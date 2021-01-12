@@ -70,8 +70,8 @@ public class Strings {
 	/**
 	 * 常用转义符
 	 */
-	public static final String NEWLINE = "\n";
-	public static final String RETURN = "\r";
+	public static final String LF = "\n";
+	public static final String CR = "\r";
 	public static final String TAB = "\t";
 
 	/**
@@ -101,6 +101,7 @@ public class Strings {
 	public static final String FAIL = "fail";
 	public static final String ZERO = "0";
 	public static final String ONE = "1";
+	public static final int INDEX_NOT_FOUND = -1;
 	public static final String TRUE = "true";
 	public static final String NO = "no";
 	public static final String YES = "yes";
