@@ -1,54 +1,54 @@
-//plugins {
-//	id "java-gradle-plugin"
-////	id "io.spring.javaformat" version "${javaFormatVersion}"
-////	id "checkstyle"
-//}
-//
-//repositories {
-//	maven { url 'https://maven.aliyun.com/repository/public' }
-//	maven { url 'https://repo.spring.io/release' }
-//	mavenCentral()
-//	gradlePluginPortal()
-//}
-//
-//sourceCompatibility = 1.8
-//targetCompatibility = 1.8
-//
-//dependencies {
-////	checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${javaFormatVersion}"
-//	implementation("com.fasterxml.jackson.core:jackson-databind:2.10.0")
-//	implementation("commons-codec:commons-codec:1.13")
-//	implementation("org.apache.maven:maven-embedder:3.6.2")
-//	implementation("org.asciidoctor:asciidoctor-gradle-jvm:3.0.0")
-//	implementation("org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.0.0")
-//	implementation("org.springframework:spring-core:5.2.2.RELEASE")
-//	implementation("org.springframework:spring-web:5.2.2.RELEASE")
-//	implementation("com.google.code.gson:gson:2.8.5")
-////	implementation("io.spring.javaformat:spring-javaformat-gradle-plugin:${javaFormatVersion}")
-//	testImplementation("org.assertj:assertj-core:3.11.1")
-//	testImplementation("org.apache.logging.log4j:log4j-core:2.12.1")
-//	testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
-//}
-//
-////checkstyle {
-////	def archive = configurations.checkstyle.filter { it.name.startsWith("spring-javaformat-checkstyle")}
-////	config = resources.text.fromArchiveEntry(archive, "io/spring/javaformat/checkstyle/checkstyle.xml")
-////	toolVersion = 8.11
-////}
-//
-//gradlePlugin {
-//	plugins {
-////		bomPlugin {
-////			id = "org.springframework.boot.bom"
-////			implementationClass = "org.springframework.boot.build.bom.BomPlugin"
-////		}
-//		mavenRepositoryPlugin {
-//			id = "com.jochy.framework.maven-repository"
-//			implementationClass = "com.jcohy.framework.build.MavenRepositoryPlugin"
-//		}
-//	}
-//}
-//
-//test {
-//	useJUnitPlatform()
-//}
+plugins {
+	id "java-gradle-plugin"
+}
+
+repositories {
+	//加上阿里云镜像
+    maven { url "http://192.168.11.230:8081/repository/releases" }
+    maven { url "http://192.168.11.230:8081/repository/snapshot" }
+	maven { url 'https://maven.aliyun.com/repository/central' }
+	maven { url 'https://maven.aliyun.com/repository/public' }
+	maven { url "https://maven.aliyun.com/repository/spring" }
+	mavenCentral()
+	gradlePluginPortal()
+	maven { url "https://repo.spring.io/release" }
+}
+
+dependencies {
+	implementation("org.asciidoctor:asciidoctor-gradle-jvm:3.3.2")
+	implementation("org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2")
+	implementation("com.jcohy.gradle:jcohy-java-convention:${jcohyJavaFormatVersion}")
+	implementation("org.apache.maven:maven-embedder:3.6.2")
+	testImplementation("org.assertj:assertj-core:3.11.1")
+	testImplementation("org.apache.logging.log4j:log4j-core:2.12.1")
+	testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
+}
+
+//将src文件夹中的资源文件同时打包
+processResources {
+	from('src/main/java') {
+		include '**/*.xml'
+	}
+}
+
+gradlePlugin {
+	plugins {
+		docsPlugin {
+			id = "com.jcohy.framework.docs"
+			implementationClass = "com.jcohy.framework.build.AsciidoctorDocsPlugins"
+		}
+		deployedPlugin {
+			id = "com.jcohy.framework.module"
+			implementationClass = "com.jcohy.framework.build.JcohyModulePlugin"
+		}
+		autoConfigurationPlugin {
+			id = "com.jcohy.framework.auto-configuration"
+			implementationClass = "com.jcohy.framework.build.AutoConfigurationPlugin"
+		}
+	}
+}
+
+
+test {
+	useJUnitPlatform()
+}

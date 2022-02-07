@@ -1,144 +1,28 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-plugins {
-	id 'org.springframework.boot' version '2.3.7.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'org.asciidoctor.jvm.convert' version '2.4.0'
-	id "com.gorylenko.gradle-git-properties" version "2.2.2"
-	id "org.asciidoctor.jvm.pdf" version "2.3.0"
-	id 'de.undercouch.download' version '4.0.0'
-}
-
 description = "jcohy-framework"
 
-ext {
-	moduleProjects = subprojects.findAll { it.name.startsWith("jcohy-") }
-	bomProject = project(":jcohy-framework-project:jcohy-framework-bom")
-	javaProjects = subprojects - bomProject
-
-	//================= framework =================
-	set('aliyunSpringBootVersion', "1.0.0")
-	set('springCloudAlibabaVersion', "2.2.2.RELEASE")
-
-	//================= utils =================
-	set('GuavaVersion', "30.0-jre")
-}
 
 configure(allprojects) { abjects ->
 
-	apply plugin: "io.spring.dependency-management"
-
-	group = GROUPID
+	group = GROUP
 	version = VERSION
 
-	dependencyManagement {
-
-		imports {
-			mavenBom(SpringBootPlugin.BOM_COORDINATES)
-			mavenBom "com.alibaba.cloud:aliyun-spring-boot-dependencies:${aliyunSpringBootVersion}"
-			mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
-		}
-
-		dependencies {
-//			dependency "com.github.oshi:oshi-core:${oshiVersion}"
-			dependency "com.google.guava:guava:${GuavaVersion}"
-//			dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
-//			dependency "io.swagger:swagger-models:${swaggerModelsVersion}"
-//			dependency "com.alibaba:easyexcel:${easyexcelVersion}"
-//			dependency "net.sf.barcode4j:barcode4j:${barcode4jVersion}"
-//			dependencySet("io.protostuff:${protostuffVersion}") {
-//				entry 'protostuff-core'
-//				entry 'protostuff-runtime'
-//			}
-//
-//			dependencySet("com.google.zxing:${zxingVersion}") {
-//				entry 'core'
-//				entry 'javase'
-//			}
-//
-//			dependencySet("org.apache.poi:${poiVersion}") {
-//				entry 'poi'
-//				entry 'poi-ooxml'
-//			}
-//
-//			dependency "xerces:xercesImpl:${xercesVersion}"
-//			dependency "eu.bitwalker:UserAgentUtils:${UserAgentUtilsVersion}"
-//			dependencySet("com.github.xiaoymin:${knife4jVersion}") {
-//				entry 'knife4j-micro-spring-boot-starter'
-//				entry 'knife4j-spring-ui'
-//			}
-//			dependencySet("com.alibaba:${druidVersion}") {
-//				entry 'druid'
-//				entry 'druid-spring-boot-starter'
-//			}
-//			dependencySet("org.mapstruct:${mapstructVersion}") {
-//				entry 'mapstruct'
-//				entry 'mapstruct-processor'
-//			}
-//			dependency "io.jsonwebtoken:jjwt:${jjwtVersion}"
-//			dependency "org.lionsoul:ip2region:${ip2regionVersion}"
-//			dependency "com.alibaba:fastjson:${fastjsonVersion}"
-//			dependency "com.github.whvcse:easy-captcha:${easyCaptchaVersion}"
-//			dependency "org.junit.platform:junit-platform-commons:${junitPlatformCommonsVersion}"
-//			dependency "org.assertj:assertj-core:${assertjCoreVersion}"
-//			dependency "com.aliyun.oss:aliyun-sdk-oss:${aliyunSdkVersion}"
-		}
-	}
-
 	repositories {
-
-		if (!version.endsWith('SNAPSHOT')) {
-			maven { url REPOSITORY_URL_SNAPSHOT }
-		}
-		if (version.endsWith('SNAPSHOT')) {
-			maven { url REPOSITORY_URL_SNAPSHOT }
-		}
-		maven { url 'https://maven.aliyun.com/repository/central' }
-		maven { url 'https://repo.spring.io/libs-milestone' }
-		maven { url 'https://repo.spring.io/snapshot/' }
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		maven { url = 'https://maven.aliyun.com/repository/central'}
+		maven { url = 'https://repo.spring.io/libs-milestone'}
+		maven { url = 'https://repo.spring.io/snapshot/'}
+		maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/'}
 
 		mavenCentral()
 	}
 
 	configurations.all {
 		resolutionStrategy {
-			cacheChangingModulesFor 0, "seconds"
-			cacheDynamicVersionsFor 0, "seconds"
+			cacheChangingModulesFor 0, "minutes"
+			cacheDynamicVersionsFor 0, "minutes"
 		}
 	}
-}
 
-configure([rootProject] + javaProjects) { project ->
-
-}
-
-
-configure(moduleProjects) { project ->
-	apply from: "${rootDir}/gradle/jcohy-module.gradle"
-}
-
-configure(rootProject) {
-	description = "Jcohy Document API"
-	apply plugin: "org.asciidoctor.jvm.convert"
-	apply from: "${rootDir}/gradle/docs.gradle"
-	apply from: "${rootDir}/gradle/publications.gradle"
-	apply plugin: "com.gorylenko.gradle-git-properties"
-
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				artifact docsZip
-//                artifact schemaZip
-//                artifact distZip
-			}
-		}
+	configurations {
+		compile.exclude module :'spring-boot-starter-tomcat'
 	}
-}
-
-def getRepositoryUsername() {
-	return System.getenv('NEXUS_OSS_USER_NAME') ?: NEXUS_OSS_USER_NAME
-}
-
-def getRepositoryPassword() {
-	return System.getenv('NEXUS_OSS_PASS_WORD') ?: NEXUS_OSS_PASS_WORD
 }
