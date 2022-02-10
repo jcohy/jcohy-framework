@@ -34,15 +34,15 @@ processResources {
 gradlePlugin {
 	plugins {
 		docsPlugin {
-			id = "com.jcohy.framework.docs"
+			id = "com.jcohy.docs"
 			implementationClass = "com.jcohy.framework.build.AsciidoctorDocsPlugins"
 		}
 		deployedPlugin {
-			id = "com.jcohy.framework.module"
+			id = "com.jcohy.module"
 			implementationClass = "com.jcohy.framework.build.JcohyModulePlugin"
 		}
 		autoConfigurationPlugin {
-			id = "com.jcohy.framework.auto-configuration"
+			id = "com.jcohy.auto-configuration"
 			implementationClass = "com.jcohy.framework.build.AutoConfigurationPlugin"
 		}
 	}
