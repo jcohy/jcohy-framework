@@ -60,13 +60,13 @@
 [source,java]
 ----
 /**
- * Copyright: Copyright (c) 2020 Jcohy
+ * Copyright: Copyright (c) 2022 <a href="http://www.jcohy.com" target="_blank">jcohy.com</a>
  *
  * <p> Description:
  *
  * @author  jiac
- * @version  1.0.0 ${DATE}:${TIME}
- * @since  1.0.0
+ * @version 2022.0.1 ${DATE}:${TIME}
+ * @since  2022.0.1
  */
 ----
 

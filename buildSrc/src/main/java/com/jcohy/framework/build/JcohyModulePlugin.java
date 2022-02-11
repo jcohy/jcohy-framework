@@ -15,11 +15,11 @@ import org.gradle.api.plugins.PluginContainer;
  * 描述: .
  *
  * <p>
- * Copyright © 2021 <a href="https://www.xuanwuai.com" target= "_blank">https://www.xuanwuai.com</a>
+ * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
- * @version 2021.0.1 2022/2/7:16:15
- * @since 2021.0.1
+ * @version 2022.0.1 2022/2/7:16:15
+ * @since 2022.0.1
  */
 public class JcohyModulePlugin implements Plugin<Project> {
 

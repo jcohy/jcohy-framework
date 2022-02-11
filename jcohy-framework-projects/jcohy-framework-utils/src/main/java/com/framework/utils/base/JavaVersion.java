@@ -7,13 +7,13 @@ package com.framework.utils.base;
  * @since 3.0
  */
 /**
- * Copyright: Copyright (c) 2021 <a href="http://www.jcohy.com" target="_blank">jcohy.com</a>
+ * Copyright: Copyright (c) 2022 <a href="http://www.jcohy.com" target="_blank">jcohy.com</a>
  *
  * <p> Description: 代表 Java 规范的所有版本的枚举。主要是代表 <em>java.specification.version</em> 系统属性.
  *
  * @author jiac
- * @version 1.0.0 2021/1/11:22:59
- * @since 1.0.0
+ * @version 2022.0.1 2022/1/11:22:59
+ * @since 2022.0.1
  */
 public enum JavaVersion {
 
