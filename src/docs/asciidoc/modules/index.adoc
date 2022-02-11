@@ -1,6 +1,0 @@
-[[jcohy-module]]
-= 模块说明
-
-include::bom.adoc[]
-
-include::rabbit.adoc[]

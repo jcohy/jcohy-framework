@@ -1,0 +1,2 @@
+com.jcohy.framework.configuration.processor.SpiServiceProcessor
+com.jcohy.framework.configuration.processor.SpringFactoriesProcessor

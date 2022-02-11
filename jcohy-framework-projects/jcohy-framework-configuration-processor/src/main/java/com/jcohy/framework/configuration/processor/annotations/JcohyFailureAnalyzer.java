@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
  * 描述: .
  *
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
  * @version 2022.0.1 2022/2/11:10:46
@@ -19,4 +20,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
-public @interface JcohyFailureAnalyzer {}
+public @interface JcohyFailureAnalyzer {
+
+}

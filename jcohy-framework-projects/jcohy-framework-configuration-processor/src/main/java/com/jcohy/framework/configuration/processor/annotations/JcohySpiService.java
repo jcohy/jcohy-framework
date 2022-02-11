@@ -31,8 +31,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface JcohySpiService {
 
-    Class<?>[] value();
+	Class<?>[] value();
 
-    String name() default "";
+	String name() default "";
 
 }
