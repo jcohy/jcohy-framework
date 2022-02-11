@@ -21,31 +21,31 @@ import com.jcohy.framework.configuration.processor.utils.Elements;
  */
 public abstract class AbstractValueExtractor implements ValueExtractor {
 
-	/**
-	 * 提取值.
-	 * @param annotationValue 表示注解类型元素的值。
-	 * @return /
-	 */
-	@SuppressWarnings("unchecked")
-	protected Stream<Object> extractValues(AnnotationValue annotationValue) {
-		if (annotationValue == null) {
-			return Stream.empty();
-		}
+    /**
+     * 提取值.
+     * @param annotationValue 表示注解类型元素的值。
+     * @return /
+     */
+    @SuppressWarnings("unchecked")
+    protected Stream<Object> extractValues(AnnotationValue annotationValue) {
+        if (annotationValue == null) {
+            return Stream.empty();
+        }
 
-		Object value = annotationValue.getValue();
+        Object value = annotationValue.getValue();
 
-		if (value instanceof List) {
-			return ((List<AnnotationValue>) value).stream().map((annotation) -> extractValue(annotation.getValue()));
-		}
+        if (value instanceof List) {
+            return ((List<AnnotationValue>) value).stream().map((annotation) -> extractValue(annotation.getValue()));
+        }
 
-		return Stream.of(value);
-	}
+        return Stream.of(value);
+    }
 
-	private Object extractValue(Object value) {
-		if (value instanceof DeclaredType) {
-			return Elements.getQualifiedName(((DeclaredType) value).asElement());
-		}
-		return value;
-	}
+    private Object extractValue(Object value) {
+        if (value instanceof DeclaredType) {
+            return Elements.getQualifiedName(((DeclaredType) value).asElement());
+        }
+        return value;
+    }
 
 }

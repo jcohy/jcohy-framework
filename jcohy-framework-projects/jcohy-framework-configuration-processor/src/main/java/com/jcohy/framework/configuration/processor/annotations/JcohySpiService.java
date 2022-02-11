@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>不能是内部类和匿名类，必须要有确定的名称
  * <li>必须要有公共的，可调用的无参构造函数
- * <li>使用这个注解的类必须要实现value参数定义的接口 { @code value()}
+ * <li>使用这个注解的类必须要实现 value 参数定义的接口 {@code value()}
  * </ul>
  *
  * @author jiac
@@ -31,8 +31,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface JcohySpiService {
 
-	Class<?>[] value();
+    Class<?>[] value();
 
-	String name() default "";
+    String name() default "";
 
 }

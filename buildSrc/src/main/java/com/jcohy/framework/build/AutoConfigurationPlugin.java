@@ -8,8 +8,13 @@ import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPlugin;
 
 /**
- * 描述: .
+ * 描述: 自动为项目添加三个注解处理器.
  *
+ * <ul>
+ *     <li>annotationProcessor("spring-boot-autoconfigure-processor")</li>
+ *     <li>annotationProcessor("spring-boot-configuration-processor")</li>
+ *     <li>annotationProcessor("jcohy-framework-projects:jcohy-framework-configuration-processor")</li>
+ * </ul>
  * <p>
  * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *

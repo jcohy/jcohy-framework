@@ -9,24 +9,25 @@
 		<property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>
 	</module>
 	<module name="com.jcohy.checkstyle.JcohyChecks">
-		<property name="projectRootPackage" value="com.saga.boot"/>
-		<property name="headerType" value="unchecked" />
-		<property name="style" value="jcohy" />
+		<property name="projectRootPackage" value="com.jcohy.framework"/>
+		<property name="headerType" value="unchecked"/>
+		<property name="style" value="jcohy"/>
 	</module>
 
 
 	<module name="com.puppycrawl.tools.checkstyle.TreeWalker">
 		<module name="com.jcohy.checkstyle.check.SpringJavadocCheck">
-			<property name="publicOnlySinceTags" value="true" />
-			<property name="requireSinceTag" value="true" />
+			<property name="publicOnlySinceTags" value="true"/>
+			<property name="requireSinceTag" value="true"/>
 		</module>
 
 
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck">
 			<property name="ignoreHashCodeMethod" value="true"/>
-			<property name="ignoreNumbers" value="-1, 0, 1, 2, 4, 8, 10, 16, 32, 64, 1024, 2048"/>
-<!--			<property name="ignoreFieldDeclaration" value=""/>-->
-<!--			<property name="ignoreAnnotationElementDefaults" value="6"/>-->
+			<property name="ignoreNumbers"
+					  value="-1, 0, 1, 2, 4, 8, 10, 16, 32, 64, 1024, 2048"/>
+			<!--			<property name="ignoreFieldDeclaration" value=""/>-->
+			<!--			<property name="ignoreAnnotationElementDefaults" value="6"/>-->
 			<property name="ignoreAnnotation" value="true"/>
 		</module>
 	</module>

@@ -18,20 +18,20 @@ import javax.lang.model.element.AnnotationMirror;
 @FunctionalInterface
 public interface ValueExtractor {
 
-	/**
-	 * 指定注解的属性列表，后续会从此属性中提取值.
-	 * @param names 属性列表
-	 * @return valueExtractor
-	 */
-	static ValueExtractor allFrom(String... names) {
-		return new NamedValuesExtractor(names);
-	}
+    /**
+     * 指定注解的属性列表，后续会从此属性中提取值.
+     * @param names 属性列表
+     * @return valueExtractor
+     */
+    static ValueExtractor allFrom(String... names) {
+        return new NamedValuesExtractor(names);
+    }
 
-	/**
-	 * 获取注解的值.
-	 * @param annotation 注解
-	 * @return 值
-	 */
-	List<Object> getValues(AnnotationMirror annotation);
+    /**
+     * 获取注解的值.
+     * @param annotation 注解
+     * @return 值
+     */
+    List<Object> getValues(AnnotationMirror annotation);
 
 }

@@ -29,7 +29,7 @@ public class AsciidoctorDocsPlugins implements Plugin<Project> {
         plugins.apply(AsciidoctorJPlugin.class);
         plugins.apply(ConventionsPlugin.class);
         plugins.apply(DeployedPlugin.class);
-        plugins.withType(AsciidoctorJPlugin.class,(asciidoctorPlugin) -> {
+        plugins.withType(AsciidoctorJPlugin.class, (asciidoctorPlugin) -> {
             project.getTasks().withType(AbstractAsciidoctorTask.class, (asciidoctorTask) -> {
                 configureAsciidoctorTask(project, asciidoctorTask);
             });
@@ -42,11 +42,11 @@ public class AsciidoctorDocsPlugins implements Plugin<Project> {
 
     private void configureCommonAttributes(Project project, AbstractAsciidoctorTask asciidoctorTask) {
         Map<String, Object> attributes = new HashMap<>();
-        addAsciidoctorTaskAttributes(project,attributes);
+        addAsciidoctorTaskAttributes(project, attributes);
         asciidoctorTask.attributes(attributes);
     }
 
-    private void addAsciidoctorTaskAttributes(Project project,Map<String, Object> attributes) {
+    private void addAsciidoctorTaskAttributes(Project project, Map<String, Object> attributes) {
         attributes.put("rootProject", project.getRootProject().getProjectDir());
     }
 }

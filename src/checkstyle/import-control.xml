@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE import-control PUBLIC "-//Checkstyle//DTD ImportControl Configuration 1.4//EN" "https://checkstyle.org/dtds/import_control_1_4.dtd">
-<import-control pkg="com.saga.boot">
-	<allow pkg=".*" regex="true" />
+<!DOCTYPE import-control PUBLIC "-//Checkstyle//DTD ImportControl Configuration 1.4//EN"
+		"https://checkstyle.org/dtds/import_control_1_4.dtd">
+<import-control pkg="com.jcohy.framework">
+	<allow pkg=".*" regex="true"/>
 </import-control>

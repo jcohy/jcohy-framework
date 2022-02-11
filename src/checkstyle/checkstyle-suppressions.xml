@@ -3,13 +3,17 @@
 		"-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
 		"https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
-	<suppress files="Test.*\.java" checks="MagicNumberCheck" />
-	<suppress files=".+(Utils|Util|Converter|Helper|Properties|Prop|Filter|Dto|Excel|Builder|Template).java$" checks="MagicNumberCheck" />
-	<suppress files="SqlKeyword\.java" checks="LineLength" />
-	<suppress files="SecurityUtils\.java" checks="SpringHideUtilityClassConstructor" />
-	<suppress files="LogicCrudServiceImpl\.java" checks="LineLength" />
-	<suppress files="LogLevel\.java" checks="JavadocVariable" />
-	<suppress files="I.*\.java" checks="JcohyAbbreviationAsWordInNameCheck" />
-	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="SpringAvoidStaticImport" />
-	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="NonEmptyAtclauseDescription" />
+	<suppress files="Test.*\.java" checks="MagicNumberCheck"/>
+	<suppress
+			files=".+(Utils|Util|Converter|Helper|Properties|Prop|Filter|Dto|Excel|Builder|Template).java$"
+			checks="MagicNumberCheck"/>
+	<suppress files="SqlKeyword\.java" checks="LineLength"/>
+	<suppress files="SecurityUtils\.java" checks="SpringHideUtilityClassConstructor"/>
+	<suppress files="LogicCrudServiceImpl\.java" checks="LineLength"/>
+	<suppress files="LogLevel\.java" checks="JavadocVariable"/>
+	<suppress files="I.*\.java" checks="JcohyAbbreviationAsWordInNameCheck"/>
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="SpringAvoidStaticImport"/>
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]"
+			  checks="NonEmptyAtclauseDescription"/>
+	<suppress files="[\\/]jcohy-framework-configuration-processor[\\/]" checks="AbstractClassNameCheck" />
 </suppressions>

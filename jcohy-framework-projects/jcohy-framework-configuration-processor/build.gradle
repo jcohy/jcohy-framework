@@ -2,7 +2,7 @@ plugins {
 	id "com.jcohy.module"
 }
 
-description = "Saga Boot Annotation Processor Generation spring.factories and Java SPI file"
+description = "Jcohy Framework Annotation Processor Generation spring.factories and Java SPI file"
 
 dependencies {
 }

@@ -24,22 +24,22 @@ import javax.lang.model.element.ExecutableElement;
  */
 public class NamedValuesExtractor extends AbstractValueExtractor {
 
-	private final Set<String> names;
+    private final Set<String> names;
 
-	NamedValuesExtractor(String... names) {
-		this.names = new HashSet<>(Arrays.asList(names));
-	}
+    NamedValuesExtractor(String... names) {
+        this.names = new HashSet<>(Arrays.asList(names));
+    }
 
-	@Override
-	public List<Object> getValues(AnnotationMirror annotation) {
-		List<Object> result = new ArrayList<>();
-		Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotation.getElementValues();
-		annotation.getElementValues().forEach((key, value) -> {
-			if (this.names.contains(key.getSimpleName().toString())) {
-				extractValues(value).forEach(result::add);
-			}
-		});
-		return result;
-	}
+    @Override
+    public List<Object> getValues(AnnotationMirror annotation) {
+        List<Object> result = new ArrayList<>();
+        Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotation.getElementValues();
+        annotation.getElementValues().forEach((key, value) -> {
+            if (this.names.contains(key.getSimpleName().toString())) {
+                extractValues(value).forEach(result::add);
+            }
+        });
+        return result;
+    }
 
 }
