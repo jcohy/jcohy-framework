@@ -2,3 +2,4 @@ rootProject.name = "jcohy-framework"
 
 include "jcohy-framework-projects:jcohy-framework-dependencies"
 include "jcohy-framework-projects:jcohy-framework-configuration-processor"
+include "jcohy-framework-projects:jcohy-framework-utils"

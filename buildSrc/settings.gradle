@@ -1,8 +1,8 @@
 pluginManagement {
 	repositories {
 		//加上阿里云镜像
-		maven { url "http://192.168.11.230:8081/repository/releases" }
-		maven { url "http://192.168.11.230:8081/repository/snapshot" }
+//		maven { url "http://192.168.11.230:8081/repository/releases" }
+//		maven { url "http://192.168.11.230:8081/repository/snapshot" }
 		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
 		maven { url "https://maven.aliyun.com/repository/spring-plugin" }
 		mavenCentral()
