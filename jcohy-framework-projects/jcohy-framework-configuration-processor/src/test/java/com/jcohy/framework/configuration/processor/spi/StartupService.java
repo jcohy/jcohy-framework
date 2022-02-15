@@ -1,7 +1,7 @@
 package com.jcohy.framework.configuration.processor.spi;
 
 /**
- * 描述: 注解处理器.
+ * 描述: .
  *
  * <p>
  * Copyright © 2022
@@ -17,4 +17,5 @@ public interface StartupService {
      * 启动时加载 spi.
      */
     void startup();
+
 }

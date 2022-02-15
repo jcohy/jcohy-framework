@@ -62,12 +62,12 @@ public class SpringFactoriesProcessor extends AbstractConfigureAnnotationProcess
     }
 
     private void addAnnotations(Map<String, String> annotations) {
-        annotations.put("com.jcohy.framework.configuration.processor.annotations.SagaApplicationContextInitializer",
+        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohyApplicationContextInitializer",
                 "org.springframework.context.ApplicationContextInitializer");
-        annotations.put("com.jcohy.framework.configuration.processor.annotations.SagaApplicationListener",
+        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohySagaApplicationListener",
                 "org.springframework.context.ApplicationListener");
-        annotations.put("com.jcohy.framework.configuration.processor.annotations.SagaFailureAnalyzer",
-                "org.springframework.boot.diagnostics.FailureAnalyzer");
+        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohySagaFailureAnalyzer",
+                "org.springframework.boot.diagnostics.JcohyFailureAnalyzer");
         annotations.put("org.springframework.stereotype.Component",
                 "org.springframework.boot.autoconfigure.EnableAutoConfiguration");
     }

@@ -4,24 +4,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import com.jcohy.framework.configuration.processor.spi.StartupServiceTestOne;
-import com.jcohy.framework.configuration.processor.spi.StartupServiceTestTwo;
-import com.jcohy.framework.configuration.processor.spi.TestSagaSpiServiceProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import com.jcohy.framework.configuration.processor.spi.StartupServiceTestOne;
+import com.jcohy.framework.configuration.processor.spi.StartupServiceTestTwo;
+import com.jcohy.framework.configuration.processor.spi.TestSpiServiceProcessor;
+
 /**
- * 描述: 注解处理器.
+ * 描述: .
  *
  * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
- * @version 2022.0.1 2/14/22:18:23
+ * @version 2022.0.1 2022/14/22:18:23
  * @since 2022.0.1
  */
 class SpiServiceProcessorTest {
@@ -51,11 +52,10 @@ class SpiServiceProcessorTest {
         return process(types).getWrittenProperties();
     }
 
-    private TestSagaSpiServiceProcessor process(Class<?>... types) {
-        TestSagaSpiServiceProcessor processor = new TestSagaSpiServiceProcessor(this.compiler.getOutputLocation());
+    private TestSpiServiceProcessor process(Class<?>... types) {
+        TestSpiServiceProcessor processor = new TestSpiServiceProcessor(this.compiler.getOutputLocation());
         this.compiler.getTask(types).call(processor);
         return processor;
     }
 
 }
-

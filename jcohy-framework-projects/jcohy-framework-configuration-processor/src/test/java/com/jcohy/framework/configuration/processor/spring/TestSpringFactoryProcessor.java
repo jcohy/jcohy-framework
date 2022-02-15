@@ -1,4 +1,4 @@
-package com.jcohy.framework.configuration.processor.spi;
+package com.jcohy.framework.configuration.processor.spring;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,26 +7,26 @@ import java.util.Properties;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 
-import com.jcohy.framework.configuration.processor.SpiServiceProcessor;
+import com.jcohy.framework.configuration.processor.SpringFactoriesProcessor;
 import com.jcohy.framework.configuration.processor.utils.Constants;
 
 /**
- * 描述: 注解处理器.
+ * 描述: .
  *
  * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
- * @version 2022.0.1 2/14/22:18:21
+ * @version 2022.0.1 2/15/22:10:51
  * @since 2022.0.1
  */
-@SupportedAnnotationTypes({ "com.jcohy.framework.configuration.processor.annotations.SagaSpiService" })
-public class TestSagaSpiServiceProcessor extends SpiServiceProcessor {
+@SupportedAnnotationTypes({ "*" })
+public class TestSpringFactoryProcessor extends SpringFactoriesProcessor {
 
     private final File outputLocation;
 
-    public TestSagaSpiServiceProcessor(File outputLocation) {
+    public TestSpringFactoryProcessor(File outputLocation) {
         this.outputLocation = outputLocation;
     }
 
@@ -43,8 +43,7 @@ public class TestSagaSpiServiceProcessor extends SpiServiceProcessor {
     }
 
     public File getWrittenFile() {
-        return new File(this.outputLocation, Constants.SERVICE_RESOURCE_LOCATION);
+        return new File(this.outputLocation, Constants.SPRING_FACTORY_RESOURCE_LOCATION);
     }
 
 }
-

@@ -15,7 +15,7 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 /**
- * 描述: 注解处理器.
+ * 描述: Wrapper to make the {@link JavaCompiler} easier to use in tests.
  *
  * <p>
  * Copyright © 2022
@@ -112,4 +112,3 @@ public class TestCompiler {
     }
 
 }
-

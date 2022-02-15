@@ -34,10 +34,10 @@ public class JcohyModulePlugin implements Plugin<Project> {
     }
 
     private void configureDependencyManagement(Project project) {
-        Dependency sagaParent = project.getDependencies().enforcedPlatform(project.getDependencies()
+        Dependency parent = project.getDependencies().enforcedPlatform(project.getDependencies()
                 .project(Collections.singletonMap("path", ":jcohy-framework-projects:jcohy-framework-dependencies")));
         project.getConfigurations().getByName("dependencyManagement", (dependencyManagement) -> {
-            dependencyManagement.getDependencies().add(sagaParent);
+            dependencyManagement.getDependencies().add(parent);
         });
     }
 }

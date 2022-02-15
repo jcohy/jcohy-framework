@@ -43,7 +43,7 @@ import com.jcohy.framework.configuration.processor.value.ValueExtractor;
  * @version 2022.0.1 2022/2/11:11:24
  * @since 2022.0.1
  */
-@SupportedAnnotationTypes({ "com.jcohy.framework.configuration.processor.annotations.SagaSpiService" })
+@SupportedAnnotationTypes({ "com.jcohy.framework.configuration.processor.annotations.JcohySpiService" })
 public class SpiServiceProcessor extends AbstractConfigureAnnotationProcessor {
 
     private final Map<String, String> annotations;
@@ -65,11 +65,11 @@ public class SpiServiceProcessor extends AbstractConfigureAnnotationProcessor {
     }
 
     private void addAnnotations(Map<String, String> annotations) {
-        annotations.put("SagaSpiService", "com.jcohy.framework.configuration.processor.annotations.SagaSpiService");
+        annotations.put("JcohySpiService", "com.jcohy.framework.configuration.processor.annotations.JcohySpiService");
     }
 
     private void addValueExtractors(Map<String, ValueExtractor> attributes) {
-        attributes.put("SagaSpiService", ValueExtractor.allFrom("value"));
+        attributes.put("JcohySpiService", ValueExtractor.allFrom("value"));
     }
 
     @Override
