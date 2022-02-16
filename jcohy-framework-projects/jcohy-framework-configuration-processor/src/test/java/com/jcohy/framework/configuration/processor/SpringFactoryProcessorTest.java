@@ -19,6 +19,8 @@ import com.jcohy.framework.configuration.processor.spring.TestApplicationListene
 import com.jcohy.framework.configuration.processor.spring.TestNoApplicationListener;
 import com.jcohy.framework.configuration.processor.spring.TestSpringFactoryProcessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * 描述: .
  *
@@ -59,22 +61,19 @@ class SpringFactoryProcessorTest {
     @BeforeEach
     void createCompiler() throws IOException {
         this.compiler = new TestCompiler(new File("src/test/resources"));
-        // this.compiler = new TestCompiler(this.tempDir);
     }
 
     /**
-     * 预期结果：没有实现ApplicationListener接口的类不写入到spring.factories中.
+     * 预期结果：没有实现 ApplicationListener 接口的类不写入到 spring.factories 中.
      * TestApplicationListener.class,TestApplicationContextInitializer.class,
-     * @throws IOException
-     */
+	 */
     @Test
     void annotatedClass() throws IOException {
         Properties properties = compile(TestApplicationListener.class, TestApplicationContextInitializer.class,
                 TestNoApplicationListener.class);
         Map<String, List<String>> stringListMap = loadSpringFactories(properties);
         System.out.println(stringListMap);
-        // assertThat(properties).hasSize(7);
-
+		assertThat(properties).hasSize(1);
     }
 
     private Properties compile(Class<?>... types) throws IOException {

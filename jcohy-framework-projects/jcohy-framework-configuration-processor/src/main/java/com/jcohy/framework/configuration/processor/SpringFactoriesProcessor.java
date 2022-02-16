@@ -64,9 +64,9 @@ public class SpringFactoriesProcessor extends AbstractConfigureAnnotationProcess
     private void addAnnotations(Map<String, String> annotations) {
         annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohyApplicationContextInitializer",
                 "org.springframework.context.ApplicationContextInitializer");
-        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohySagaApplicationListener",
+        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohyApplicationListener",
                 "org.springframework.context.ApplicationListener");
-        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohySagaFailureAnalyzer",
+        annotations.put("com.jcohy.framework.configuration.processor.annotations.JcohyFailureAnalyzer",
                 "org.springframework.boot.diagnostics.JcohyFailureAnalyzer");
         annotations.put("org.springframework.stereotype.Component",
                 "org.springframework.boot.autoconfigure.EnableAutoConfiguration");
@@ -194,7 +194,7 @@ public class SpringFactoriesProcessor extends AbstractConfigureAnnotationProcess
 
     /**
      * 检查被注解的类实现的接口是否和相对应的注解匹配. eg: 使用
-     * com.jcohy.framework.configuration.processor.annotations.SagaApplicationContextInitializer
+     * com.jcohy.framework.configuration.processor.annotations.JcohyApplicationContextInitializer
      * 注解的必须实现 org.springframework.context.ApplicationContextInitializer
      * @param annotationTypeElement 被注解的类。
      * @param interfaces 接口

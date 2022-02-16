@@ -3,7 +3,7 @@ package com.jcohy.framework.configuration.processor.spring;
 import com.jcohy.framework.configuration.processor.annotations.JcohyApplicationListener;
 
 /**
- * 描述: .
+ * 描述: 此类不会被写入 spring.factories.
  *
  * <p>
  * Copyright © 2022

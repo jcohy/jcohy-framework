@@ -1,2 +1,0 @@
-org.springframework.context.ApplicationContextInitializer=\
-  com.jcohy.framework.configuration.processor.spring.TestApplicationContextInitializer

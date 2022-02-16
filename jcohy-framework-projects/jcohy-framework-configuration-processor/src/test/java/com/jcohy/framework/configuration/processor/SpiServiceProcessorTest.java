@@ -2,17 +2,22 @@ package com.jcohy.framework.configuration.processor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.util.StringUtils;
 
 import com.jcohy.framework.configuration.processor.spi.StartupServiceTestOne;
 import com.jcohy.framework.configuration.processor.spi.StartupServiceTestTwo;
 import com.jcohy.framework.configuration.processor.spi.TestSpiServiceProcessor;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 描述: .
@@ -27,9 +32,6 @@ import com.jcohy.framework.configuration.processor.spi.TestSpiServiceProcessor;
  */
 class SpiServiceProcessorTest {
 
-    @TempDir
-    File tempDir;
-
     private TestCompiler compiler;
 
     @BeforeEach
@@ -39,16 +41,12 @@ class SpiServiceProcessorTest {
 
     @Test
     void annotatedClass() throws IOException {
-        Properties properties = compile(StartupServiceTestOne.class, StartupServiceTestTwo.class);
-        System.out.println(properties);
-        assertThat(properties).hasSize(7);
+		List<String> result = compile(StartupServiceTestOne.class, StartupServiceTestTwo.class);
+        System.out.println(result);
+        assertThat(result).hasSize(2);
     }
 
-    private WebTestClient.ListBodySpec<Object> assertThat(Properties properties) {
-        return null;
-    }
-
-    private Properties compile(Class<?>... types) throws IOException {
+    private List<String> compile(Class<?>... types) throws IOException {
         return process(types).getWrittenProperties();
     }
 
@@ -57,5 +55,4 @@ class SpiServiceProcessorTest {
         this.compiler.getTask(types).call(processor);
         return processor;
     }
-
 }
