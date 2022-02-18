@@ -1,0 +1,13 @@
+plugins {
+	id "com.jcohy.module"
+}
+
+description = "jcohy-framework-commons module provie the common constant of system. "
+
+dependencies {
+	api ("io.springfox:springfox-swagger2")
+	api ("io.swagger:swagger-models")
+	api ("org.springframework.boot:spring-boot-starter-validation")
+	api ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+//	implementation ("org.springframework.boot:spring-boot-starter-security")
+}
