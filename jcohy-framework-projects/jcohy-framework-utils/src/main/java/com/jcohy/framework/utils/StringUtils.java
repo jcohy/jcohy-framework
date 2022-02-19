@@ -403,7 +403,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 切分字符串.
+	 * 切分字符串，默认不忽略大小写.
 	 * @param str 被切分的字符串
 	 * @param separator 分隔符字符
 	 * @param limit 限制分片数，-1不限制
@@ -420,20 +420,20 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 
-	/**
-	 * 切分字符串，忽略大小写.
-	 * @param str 被切分的字符串
-	 * @param separator 分隔符字符
-	 * @param limit 限制分片数，-1 不限制
-	 * @param isTrim 是否去除切分字符串后每个元素两边的空格
-	 * @param ignoreEmpty 是否忽略空串
-	 * @return 切分后的集合
-	 * @since 2022.0.1
-	 */
-	public static List<String> splitIgnoreCase(String str, char separator, int limit, boolean isTrim,
-			boolean ignoreEmpty) {
-		return split(str, separator, limit, isTrim, ignoreEmpty, true);
-	}
+//	/**
+//	 * 切分字符串，忽略大小写.
+//	 * @param str 被切分的字符串
+//	 * @param separator 分隔符字符
+//	 * @param limit 限制分片数，-1 不限制
+//	 * @param isTrim 是否去除切分字符串后每个元素两边的空格
+//	 * @param ignoreEmpty 是否忽略空串
+//	 * @return 切分后的集合
+//	 * @since 2022.0.1
+//	 */
+//	public static List<String> splitIgnoreCase(String str, char separator, int limit, boolean isTrim,
+//			boolean ignoreEmpty) {
+//		return split(str, separator, limit, isTrim, ignoreEmpty, true);
+//	}
 
 	/**
 	 * 切分字符串为字符串数组.
@@ -490,6 +490,31 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	// Split by String 通过 String 类型拆分
 
 	/**
+	 * 切分字符串，去除每个元素两边空格，忽略大小写.
+	 * @param str 被切分的字符串
+	 * @param separator 分隔符字符串
+	 * @param ignoreEmpty 是否忽略空串
+	 * @return 切分后的集合
+	 * @since 2022.0.1
+	 */
+	public static List<String> splitTrim(String str, String separator, boolean ignoreEmpty) {
+		return split(str, separator, true, ignoreEmpty);
+	}
+
+	/**
+	 * 切分字符串，去除每个元素两边空格，忽略大小写.
+	 * @param str 被切分的字符串
+	 * @param separator 分隔符字符串
+	 * @param limit 限制分片数
+	 * @param ignoreEmpty 是否忽略空串
+	 * @return 切分后的集合
+	 * @since 2022.0.1
+	 */
+	public static List<String> splitTrim(String str, String separator, int limit, boolean ignoreEmpty) {
+		return split(str, separator, limit, true, ignoreEmpty);
+	}
+
+	/**
 	 * 切分字符串，不忽略大小写.
 	 * @param str 被切分的字符串
 	 * @param separator 分隔符字符串
@@ -500,18 +525,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	 */
 	public static List<String> split(String str, String separator, boolean isTrim, boolean ignoreEmpty) {
 		return split(str, separator, -1, isTrim, ignoreEmpty, false);
-	}
-
-	/**
-	 * 切分字符串，去除每个元素两边空格，忽略大小写.
-	 * @param str 被切分的字符串
-	 * @param separator 分隔符字符串
-	 * @param ignoreEmpty 是否忽略空串
-	 * @return 切分后的集合
-	 * @since 2022.0.1
-	 */
-	public static List<String> splitTrim(String str, String separator, boolean ignoreEmpty) {
-		return split(str, separator, true, ignoreEmpty);
 	}
 
 	/**
@@ -531,18 +544,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		return split(str, separator, limit, isTrim, ignoreEmpty, false);
 	}
 
-	/**
-	 * 切分字符串，去除每个元素两边空格，忽略大小写.
-	 * @param str 被切分的字符串
-	 * @param separator 分隔符字符串
-	 * @param limit 限制分片数
-	 * @param ignoreEmpty 是否忽略空串
-	 * @return 切分后的集合
-	 * @since 2022.0.1
-	 */
-	public static List<String> splitTrim(String str, String separator, int limit, boolean ignoreEmpty) {
-		return split(str, separator, limit, true, ignoreEmpty);
-	}
 
 	/**
 	 * 切分字符串，忽略大小写.
@@ -872,11 +873,11 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * List转array.
+	 * List 转 array.
 	 * @param list list
 	 * @return array
 	 */
 	private static String[] toArray(List<String> list) {
-		return list.toArray(new String[list.size()]);
+		return list.toArray(new String[0]);
 	}
 }

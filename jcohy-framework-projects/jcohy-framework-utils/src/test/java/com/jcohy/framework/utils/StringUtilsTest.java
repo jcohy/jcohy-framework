@@ -1,5 +1,8 @@
 package com.jcohy.framework.utils;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
@@ -150,19 +153,60 @@ public class StringUtilsTest {
 		assertThat(StringUtils.split(str3,CharPools.COMMA,3,false,true)).hasSize(3).contains("Hello World : ","  I "," am :, Iron Man.");
 		assertThat(StringUtils.split(str3,CharPools.COMMA,3,true,true)).hasSize(3).contains("Hello World :","I","am :, Iron Man.");
 
+		String str4 = "Hello World, I am,  Iron Man.";
+//		StringUtils.split(str4,'I',-1,true,true,true).forEach(System.out::println);
+//		System.out.println("========");
+//		StringUtils.split(str4,'i',-1,true,true,true).forEach(System.out::println);
+//		System.out.println("========");
+//		StringUtils.splitIgnoreCase(str4,'I',-1,true,true).forEach(System.out::println);
+//		System.out.println("========");
+//		StringUtils.splitIgnoreCase(str4,'i',-1,true,true).forEach(System.out::println);
 
+//		assertThat(StringUtils.splitIgnoreCase(str4,'I',-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+//		assertThat(StringUtils.splitIgnoreCase(str4,'i',-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+		assertThat(StringUtils.splitToArray(str4,'I',-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+	}
+
+	@Test
+	public void testStringSplit() {
+		// 通过 char 类型拆分
+		String str2 = "Hello World,  ,  I , am , Iron Man.";
+		assertThat(StringUtils.splitTrim(str2,StringPools.COMMA,true)).hasSize(4).doesNotContain("  I ");
+		assertThat(StringUtils.splitTrim(str2,StringPools.COMMA,false)).hasSize(5).contains("").doesNotContain("  I ");
+		assertThat(StringUtils.splitTrim(str2,StringPools.COMMA,3,true)).hasSize(3).doesNotContain("  I ");
+		assertThat(StringUtils.splitTrim(str2,StringPools.COMMA,3,false)).hasSize(3).contains("").doesNotContain("  I ");
+
+		String str3 = "Hello World : ,,  I , am :, Iron Man.";
+		assertThat(StringUtils.split(str3)).hasSize(4).contains("Hello World :","I","am :","Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COLON)).hasSize(3).contains("Hello World",",,  I , am",", Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,false,false)).hasSize(5).contains("Hello World : ","","  I " , " am :", " Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,true,false)).hasSize(5).contains("Hello World :","","I" , "am :", "Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,false,true)).hasSize(4).contains("Hello World : ","  I " , " am :", " Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,true,true)).hasSize(4).contains("Hello World :","I","am :","Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,3,false,false)).hasSize(3).contains("Hello World : ","","  I , am :, Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,3,true,false)).hasSize(3).contains("Hello World :","","I , am :, Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,3,false,true)).hasSize(3).contains("Hello World : ","  I "," am :, Iron Man.");
+		assertThat(StringUtils.split(str3,StringPools.COMMA,3,true,true)).hasSize(3).contains("Hello World :","I","am :, Iron Man.");
 
 		String str4 = "Hello World, I am,  Iron Man.";
-		StringUtils.splitIgnoreCase(str4,'i',-1,true,true).forEach(System.out::println);
-		StringUtils.splitIgnoreCase(str4,'I',-1,true,true).forEach(System.out::println);
-		System.out.println("=====");
-		StringUtils.splitIgnoreCase(str4,"i",-1,true,true).forEach(System.out::println);
-		StringUtils.splitIgnoreCase(str4,"I",-1,true,true).forEach(System.out::println);
+		assertThat(StringUtils.splitIgnoreCase(str4,"I",-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+		assertThat(StringUtils.splitIgnoreCase(str4,"i",-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+		assertThat(StringUtils.splitToArray(str4,"i",-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+	}
 
+	@Test
+	public void testSplit() {
 
-//		StringUtils.splitIgnoreCase(str4,'I',-1,true,true).forEach(System.out::println);
-		assertThat(StringUtils.splitIgnoreCase(str4,'I',-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
-		assertThat(StringUtils.splitIgnoreCase(str4,'i',-1,true,true)).hasSize(1).contains("Hello World, I am,  Iron Man.");
+		// Whitespace
+		String str = " Hello World, I am,  Iron Man. ";
+		StringUtils.split(str,1).forEach(System.out::println);
+		assertThat(StringUtils.split(str,1)).hasSize(1).contains("Hello World, I am,  Iron Man.");
 
+		// 通过正则拆分
+		Pattern pattern = Pattern.compile("Hello");
+		assertThat(StringUtils.split(str,pattern,2,true,true)).hasSize(1).contains("World, I am,  Iron Man.");
+
+		// 通过长度拆分
+		assertThat(StringUtils.splitByLength(str,8)).hasSize(4).contains(" Hello W","orld, I ","am,  Iro","n Man. ");
 	}
 }
