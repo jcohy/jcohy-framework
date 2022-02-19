@@ -122,4 +122,47 @@ public class StringUtilsTest {
 		assertThat(StringUtils.formatTime(2000000100)).isEqualTo("2.000s");
 
 	}
+
+	@Test
+	public void testCharSplit() {
+		// 通过 char 类型拆分
+		String str1 = "/User/jcohy/idea";
+		assertThat(StringUtils.splitPath(str1)).hasSize(3).contains("User","jcohy","idea");
+		assertThat(StringUtils.splitPath(str1,2)).hasSize(2).contains("User","jcohy/idea");
+		assertThat(StringUtils.splitPathToArray(str1)).hasSize(3).contains("User","jcohy","idea");
+		assertThat(StringUtils.splitPathToArray(str1,2)).hasSize(2).contains("User","jcohy/idea");
+
+		String str2 = "Hello World,  ,  I , am , Iron Man.";
+		assertThat(StringUtils.splitTrim(str2,',',true)).hasSize(4).doesNotContain("  I ");
+		assertThat(StringUtils.splitTrim(str2,',',false)).hasSize(5).contains("").doesNotContain("  I ");
+		assertThat(StringUtils.splitTrim(str2,',',3,true)).hasSize(3).doesNotContain("  I ");
+		assertThat(StringUtils.splitTrim(str2,',',3,false)).hasSize(3).contains("").doesNotContain("  I ");
+
+		String str3 = "Hello World : ,,  I , am :, Iron Man.";
+		assertThat(StringUtils.split(str3)).hasSize(4).contains("Hello World :","I","am :","Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COLON)).hasSize(3).contains("Hello World",",,  I , am",", Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,false,false)).hasSize(5).contains("Hello World : ","","  I " , " am :", " Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,true,false)).hasSize(5).contains("Hello World :","","I" , "am :", "Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,false,true)).hasSize(4).contains("Hello World : ","  I " , " am :", " Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,true,true)).hasSize(4).contains("Hello World :","I","am :","Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,3,false,false)).hasSize(3).contains("Hello World : ","","  I , am :, Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,3,true,false)).hasSize(3).contains("Hello World :","","I , am :, Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,3,false,true)).hasSize(3).contains("Hello World : ","  I "," am :, Iron Man.");
+		assertThat(StringUtils.split(str3,CharPools.COMMA,3,true,true)).hasSize(3).contains("Hello World :","I","am :, Iron Man.");
+
+
+
+		String str4 = "Hello World, I am,  Iron Man.";
+		StringUtils.splitIgnoreCase(str4,'i',-1,true,true).forEach(System.out::println);
+		StringUtils.splitIgnoreCase(str4,'I',-1,true,true).forEach(System.out::println);
+		System.out.println("=====");
+		StringUtils.splitIgnoreCase(str4,"i",-1,true,true).forEach(System.out::println);
+		StringUtils.splitIgnoreCase(str4,"I",-1,true,true).forEach(System.out::println);
+
+
+//		StringUtils.splitIgnoreCase(str4,'I',-1,true,true).forEach(System.out::println);
+		assertThat(StringUtils.splitIgnoreCase(str4,'I',-1,true,true)).hasSize(3).contains("Hello World,","am,","ron Man.");
+		assertThat(StringUtils.splitIgnoreCase(str4,'i',-1,true,true)).hasSize(1).contains("Hello World, I am,  Iron Man.");
+
+	}
 }
