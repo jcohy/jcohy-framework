@@ -1,9 +1,5 @@
 package com.jcohy.framework.commons;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * 描述: .
  *
@@ -17,9 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class JcohyFrameworkVersionTest {
 
-//	@Test
-//	public void getVersion() {
-//		String version = JcohyFrameworkVersion.getVersion();
-//		System.out.println(version);
-//	}
+    // @Test
+    // public void getVersion() {
+    // String version = JcohyFrameworkVersion.getVersion();
+    // System.out.println(version);
+    // }
+
 }

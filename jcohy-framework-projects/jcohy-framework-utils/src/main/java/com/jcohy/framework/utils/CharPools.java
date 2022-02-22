@@ -13,61 +13,61 @@ package com.jcohy.framework.utils;
  */
 public interface CharPools {
 
-	/**
-	 * UPPER_A.
-	 */
-	char UPPER_A = 'A';
+    /**
+     * UPPER_A.
+     */
+    char UPPER_A = 'A';
 
-	/**
-	 * LOWER_A.
-	 */
-	char LOWER_A = 'a';
+    /**
+     * LOWER_A.
+     */
+    char LOWER_A = 'a';
 
-	/**
-	 * UPPER_Z.
-	 */
-	char UPPER_Z = 'Z';
+    /**
+     * UPPER_Z.
+     */
+    char UPPER_Z = 'Z';
 
-	/**
-	 * LOWER_Z.
-	 */
-	char LOWER_Z = 'z';
+    /**
+     * LOWER_Z.
+     */
+    char LOWER_Z = 'z';
 
-	/**
-	 * COLON.
-	 */
-	char COLON = ':';
+    /**
+     * COLON.
+     */
+    char COLON = ':';
 
-	/**
-	 * BACK_SLASH.
-	 */
-	char BACK_SLASH = '\\';
+    /**
+     * BACK_SLASH.
+     */
+    char BACK_SLASH = '\\';
 
-	/**
-	 * LF.
-	 */
-	char LF = '\n';
+    /**
+     * LF.
+     */
+    char LF = '\n';
 
-	/**
-	 * CR.
-	 */
-	char CR = '\r';
+    /**
+     * CR.
+     */
+    char CR = '\r';
 
-	/**
-	 * TAB.
-	 */
-	char TAB = '\t';
+    /**
+     * TAB.
+     */
+    char TAB = '\t';
 
-	/**
-	 * 逗号.
-	 */
-	char COMMA = ',';
+    /**
+     * 逗号.
+     */
+    char COMMA = ',';
 
-	/**
-	 * 接口应描述一种类型，从而必须拥有方法.
-	 * @param chaz chaz
-	 * @return character char
-	 */
-	Character getChar(char chaz);
+    /**
+     * 接口应描述一种类型，从而必须拥有方法.
+     * @param chaz chaz
+     * @return character char
+     */
+    Character getChar(char chaz);
 
 }

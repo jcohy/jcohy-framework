@@ -13,33 +13,33 @@ package com.jcohy.framework.utils.api;
  */
 public enum ServiceStatusCode implements ResultStatusCode {
 
-	/**
-	 * 10000 操作成功.
-	 */
-	SUCCESS(10000, "操作成功"),
+    /**
+     * 10000 操作成功.
+     */
+    SUCCESS(10000, "操作成功"),
 
-	/**
-	 * 99999 其他错误.
-	 */
-	FAIL(99999, "其他错误");
+    /**
+     * 99999 其他错误.
+     */
+    FAIL(99999, "其他错误");
 
-	private final Integer code;
+    private final Integer code;
 
-	private final String message;
+    private final String message;
 
-	ServiceStatusCode(Integer code, String message) {
-		this.code = code;
-		this.message = message;
-	}
+    ServiceStatusCode(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
-	@Override
-	public Integer getCode() {
-		return this.code;
-	}
+    @Override
+    public Integer getCode() {
+        return this.code;
+    }
 
-	@Override
-	public String getMessage() {
-		return this.message;
-	}
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
 
 }
