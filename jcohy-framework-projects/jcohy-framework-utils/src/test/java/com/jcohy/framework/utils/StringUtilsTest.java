@@ -277,4 +277,109 @@ public class StringUtilsTest {
         assertThat(StringUtils.isSubEquals("ubidexiaobang", 5, "", 3, 5, true)).isFalse();
     }
 
+    @Test
+    public void testSubstring() {
+        String str = "Abcdefg";
+
+        // Prefix
+        assertThat(StringUtils.subPrefix(null, "abc")).isEmpty();
+        assertThat(StringUtils.subPrefix(str, null)).isEmpty();
+        assertThat(StringUtils.subPrefix(str, "")).isEmpty();
+        assertThat(StringUtils.subPrefix(str, "Abc")).isEqualTo("defg");
+        assertThat(StringUtils.subPrefix(str, "efg")).isEqualTo(str);
+
+        // Suffix
+        assertThat(StringUtils.subSuffix(null, "efg")).isEmpty();
+        assertThat(StringUtils.subSuffix(str, null)).isEmpty();
+        assertThat(StringUtils.subSuffix(str, "")).isEmpty();
+        assertThat(StringUtils.subSuffix(str, "gfd")).isEqualTo(str);
+        assertThat(StringUtils.subSuffix(str, "efg")).isEqualTo("Abcd");
+        assertThat(StringUtils.subSuffix(str, "EFG")).isEqualTo(str);
+
+        assertThat(StringUtils.subSuffixIgnoreCase(str, "EFG")).isEqualTo("Abcd");
+        assertThat(StringUtils.subSuffixIgnoreCase(str, "efg")).isEqualTo("Abcd");
+
+        assertThat(StringUtils.subSuffixAndLowerFirst(str, "efg")).isNotEqualTo("Abcd");
+        assertThat(StringUtils.subSuffixAndLowerFirst(str, "efg")).isEqualTo("abcd");
+
+        // Before
+        assertThat(StringUtils.subBefore(null, 2)).isEmpty();
+        assertThat(StringUtils.subBefore(str, 2)).isEqualTo("Ab");
+        assertThat(StringUtils.subBefore(str, -1)).isEqualTo("Abcdef");
+        assertThat(StringUtils.subBefore(str, -2)).isEqualTo("Abcde");
+
+        assertThat(StringUtils.subBefore(null, "", false)).isNull();
+        assertThat(StringUtils.subBefore("", "a", false)).isEmpty();
+        assertThat(StringUtils.subBefore("abc", null, false)).isEqualTo("abc");
+        assertThat(StringUtils.subBefore("abc", "a", false)).isEmpty();
+        assertThat(StringUtils.subBefore("abcba", "b", false)).isEqualTo("a");
+        assertThat(StringUtils.subBefore("abc", "c", false)).isEqualTo("ab");
+        assertThat(StringUtils.subBefore("abc", "d", false)).isEqualTo("abc");
+        assertThat(StringUtils.subBefore("abc", "", false)).isEmpty();
+        assertThat(StringUtils.subBefore("abcba", "b", true)).isEqualTo("abc");
+
+        // After
+        assertThat(StringUtils.subAfter(null, 2)).isEmpty();
+        assertThat(StringUtils.subAfter(str, 2)).isEqualTo("cdefg");
+        assertThat(StringUtils.subAfter(str, -1)).isEqualTo("g");
+        assertThat(StringUtils.subAfter(str, -2)).isEqualTo("fg");
+
+        assertThat(StringUtils.subAfter(null, "a", false)).isNull();
+        assertThat(StringUtils.subAfter("", "a", false)).isEmpty();
+        assertThat(StringUtils.subAfter("null", null, false)).isEmpty();
+
+        assertThat(StringUtils.subAfter("abc", "a", false)).isEqualTo("bc");
+        assertThat(StringUtils.subAfter("abcba", "b", false)).isEqualTo("cba");
+        assertThat(StringUtils.subAfter("abc", "c", false)).isEmpty();
+        assertThat(StringUtils.subAfter("abc", "d", false)).isEmpty();
+        assertThat(StringUtils.subAfter("abc", "", false)).isEqualTo("abc");
+        assertThat(StringUtils.subAfter("abcba", "b", true)).isEqualTo("a");
+
+        // Between
+        assertThat(StringUtils.subBetween("wx[b]yz", "[", "]")).isEqualTo("b");
+        assertThat(StringUtils.subBetween(null, "*", "*")).isNull();
+        assertThat(StringUtils.subBetween("*", null, "*")).isNull();
+        assertThat(StringUtils.subBetween("*", "*", null)).isNull();
+        assertThat(StringUtils.subBetween("", "", "")).isEmpty();
+        assertThat(StringUtils.subBetween("", "", "]")).isNull();
+        assertThat(StringUtils.subBetween("", "[", "]")).isNull();
+        assertThat(StringUtils.subBetween("yabcz", "", "")).isEmpty();
+        assertThat(StringUtils.subBetween("yabcz", "y", "z")).isEqualTo("abc");
+        assertThat(StringUtils.subBetween("yabczyabcz", "y", "z")).isEqualTo("abc");
+
+        assertThat(StringUtils.subBetween(null, "*")).isNull();
+        assertThat(StringUtils.subBetween("", "")).isEmpty();
+        assertThat(StringUtils.subBetween("", "tag")).isNull();
+        assertThat(StringUtils.subBetween("tagabctag", null)).isNull();
+        assertThat(StringUtils.subBetween("tagabctag", "")).isEmpty();
+        assertThat(StringUtils.subBetween("tagabctag", "tag")).isEqualTo("abc");
+
+    }
+
+    @Test
+    public void testRepeat() {
+        assertThat(StringUtils.repeat('a', 0)).isEmpty();
+        assertThat(StringUtils.repeat('a', 1)).isEqualTo("a");
+        assertThat(StringUtils.repeat('a', 3)).isEqualTo("aaa");
+
+        assertThat(StringUtils.repeat("ab", 0)).isEmpty();
+        assertThat(StringUtils.repeat("ab", 1)).isEqualTo("ab");
+        assertThat(StringUtils.repeat("ab", 3)).isEqualTo("ababab");
+
+        assertThat(StringUtils.repeat("ab", "/", 5)).isEqualTo("ab/ab/ab/ab/ab");
+    }
+
+    @Test
+    public void testContains() {
+        assertThat(StringUtils.containsAny(null, "*")).isFalse();
+        assertThat(StringUtils.containsAny("", "*")).isFalse();
+        assertThat(StringUtils.containsAny("*", "")).isFalse();
+        assertThat(StringUtils.containsAny("zzabyycdxx", "za")).isTrue();
+        assertThat(StringUtils.containsAny("zzabyycdxx", "by")).isTrue();
+        assertThat(StringUtils.containsAny("zzabyycdxx", "zy")).isTrue();
+        assertThat(StringUtils.containsAny("zzabyycdxx", "\tx")).isTrue();
+        assertThat(StringUtils.containsAny("zzabyycdxx", "$.#yF")).isTrue();
+        assertThat(StringUtils.containsAny("aba", "z")).isFalse();
+    }
+
 }

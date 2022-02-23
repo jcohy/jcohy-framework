@@ -1,8 +1,12 @@
 package com.jcohy.framework.utils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -28,6 +32,11 @@ public class StringUtils extends org.springframework.util.StringUtils {
      * INDEX_NOT_FOUND.
      */
     public static final int INDEX_NOT_FOUND = -1;
+
+    /**
+     * 最大填充长度.
+     */
+    private static final int PAD_LIMIT = 8192;
 
     // ----------------------------------------------------------------------------------------------
     // Blank 和 Empty
@@ -297,8 +306,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
         }
     }
 
-    // =========================================== split
-    // ============================================
     // ----------------------------------------------------------------------------------------------
     // Split by char 通过 char 类型拆分
 
@@ -786,7 +793,8 @@ public class StringUtils extends org.springframework.util.StringUtils {
         return strs;
     }
 
-    // ==================================== IndexOf ====================================
+    // ----------------------------------------------------------------------------------------------
+    // IndexOf
 
     /**
      * 指定范围内查找指定字符.
@@ -905,7 +913,8 @@ public class StringUtils extends org.springframework.util.StringUtils {
         return INDEX_NOT_FOUND;
     }
 
-    // ==================================== Equals ====================================
+    // ----------------------------------------------------------------------------------------------
+    // Equals
 
     /**
      * 比较两个字符串（大小写敏感）.
@@ -992,9 +1001,533 @@ public class StringUtils extends org.springframework.util.StringUtils {
         return str1.toString().regionMatches(ignoreCase, start1, str2.toString(), start2, length);
     }
 
+    // ----------------------------------------------------------------------------------------------
+    // SubString
+
+    /**
+     * 去掉指定后缀.
+     * @param str 字符串
+     * @param suffix 后缀
+     * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
+     * @since 2022.0.1
+     */
+    public static String subSuffix(CharSequence str, CharSequence suffix) {
+        if (!hasLength(str) || !hasLength(suffix)) {
+            return StringPools.EMPTY;
+        }
+
+        final String str2 = str.toString();
+        if (str2.endsWith(suffix.toString())) {
+            return subBefore(str2, str2.length() - suffix.length());
+        }
+        return str2;
+    }
+
+    /**
+     * 忽略大小写去掉指定后缀.
+     * @param str 字符串
+     * @param suffix 后缀
+     * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
+     * @since 2022.0.1
+     */
+    public static String subSuffixIgnoreCase(CharSequence str, CharSequence suffix) {
+        if (!hasLength(str) || !hasLength(suffix)) {
+            return StringPools.EMPTY;
+        }
+
+        final String str2 = str.toString();
+        if (str2.toLowerCase().endsWith(suffix.toString().toLowerCase())) {
+            return subBefore(str2, str2.length() - suffix.length());
+        }
+        return str2;
+    }
+
+    /**
+     * 去掉指定后缀，并小写首字母.
+     * @param str 字符串
+     * @param suffix 后缀
+     * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
+     * @since 2022.0.1
+     */
+    public static String subSuffixAndLowerFirst(CharSequence str, CharSequence suffix) {
+        return firstToLower(subSuffix(str, suffix));
+    }
+
+    /**
+     * 去掉指定前缀.
+     * @param str 字符串
+     * @param prefix 前缀
+     * @return 切掉后的字符串，若前缀不是 prefix， 返回原字符串
+     * @since 2022.0.1
+     */
+    public static String subPrefix(CharSequence str, CharSequence prefix) {
+        if (!hasLength(str) || !hasLength(prefix)) {
+            return StringPools.EMPTY;
+        }
+
+        final String str2 = str.toString();
+        if (str2.startsWith(prefix.toString())) {
+            return subAfter(str2, prefix.length());
+        }
+        return str2;
+    }
+
+    /**
+     * 改进 JDK subString. index 从 0 开始计算，最后一个字符为 -1 <br>
+     * 如果 from 和 to 位置一样，返回 "" <br>
+     * 如果 from 或 to 为负数，则按照 length 从后向前数位置，如果绝对值大于字符串长度，则 from 归到0，to 归到 length<br>
+     * 如果经过修正的 index 中 from 大于 to，则互换 from 和 to example: <br>
+     * abcdefgh 2 3 =》 c <br>
+     * abcdefgh 2 -3 =》 cde <br>
+     * .
+     * @param str string
+     * @param fromIndex 开始的index（包括）
+     * @param toIndex 结束的index（不包括）
+     * @return 字串
+     * @since 2022.0.1
+     */
+    public static String sub(CharSequence str, int fromIndex, int toIndex) {
+        if (!hasLength(str)) {
+            return StringPools.EMPTY;
+        }
+        int len = str.length();
+
+        if (fromIndex < 0) {
+            fromIndex = len + fromIndex;
+            if (fromIndex < 0) {
+                fromIndex = 0;
+            }
+        }
+        else if (fromIndex > len) {
+            fromIndex = len;
+        }
+
+        if (toIndex < 0) {
+            toIndex = len + toIndex;
+            if (toIndex < 0) {
+                toIndex = len;
+            }
+        }
+        else if (toIndex > len) {
+            toIndex = len;
+        }
+
+        if (toIndex < fromIndex) {
+            int tmp = fromIndex;
+            fromIndex = toIndex;
+            toIndex = tmp;
+        }
+
+        if (fromIndex == toIndex) {
+            return StringPools.EMPTY;
+        }
+
+        return str.toString().substring(fromIndex, toIndex);
+    }
+
+    /**
+     * 切割指定位置之前部分的字符串.
+     * @param string 字符串
+     * @param toIndex 切割到的位置（不包括）
+     * @return 切割后的剩余的前半部分字符串
+     * @since 2022.0.1
+     */
+    public static String subBefore(CharSequence string, int toIndex) {
+        return sub(string, 0, toIndex);
+    }
+
+    /**
+     * 截取分隔字符串之前的字符串，不包括分隔字符串. 如果给定的字符串为空串（null或""）或者分隔字符串为null，返回原字符串<br>
+     * 如果分隔字符串为空串""，则返回空串，如果分隔字符串未找到，返回原字符串
+     * <p>
+     * 例子：
+     *
+     * <pre>
+     * StringUtil.subBefore(null, *)      = null
+     * StringUtil.subBefore("", *)        = ""
+     * StringUtil.subBefore("abc", "a")   = ""
+     * StringUtil.subBefore("abcba", "b") = "a"
+     * StringUtil.subBefore("abc", "c")   = "ab"
+     * StringUtil.subBefore("abc", "d")   = "abc"
+     * StringUtil.subBefore("abc", "")    = ""
+     * StringUtil.subBefore("abc", null)  = "abc"
+     * </pre>.
+     * @param string 被查找的字符串
+     * @param separator 分隔字符串（不包括）
+     * @param isLastSeparator 是否查找最后一个分隔字符串（多次出现分隔字符串时选取最后一个），true 为选取最后一个
+     * @return 切割后的字符串
+     * @since 2022.0.1
+     */
+    public static String subBefore(CharSequence string, CharSequence separator, boolean isLastSeparator) {
+        if (!hasLength(string) || separator == null) {
+            return (string != null) ? string.toString() : null;
+        }
+
+        final String str = string.toString();
+        final String sep = separator.toString();
+        if (sep.isEmpty()) {
+            return StringPools.EMPTY;
+        }
+        final int pos = isLastSeparator ? str.lastIndexOf(sep) : str.indexOf(sep);
+        if (pos == INDEX_NOT_FOUND) {
+            return str;
+        }
+        return str.substring(0, pos);
+    }
+
+    /**
+     * 切割指定位置之后部分的字符串.
+     * @param string 字符串
+     * @param fromIndex 切割开始的位置（包括）
+     * @return 切割后后剩余的后半部分字符串
+     * @since 2022.0.1
+     */
+    public static String subAfter(CharSequence string, int fromIndex) {
+        if (!hasLength(string)) {
+            return StringPools.EMPTY;
+        }
+        return sub(string, fromIndex, string.length());
+    }
+
+    /**
+     * 截取分隔字符串之后的字符串，不包括分隔字符串. 如果给定的字符串为空串（null或""），返回原字符串<br>
+     * 如果分隔字符串为空串（null或""），则返回空串，如果分隔字符串未找到，返回空串
+     * <p>
+     * 例子：
+     *
+     * <pre>
+     * StringUtil.subAfter(null, *)      = null
+     * StringUtil.subAfter("", *)        = ""
+     * StringUtil.subAfter(*, null)      = ""
+     * StringUtil.subAfter("abc", "a")   = "bc"
+     * StringUtil.subAfter("abcba", "b") = "cba"
+     * StringUtil.subAfter("abc", "c")   = ""
+     * StringUtil.subAfter("abc", "d")   = ""
+     * StringUtil.subAfter("abc", "")    = "abc"
+     * </pre>.
+     * @param string 被查找的字符串
+     * @param separator 分隔字符串（不包括）
+     * @param isLastSeparator 是否查找最后一个分隔字符串（多次出现分隔字符串时选取最后一个），true为选取最后一个
+     * @return 切割后的字符串
+     * @since 2022.0.1
+     */
+    public static String subAfter(CharSequence string, CharSequence separator, boolean isLastSeparator) {
+        if (!hasLength(string)) {
+            return (string != null) ? string.toString() : null;
+        }
+        if (separator == null) {
+            return StringPools.EMPTY;
+        }
+        final String str = string.toString();
+        final String sep = separator.toString();
+        final int pos = isLastSeparator ? str.lastIndexOf(sep) : str.indexOf(sep);
+        if (pos == INDEX_NOT_FOUND) {
+            return StringPools.EMPTY;
+        }
+        return str.substring(pos + separator.length());
+    }
+
+    /**
+     * 截取指定字符串中间部分，不包括标识字符串<br>
+     * <p>
+     * 例子：
+     *
+     * <pre>
+     * StringUtil.subBetween("wx[b]yz", "[", "]") = "b"
+     * StringUtil.subBetween(null, *, *)          = null
+     * StringUtil.subBetween(*, null, *)          = null
+     * StringUtil.subBetween(*, *, null)          = null
+     * StringUtil.subBetween("", "", "")          = ""
+     * StringUtil.subBetween("", "", "]")         = null
+     * StringUtil.subBetween("", "[", "]")        = null
+     * StringUtil.subBetween("yabcz", "", "")     = ""
+     * StringUtil.subBetween("yabcz", "y", "z")   = "abc"
+     * StringUtil.subBetween("yabczyabcz", "y", "z")   = "abc"
+     * </pre>.
+     * @param str 被切割的字符串
+     * @param before 截取开始的字符串标识
+     * @param after 截取到的字符串标识
+     * @return 截取后的字符串
+     * @since 2022.0.1
+     */
+    public static String subBetween(CharSequence str, CharSequence before, CharSequence after) {
+        if (str == null || before == null || after == null) {
+            return null;
+        }
+
+        final String str2 = str.toString();
+        final String before2 = before.toString();
+        final String after2 = after.toString();
+
+        final int start = str2.indexOf(before2);
+        if (start != INDEX_NOT_FOUND) {
+            final int end = str2.indexOf(after2, start + before2.length());
+            if (end != INDEX_NOT_FOUND) {
+                return str2.substring(start + before2.length(), end);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 截取指定字符串中间部分，不包括标识字符串.
+     * <p>
+     * 例子：
+     *
+     * <pre>
+     * StringUtil.subBetween(null, *)            = null
+     * StringUtil.subBetween("", "")             = ""
+     * StringUtil.subBetween("", "tag")          = null
+     * StringUtil.subBetween("tagabctag", null)  = null
+     * StringUtil.subBetween("tagabctag", "")    = ""
+     * StringUtil.subBetween("tagabctag", "tag") = "abc"
+     * </pre>.
+     * @param str 被切割的字符串
+     * @param beforeAndAfter 截取开始和结束的字符串标识
+     * @return 截取后的字符串
+     * @since 2022.0.1
+     */
+    public static String subBetween(CharSequence str, CharSequence beforeAndAfter) {
+        return subBetween(str, beforeAndAfter, beforeAndAfter);
+    }
+
+    // ----------------------------------------------------------------------------------------------
+    // repeat
+
+    /**
+     * 重复指定字符.
+     * @param ch 重复字符
+     * @param repeat 重复次数
+     * @return 操作后的字符串
+     * @since 2022.0.1
+     */
+    public static String repeat(final char ch, final int repeat) {
+        if (repeat <= 0) {
+            return StringPools.EMPTY;
+        }
+        final char[] buf = new char[repeat];
+        for (int i = repeat - 1; i >= 0; i--) {
+            buf[i] = ch;
+        }
+        return new String(buf);
+    }
+
+    /**
+     * 重复指定字符.
+     * @param str 字符串
+     * @param repeat 重复次数
+     * @return 操作后的字符串
+     * @since 2022.0.1
+     */
+    public static String repeat(final String str, final int repeat) {
+
+        // Performance tuned for 2.0 (JDK1.4)
+        if (str == null) {
+            return null;
+        }
+        if (repeat <= 0) {
+            return StringPools.EMPTY;
+        }
+        final int inputLength = str.length();
+        if (repeat == 1 || inputLength == 0) {
+            return str;
+        }
+        if (inputLength == 1 && repeat <= PAD_LIMIT) {
+            return repeat(str.charAt(0), repeat);
+        }
+
+        final int outputLength = inputLength * repeat;
+        switch (inputLength) {
+        case 1:
+            return repeat(str.charAt(0), repeat);
+        case 2:
+            final char ch0 = str.charAt(0);
+            final char ch1 = str.charAt(1);
+            final char[] output2 = new char[outputLength];
+            for (int i = repeat * 2 - 2; i >= 0; i--, i--) {
+                output2[i] = ch0;
+                output2[i + 1] = ch1;
+            }
+            return new String(output2);
+        default:
+            final StringBuilder buf = new StringBuilder(outputLength);
+            for (int i = 0; i < repeat; i++) {
+                buf.append(str);
+            }
+            return buf.toString();
+        }
+    }
+
+    /**
+     * 重复指定字符.
+     * @param str 字符串
+     * @param separator 分隔符
+     * @param repeat 重复次数
+     * @return 操作后的字符串
+     * @since 2022.0.1
+     */
+    public static String repeat(final String str, final String separator, final int repeat) {
+        if (str == null || separator == null) {
+            return repeat(str, repeat);
+        }
+        // given that repeat(String, int) is quite optimized, better to rely on it than
+        // try and splice this into it
+        final String result = repeat(str + separator, repeat);
+        return subBefore(result, separator, true);
+    }
+
+    // ----------------------------------------------------------------------------------------------
+    // contains
+
+    /**
+     * 判断给定的字符串是否包含指定字符.
+     *
+     * <p>
+     * {@code null} 的字符串和 {@code null} 的搜索字符都返回 {@code false}.
+     * </p>
+     *
+     * <pre>
+     * StringUtils.containsAny(null, *)               = false
+     * StringUtils.containsAny("", *)                 = false
+     * StringUtils.containsAny(*, null)               = false
+     * StringUtils.containsAny(*, "")                 = false
+     * StringUtils.containsAny("zzabyycdxx", "za")    = true
+     * StringUtils.containsAny("zzabyycdxx", "by")    = true
+     * StringUtils.containsAny("zzabyycdxx", "zy")    = true
+     * StringUtils.containsAny("zzabyycdxx", "\tx")   = true
+     * StringUtils.containsAny("zzabyycdxx", "$.#yF") = true
+     * StringUtils.containsAny("aba", "z")            = false
+     * </pre>.
+     * @param cs 被检查的字符串，可能为空
+     * @param searchChars 搜索字符串，可能为空
+     * @return 如果包含搜索字符，则返回 {@code true}
+     * @since 2022.0.1
+     */
+    public static boolean containsAny(final CharSequence cs, final CharSequence searchChars) {
+        if (searchChars == null) {
+            return false;
+        }
+        return containsAny(cs, ((String) searchChars).toCharArray());
+    }
+
+    /**
+     * <p>
+     * 判断给定的字符串是否包含指定字符.
+     * </p>
+     *
+     * <p>
+     * {@code null} 的字符串和 {@code null} 的搜索字符都返回 {@code false}.
+     * </p>
+     *
+     * <pre>
+     * StringUtils.containsAny(null, *)                  = false
+     * StringUtils.containsAny("", *)                    = false
+     * StringUtils.containsAny(*, null)                  = false
+     * StringUtils.containsAny(*, [])                    = false
+     * StringUtils.containsAny("zzabyycdxx", ['z', 'a']) = true
+     * StringUtils.containsAny("zzabyycdxx", ['b', 'y']) = true
+     * StringUtils.containsAny("zzabyycdxx", ['z', 'y']) = true
+     * StringUtils.containsAny("aba", ['z'])             = false
+     * </pre>.
+     * @param cs 被检查的字符串，可能为空
+     * @param searchChars 搜索字符串，可能为空
+     * @return 如果包含搜索字符，则返回 {@code true}
+     * @since 2022.0.1
+     */
+    public static boolean containsAny(final CharSequence cs, final char... searchChars) {
+        if (!hasLength(cs) || Array.getLength(searchChars) == 0) {
+            return false;
+        }
+        final int csLength = cs.length();
+        final int searchLength = searchChars.length;
+        final int csLast = csLength - 1;
+        final int searchLast = searchLength - 1;
+        for (int i = 0; i < csLength; i++) {
+            final char ch = cs.charAt(i);
+            for (int j = 0; j < searchLength; j++) {
+                if (searchChars[j] == ch) {
+                    if (Character.isHighSurrogate(ch)) {
+                        if (j == searchLast) {
+                            // missing low surrogate, fine, like String.indexOf(String)
+                            return true;
+                        }
+                        if (i < csLast && searchChars[j + 1] == cs.charAt(i + 1)) {
+                            return true;
+                        }
+                    }
+                    else {
+                        // ch is in the Basic Multilingual Plane
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    // ----------------------------------------------------------------------------------------------
+    //
+
+    // ----------------------------------------------------------------------------------------------
+    //
+
+    // ==================================== Convert ====================================
+
+    /**
+     * 首字母变小写.
+     * @param str 字符串
+     * @return {string}
+     * @since 2022.0.1
+     */
+    public static String firstToLower(String str) {
+        if (isBlank(str)) {
+            return StringPools.EMPTY;
+        }
+        char firstChar = str.charAt(0);
+        if (firstChar >= CharPools.UPPER_A && firstChar <= CharPools.UPPER_Z) {
+            char[] arr = str.toCharArray();
+            arr[0] += (CharPools.LOWER_A - CharPools.UPPER_A);
+            return new String(arr);
+        }
+        return str;
+    }
+
+    /**
+     * 首字母变大写.
+     * @param str 字符串
+     * @return {string}
+     * @since 2022.0.1
+     */
+    public static String firstToUpper(String str) {
+        if (isBlank(str)) {
+            return StringPools.EMPTY;
+        }
+        char firstChar = str.charAt(0);
+        if (firstChar >= CharPools.LOWER_A && firstChar <= CharPools.LOWER_Z) {
+            char[] arr = str.toCharArray();
+            arr[0] -= (CharPools.LOWER_A - CharPools.UPPER_A);
+            return new String(arr);
+        }
+        return str;
+    }
+
     // ==================================== ====================================
 
     // ==================================== ====================================
+
+    // ==================================== ====================================
+
+    // ==================================== ====================================
+
+    // ==================================== Lambda ====================================
+
+    public static void commaArrayWithOperation(Collection<String> arrays, Consumer<String> consumer) {
+        arrays.forEach(consumer);
+    }
+
+    public static void commaArrayWithOperation(String array, Consumer<String> consumer) {
+        Set<String> result = commaDelimitedListToSet(array);
+        commaArrayWithOperation(result, consumer);
+    }
 
     /**
      * 创建 stringBuilder 对象.
