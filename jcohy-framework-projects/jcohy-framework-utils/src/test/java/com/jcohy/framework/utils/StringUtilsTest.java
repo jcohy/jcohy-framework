@@ -72,10 +72,14 @@ public class StringUtilsTest {
         assertThat(StringUtils.isNotEmpty("bob")).isTrue();
         assertThat(StringUtils.isNotEmpty(" bob ")).isTrue();
 
-        assertThat(StringUtils.isAnyEmpty(null, "bob")).isTrue();
-        assertThat(StringUtils.isAnyEmpty("", " bob")).isTrue();
-        assertThat(StringUtils.isAnyEmpty(" ", "bob ")).isFalse();
-        assertThat(StringUtils.isAnyEmpty(null, "bob", "alice")).isTrue();
+		assertThat(StringUtils.isAnyEmpty((String)null)).isTrue();
+		assertThat(StringUtils.isAnyEmpty((String[])null)).isFalse();
+		assertThat(StringUtils.isAnyEmpty(null, "foo")).isTrue();
+        assertThat(StringUtils.isAnyEmpty("", " bar")).isTrue();
+        assertThat(StringUtils.isAnyEmpty("bob", "")).isTrue();
+		assertThat(StringUtils.isAnyEmpty(" bob ", null)).isTrue();
+
+		assertThat(StringUtils.isAnyEmpty(null, "bob", "alice")).isTrue();
         assertThat(StringUtils.isAnyEmpty("bob", " alice")).isFalse();
         assertThat(StringUtils.isAnyEmpty(" bob ", "alice")).isFalse();
 
