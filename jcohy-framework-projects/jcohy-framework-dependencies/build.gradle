@@ -14,10 +14,12 @@ dependencies {
 
 		// commons utils
 		api("com.google.guava:guava:26.0-jre")
-		api("commons-io:commons-io:2.10.0")
-		api("com.google.guava:guava:26.0-jre")
-		api("commons-io:commons-io:2.10.0")
 		api("com.alibaba:fastjson:1.2.70")
+		api("commons-io:commons-io:2.10.0")
+		api(
+				[group: 'org.apache.commons', name: 'commons-compress', version: "1.21"],
+		)
+
 		api(
 				[group: 'io.protostuff', name: 'protostuff-core', version: "1.6.0"],
 				[group: 'io.protostuff', name: 'protostuff-runtime', version: "1.6.0"]
