@@ -8,12 +8,12 @@ description = "jcohy-framework-utils module provide some utils class"
 dependencies {
 	api (project(":jcohy-framework-projects:jcohy-framework-commons"))
 	api ("org.apache.commons:commons-lang3")
-	implementation ("org.springframework:spring-core")
+//	implementation ("org.springframework:spring-core")
 	implementation ("org.springframework.boot:spring-boot-starter-web") {
 		exclude module: "spring-boot-starter-tomcat"
 	}
 	implementation ("org.springframework.boot:spring-boot-starter-undertow")
-	optional ("com.google.guava:guava")
+//	optional ("com.google.guava:guava")
 	optional ("commons-io:commons-io")
 	optional ("io.springfox:springfox-swagger2")
 	optional ("io.swagger:swagger-models")

@@ -63,6 +63,16 @@ public interface CharPools {
      */
     char COMMA = ',';
 
+	/**
+	 * 逗号.
+	 */
+	char DOT = '.';
+
+	/**
+	 * 逗号.
+	 */
+	char EXTENSION_SEPARATOR = CharPools.DOT;
+
     /**
      * 接口应描述一种类型，从而必须拥有方法.
      * @param chaz chaz
