@@ -18,6 +18,7 @@ dependencies {
 		api("commons-io:commons-io:2.10.0")
 		api(
 				[group: 'org.apache.commons', name: 'commons-compress', version: "1.21"],
+				[group: 'org.apache.commons', name: 'commons-collections4', version: "4.4"],
 		)
 
 		api(

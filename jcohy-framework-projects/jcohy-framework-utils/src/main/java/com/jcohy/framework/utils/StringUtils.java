@@ -1,7 +1,6 @@
 package com.jcohy.framework.utils;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -23,15 +21,10 @@ import java.util.TimeZone;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StreamUtils;
 
 /**
  * 描述: 继承 {@link org.springframework.util.StringUtils}.
@@ -46,22 +39,13 @@ import org.springframework.util.StreamUtils;
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
-    /**
-     * INDEX_NOT_FOUND.
-     */
-    public static final int INDEX_NOT_FOUND = -1;
-
-    /**
-     * 最大填充长度.
-     */
-    private static final int PAD_LIMIT = 8192;
-
 	private static final String[] EMPTY_STRING_ARRAY = {};
 
+	//---------------------------------------------------------------------
 	// 格式化
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
-    /**
+	/**
      * 同 log 格式的 format 规则.
      * <p>
      * use: format("my name is {}, and i like {}!", "jiac", "Java").
@@ -104,8 +88,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 转换后的字符串
      * @since 2022.0.1
      */
-    public static String formatStr(@org.springframework.lang.Nullable String message,
-            @org.springframework.lang.Nullable Object... arguments) {
+    public static String formatStr(String message, Object... arguments) {
         // message 为 null 返回空字符串
         if (message == null) {
             return StringPools.EMPTY;
@@ -137,8 +120,89 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
     }
 
+	/**
+	 * 用单引号引用给定的字符串.
+	 * @param str 输入的 {@code String} (e.g. "myString")
+	 * @return 需要引入的 {@code String} (e.g. "'myString'"),如果输入为 {@code null} 则返回 {@code null}
+	 */
+	public static String quote( String str) {
+		return (str != null ? "'" + str + "'" : null);
+	}
+
+	/**
+	 * 将给定的对象转换为一个带单引号的字符串(如果它是一个字符串);保持Object不变.
+	 * Turn the given Object into a {@code String} with single quotes
+	 * if it is a {@code String}; keeping the Object as-is else.
+	 * @param obj 输入 Object (e.g. "myString")
+	 * @return 引用的字符串 {@code String} (e.g. "'myString'"),或者如果不是字符串，则输入对象原为字符串
+	 */
+	public static Object quoteIfString(Object obj) {
+		return (obj instanceof String ? quote((String) obj) : obj);
+	}
+
+	/**
+	 * 取消由 '.' 限定的字符串.
+	 * 例如，"this.name.is.qualified" 返回 "qualified".
+	 * @param qualifiedName 全限定名
+	 */
+	public static String unqualify(String qualifiedName) {
+		return unqualify(qualifiedName, '.');
+	}
+
+	/**
+	 * 取消由分隔符限定的字符串.
+	 *
+	 * 例如，如果使用 ':' 分隔符，"this:name:is:qualified" 将返回 "qualified"。
+	 * @param qualifiedName 全限定名
+	 * @param separator 分隔符
+	 */
+	public static String unqualify(String qualifiedName, char separator) {
+		return qualifiedName.substring(qualifiedName.lastIndexOf(separator) + 1);
+	}
+
+	/**
+	 * 大写字符串，根据 {@link Character#toUpperCase(char)} 将第一个字母更改为大写。 其他字母没有变化.
+	 * @param str 需要大写的字符串
+	 * @return 大写后的 {@code String}
+	 */
+	public static String capitalize(String str) {
+		return changeFirstCharacterCase(str, true);
+	}
+
+	/**
+	 * 小写字符串，根据 {@link Character#toLowerCase(char)} 将第一个字母变为小写。其他字母不变.
+	 * @param str 需要小写的字符串
+	 * @return 小写后的 {@code String}
+	 */
+	public static String uncapitalize(String str) {
+		return changeFirstCharacterCase(str, false);
+	}
+
+	private static String changeFirstCharacterCase(String str, boolean capitalize) {
+		if (isEmpty(str)) {
+			return str;
+		}
+
+		char baseChar = str.charAt(0);
+		char updatedChar;
+		if (capitalize) {
+			updatedChar = Character.toUpperCase(baseChar);
+		}
+		else {
+			updatedChar = Character.toLowerCase(baseChar);
+		}
+		if (baseChar == updatedChar) {
+			return str;
+		}
+
+		char[] chars = str.toCharArray();
+		chars[0] = updatedChar;
+		return new String(chars, 0, chars.length);
+	}
+
+	//---------------------------------------------------------------------
 	// 拆分 split
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * 切分字符串，不限制分片数量,默认以逗号拆分.
@@ -274,10 +338,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return strs;
     }
 
+	//---------------------------------------------------------------------
 	// IndexOf
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
-    /**
+	/**
      * 指定范围内查找指定字符.
      * @param str 字符串
      * @param searchChar 被查找的字符
@@ -302,10 +367,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return -1;
     }
 
+	//---------------------------------------------------------------------
 	// Equals
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
-    /**
+	/**
      * 截取两个字符串的不同部分（长度一致），判断截取的子串是否相同.<br>
      * 任意一个字符串为 null 返回 false.
      * @param str1 第一个字符串
@@ -326,8 +392,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return str1.toString().regionMatches(ignoreCase, start1, str2.toString(), start2, length);
     }
 
+	//---------------------------------------------------------------------
 	// remove
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
     /**
      * 去掉指定后缀，并小写首字母.
@@ -337,7 +404,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @since 2022.0.1
      */
     public static String removeEndAndLowerFirst(String str, String suffix) {
-        return firstToLower(removeEnd(str, suffix));
+        return uncapitalize(removeEnd(str, suffix));
     }
 
     /**
@@ -394,48 +461,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
 
-    // ==================================== Convert ====================================
-
-    /**
-     * 首字母变小写.
-     * @param str 字符串
-     * @return {string}
-     * @since 2022.0.1
-     */
-    public static String firstToLower(String str) {
-        if (isBlank(str)) {
-            return StringPools.EMPTY;
-        }
-        char firstChar = str.charAt(0);
-        if (firstChar >= CharPools.UPPER_A && firstChar <= CharPools.UPPER_Z) {
-            char[] arr = str.toCharArray();
-            arr[0] += (CharPools.LOWER_A - CharPools.UPPER_A);
-            return new String(arr);
-        }
-        return str;
-    }
-
-    /**
-     * 首字母变大写.
-     * @param str 字符串
-     * @return {string}
-     * @since 2022.0.1
-     */
-    public static String firstToUpper(String str) {
-        if (isBlank(str)) {
-            return StringPools.EMPTY;
-        }
-        char firstChar = str.charAt(0);
-        if (firstChar >= CharPools.LOWER_A && firstChar <= CharPools.LOWER_Z) {
-            char[] arr = str.toCharArray();
-            arr[0] -= (CharPools.LOWER_A - CharPools.UPPER_A);
-            return new String(arr);
-        }
-        return str;
-    }
-
+	//---------------------------------------------------------------------
 	// trim
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
+
 	/**
 	 * 去除字符串前后的空格
 	 * @param str the {@code String} to check
@@ -555,54 +584,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return str.substring(0, endIdx + 1);
 	}
 
-	/**
-	 * 测试给定的 {@code String} 是否匹配给定的单个字符。
-	 * @param str 给定字符串
-	 * @param singleCharacter 比较的字符
-	 */
-	public static boolean matchesCharacter(@Nullable String str, char singleCharacter) {
-		return (str != null && str.length() == 1 && str.charAt(0) == singleCharacter);
-	}
-
-	/**
-	 * 测试给定的字符串是否以指定的前缀开始，忽略大小写.
-	 * @param str 给定字符串
-	 * @param prefix 查找的前缀
-	 * @see java.lang.String#startsWith
-	 */
-	public static boolean startsWithIgnoreCase(@Nullable String str, @Nullable String prefix) {
-		return (str != null && prefix != null && str.length() >= prefix.length() &&
-				str.regionMatches(true, 0, prefix, 0, prefix.length()));
-	}
-
-	/**
-	 * 测试给定的字符串是否以指定的后缀开始，忽略大小写.
-	 * @param str t给定字符串
-	 * @param suffix 查找的后缀
-	 * @see java.lang.String#endsWith
-	 */
-	public static boolean endsWithIgnoreCase(@Nullable String str, @Nullable String suffix) {
-		return (str != null && suffix != null && str.length() >= suffix.length() &&
-				str.regionMatches(true, str.length() - suffix.length(), suffix, 0, suffix.length()));
-	}
-
-	/**
-	 * 在给定的索引处，测试给定的字符串是否匹配给定的子字符串.
-	 * @param str 原始字符串
-	 * @param index 原始字符串中开始匹配子字符串的索引
-	 * @param substring 给定索引处要匹配的子字符串
-	 */
-	public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
-		if (index + substring.length() > str.length()) {
-			return false;
-		}
-		for (int i = 0; i < substring.length(); i++) {
-			if (str.charAt(index + i) != substring.charAt(i)) {
-				return false;
-			}
-		}
-		return true;
-	}
+	//---------------------------------------------------------------------
+	// count
+	//---------------------------------------------------------------------
 
 	/**
 	 * 计数子字符串 sub 在字符串 str 中的出现次数.
@@ -624,6 +608,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return count;
 	}
 
+	//---------------------------------------------------------------------
+	// replace
+	//---------------------------------------------------------------------
+
 	/**
 	 * 用另一个字符串替换字符串中出现的所有子字符串.
 	 * @param inString 原始字符串
@@ -631,7 +619,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param newPattern 新的字符串
 	 * @return 返回替换后的字符串
 	 */
-	public static String replace(String inString, String oldPattern, @Nullable String newPattern) {
+	public static String replace(String inString, String oldPattern, String newPattern) {
 		if (isEmpty(inString) || isEmpty(oldPattern) || newPattern == null) {
 			return inString;
 		}
@@ -661,6 +649,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return sb.toString();
 	}
 
+	//---------------------------------------------------------------------
+	// delete
+	//---------------------------------------------------------------------
+
 	/**
 	 * 删除所有给定子字符串的出现.
 	 * @param inString 原始字符串
@@ -673,90 +665,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 
 	//---------------------------------------------------------------------
-	// Convenience methods for working with formatted Strings
+	// 获取路径
 	//---------------------------------------------------------------------
-
-	/**
-	 * 用单引号引用给定的字符串.
-	 * @param str 输入的 {@code String} (e.g. "myString")
-	 * @return 需要引入的 {@code String} (e.g. "'myString'"),如果输入为 {@code null} 则返回 {@code null}
-	 */
-	@Nullable
-	public static String quote(@Nullable String str) {
-		return (str != null ? "'" + str + "'" : null);
-	}
-
-	/**
-	 * 将给定的对象转换为一个带单引号的字符串(如果它是一个字符串);保持Object不变.
-	 * Turn the given Object into a {@code String} with single quotes
-	 * if it is a {@code String}; keeping the Object as-is else.
-	 * @param obj 输入 Object (e.g. "myString")
-	 * @return 引用的字符串 {@code String} (e.g. "'myString'"),或者如果不是字符串，则输入对象原为字符串
-	 */
-	@Nullable
-	public static Object quoteIfString(@Nullable Object obj) {
-		return (obj instanceof String ? quote((String) obj) : obj);
-	}
-
-	/**
-	 * 取消由 '.' 限定的字符串.
-	 * 例如，"this.name.is.qualified" 返回 "qualified".
-	 * @param qualifiedName 全限定名
-	 */
-	public static String unqualify(String qualifiedName) {
-		return unqualify(qualifiedName, '.');
-	}
-
-	/**
-	 * 取消由分隔符限定的字符串.
-	 *
-	 * 例如，如果使用 ':' 分隔符，"this:name:is:qualified" 将返回 "qualified"。
-	 * @param qualifiedName 全限定名
-	 * @param separator 分隔符
-	 */
-	public static String unqualify(String qualifiedName, char separator) {
-		return qualifiedName.substring(qualifiedName.lastIndexOf(separator) + 1);
-	}
-
-	/**
-	 * 大写字符串，根据 {@link Character#toUpperCase(char)} 将第一个字母更改为大写。 其他字母没有变化.
-	 * @param str 需要大写的字符串
-	 * @return 大写后的 {@code String}
-	 */
-	public static String capitalize(String str) {
-		return changeFirstCharacterCase(str, true);
-	}
-
-	/**
-	 * 小写字符串，根据 {@link Character#toLowerCase(char)} 将第一个字母变为小写。其他字母不变.
-	 * @param str 需要小写的字符串
-	 * @return 小写后的 {@code String}
-	 */
-	public static String uncapitalize(String str) {
-		return changeFirstCharacterCase(str, false);
-	}
-
-	private static String changeFirstCharacterCase(String str, boolean capitalize) {
-		if (isEmpty(str)) {
-			return str;
-		}
-
-		char baseChar = str.charAt(0);
-		char updatedChar;
-		if (capitalize) {
-			updatedChar = Character.toUpperCase(baseChar);
-		}
-		else {
-			updatedChar = Character.toLowerCase(baseChar);
-		}
-		if (baseChar == updatedChar) {
-			return str;
-		}
-
-		char[] chars = str.toCharArray();
-		chars[0] = updatedChar;
-		return new String(chars, 0, chars.length);
-	}
 
 	/**
 	 * 从给定的 Java 资源路径中提取文件名.
@@ -764,8 +674,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param path 文件路径 (可能为 {@code null})
 	 * @return 提取的文件名, 如果没有，则返回 {@code null}
 	 */
-	@Nullable
-	public static String getFilename(@Nullable String path) {
+	public static String getFilename(String path) {
 		if (path == null) {
 			return null;
 		}
@@ -780,8 +689,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param path 文件路径 (可能为 {@code null})
 	 * @return 文件扩展名, 如果没有，则返回 {@code null}
 	 */
-	@Nullable
-	public static String getFilenameExtension(@Nullable String path) {
+	public static String getFilenameExtension(String path) {
 		if (path == null) {
 			return null;
 		}
@@ -928,6 +836,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return cleanPath(path1).equals(cleanPath(path2));
 	}
 
+	//---------------------------------------------------------------------
+	// URI 解码
+	//---------------------------------------------------------------------
+
 	/**
 	 * 解码给定的编码 URI 值。 基于以下规则：
 	 * <ul>
@@ -947,7 +859,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		if (length == 0) {
 			return source;
 		}
-		Assert.notNull(charset, "Charset must not be null");
+		Validate.notNull(charset, "Charset must not be null");
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(length);
 		boolean changed = false;
@@ -977,6 +889,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return (changed ? StreamUtils.copyToString(baos, charset) : source);
 	}
 
+	//---------------------------------------------------------------------
+	// Locale TimeZone 处理
+	//---------------------------------------------------------------------
+
 	/**
 	 * 将给定的 String 值解析为 {@link Locale}，接受  {@link Locale#toString} 格式以及 BCP 47 语言标签。
 	 * @param localeValue the locale value: 符合 {@code Locale's} 的
@@ -987,7 +903,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @see #parseLocaleString
 	 * @see Locale#forLanguageTag
 	 */
-	@Nullable
 	public static Locale parseLocale(String localeValue) {
 		String[] tokens = tokenizeLocaleSource(localeValue);
 		if (tokens.length == 1) {
@@ -1012,7 +927,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @return 对应的 Locale 实例，如果没有则为 null
 	 * @throws IllegalArgumentException 如果语言环境规范无效
 	 */
-	@Nullable
 	public static Locale parseLocaleString(String localeString) {
 		return parseLocaleTokens(localeString, tokenizeLocaleSource(localeString));
 	}
@@ -1021,7 +935,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return tokenizeToStringArray(localeSource, "_ ", false, false);
 	}
 
-	@Nullable
 	private static Locale parseLocaleTokens(String localeString, String[] tokens) {
 		String language = (tokens.length > 0 ? tokens[0] : "");
 		String country = (tokens.length > 1 ? tokens[1] : "");
@@ -1077,19 +990,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 
 	//---------------------------------------------------------------------
-	// Convenience methods for working with String arrays
+	// String 数组处理
 	//---------------------------------------------------------------------
-
-//	/**
-//	 * Copy the given {@link Collection} into a {@code String} array.
-//	 * <p>The {@code Collection} must contain {@code String} elements only.
-//	 * @param collection the {@code Collection} to copy
-//	 * (potentially {@code null} or empty)
-//	 * @return the resulting {@code String} array
-//	 */
-//	public static String[] toStringArray(@Nullable Collection<String> collection) {
-//		return (!CollectionUtils.isEmpty(collection) ? collection.toArray(EMPTY_STRING_ARRAY) : EMPTY_STRING_ARRAY);
-//	}
 
 	/**
 	 * 将 {@link Collection} 转为数组.
@@ -1097,7 +999,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param collection 集合 (可能为 {@code null} 或空)
 	 * @return {@code String} 数组
 	 */
-	public static String[] toStringArray(@Nullable Collection<String> collection) {
+	public static String[] toStringArray(Collection<String> collection) {
 		return (!CollectionUtils.isEmpty(collection) ? collection.toArray(EMPTY_STRING_ARRAY) : EMPTY_STRING_ARRAY);
 	}
 
@@ -1107,7 +1009,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param enumeration {@code Enumeration} (可能为 {@code null} 或空)
 	 * @return {@code String} 数组
 	 */
-	public static String[] toStringArray(@Nullable Enumeration<String> enumeration) {
+	public static String[] toStringArray(Enumeration<String> enumeration) {
 		return (enumeration != null ? toStringArray(Collections.list(enumeration)) : EMPTY_STRING_ARRAY);
 	}
 
@@ -1117,7 +1019,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param str 要附加的字符串
 	 * @return 新数组 (永不为 {@code null})
 	 */
-	public static String[] addStringToArray(@Nullable String[] array, String str) {
+	public static String[] addStringToArray(String[] array, String str) {
 		if (ObjectUtils.isEmpty(array)) {
 			return new String[] {str};
 		}
@@ -1135,8 +1037,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param array2 第二个数组 (可以为 {@code null})
 	 * @return 新数组 (如果两个给定数组都为 null，则为 null)
 	 */
-	@Nullable
-	public static String[] concatenateStringArrays(@Nullable String[] array1, @Nullable String[] array2) {
+	public static String[] concatenateStringArrays(String[] array1, String[] array2) {
 		if (ObjectUtils.isEmpty(array1)) {
 			return array2;
 		}
@@ -1204,7 +1105,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param delimiter 使用（通常是等号）分割每个元素
 	 * @return 表示数组内容的 {@code Properties} 实例，如果要处理的数组为 null 或为空，则为 null
 	 */
-	@Nullable
 	public static Properties splitArrayElementsIntoProperties(String[] array, String delimiter) {
 		return splitArrayElementsIntoProperties(array, delimiter, null);
 	}
@@ -1218,9 +1118,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param charsToDelete 在尝试拆分操作之前从每个元素中删除一个或多个字符（通常是引号符号），如果不删除，则为 {@code null}
 	 * @return 表示数组内容的 {@code Properties} 实例，如果要处理的数组为 null 或为空，则为 null
 	 */
-	@Nullable
 	public static Properties splitArrayElementsIntoProperties(
-			String[] array, String delimiter, @Nullable String charsToDelete) {
+			String[] array, String delimiter, String charsToDelete) {
 
 		if (ObjectUtils.isEmpty(array)) {
 			return null;
@@ -1252,7 +1151,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @see String#trim()
 	 * @see #delimitedListToStringArray
 	 */
-	public static String[] tokenizeToStringArray(@Nullable String str, String delimiters) {
+	public static String[] tokenizeToStringArray(String str, String delimiters) {
 		return tokenizeToStringArray(str, delimiters, true, true);
 	}
 
@@ -1271,7 +1170,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @see #delimitedListToStringArray
 	 */
 	public static String[] tokenizeToStringArray(
-			@Nullable String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
+			 String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
 
 		if (str == null) {
 			return EMPTY_STRING_ARRAY;
@@ -1302,7 +1201,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @return 分隔的字符串
 	 */
 	public static String collectionToDelimitedString(
-			@Nullable Collection<?> coll, String delim, String prefix, String suffix) {
+			Collection<?> coll, String delim, String prefix, String suffix) {
 
 		if (CollectionUtils.isEmpty(coll)) {
 			return "";
@@ -1326,7 +1225,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param delim 要使用的分隔符（通常是 ","）
 	 * @return 分隔的字符串
 	 */
-	public static String collectionToDelimitedString(@Nullable Collection<?> coll, String delim) {
+	public static String collectionToDelimitedString(Collection<?> coll, String delim) {
 		return collectionToDelimitedString(coll, delim, "", "");
 	}
 
@@ -1336,7 +1235,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param coll 要转换的集合（可能为 null 或空）
 	 * @return 分隔的字符串
 	 */
-	public static String collectionToCommaDelimitedString(@Nullable Collection<?> coll) {
+	public static String collectionToCommaDelimitedString(Collection<?> coll) {
 		return collectionToDelimitedString(coll, ",");
 	}
 
@@ -1348,7 +1247,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param delim 要使用的分隔符（通常是 ","）
 	 * @return 分隔的字符串
 	 */
-	public static String arrayToDelimitedString(@Nullable Object[] arr, String delim) {
+	public static String arrayToDelimitedString(Object[] arr, String delim) {
 		if (ObjectUtils.isEmpty(arr)) {
 			return "";
 		}
@@ -1370,19 +1269,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param arr 要转换的数组（可能为 null 或空）
 	 * @return 分隔的字符串
 	 */
-	public static String arrayToCommaDelimitedString(@Nullable Object[] arr) {
+	public static String arrayToCommaDelimitedString(Object[] arr) {
 		return arrayToDelimitedString(arr, ",");
 	}
 
-	// checks
-	//-----------------------------------------------------------------------
-
-	// checks
-	//-----------------------------------------------------------------------
-
-
-	// checks
-	//-----------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// 判断
+	//---------------------------------------------------------------------
 
 	/**
 	 * 检查给定字符串是否包含文本
@@ -1428,7 +1321,58 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return containsWhitespace((CharSequence)str);
 	}
 
-	// ==================================== ====================================
+	/**
+	 * 测试给定的 {@code String} 是否匹配给定的单个字符。
+	 * @param str 给定字符串
+	 * @param singleCharacter 比较的字符
+	 */
+	public static boolean matchesCharacter(String str, char singleCharacter) {
+		return (str != null && str.length() == 1 && str.charAt(0) == singleCharacter);
+	}
+
+	/**
+	 * 测试给定的字符串是否以指定的前缀开始，忽略大小写.
+	 * @param str 给定字符串
+	 * @param prefix 查找的前缀
+	 * @see java.lang.String#startsWith
+	 */
+	public static boolean startsWithIgnoreCase(String str, String prefix) {
+		return (str != null && prefix != null && str.length() >= prefix.length() &&
+				str.regionMatches(true, 0, prefix, 0, prefix.length()));
+	}
+
+	/**
+	 * 测试给定的字符串是否以指定的后缀开始，忽略大小写.
+	 * @param str t给定字符串
+	 * @param suffix 查找的后缀
+	 * @see java.lang.String#endsWith
+	 */
+	public static boolean endsWithIgnoreCase(String str, String suffix) {
+		return (str != null && suffix != null && str.length() >= suffix.length() &&
+				str.regionMatches(true, str.length() - suffix.length(), suffix, 0, suffix.length()));
+	}
+
+	/**
+	 * 在给定的索引处，测试给定的字符串是否匹配给定的子字符串.
+	 * @param str 原始字符串
+	 * @param index 原始字符串中开始匹配子字符串的索引
+	 * @param substring 给定索引处要匹配的子字符串
+	 */
+	public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
+		if (index + substring.length() > str.length()) {
+			return false;
+		}
+		for (int i = 0; i < substring.length(); i++) {
+			if (str.charAt(index + i) != substring.charAt(i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//---------------------------------------------------------------------
+	// 转换
+	//---------------------------------------------------------------------
 
 	/**
 	 * 将逗号分割的字符串转为 Set.
@@ -1508,7 +1452,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * E.g. "az\n" will delete 'a's, 'z's and new lines.
 	 * @return the resulting {@code String}
 	 */
-	public static String deleteAny(String inString, @Nullable String charsToDelete) {
+	public static String deleteAny(String inString, String charsToDelete) {
 		if (isEmpty(inString) || isEmpty(charsToDelete)) {
 			return inString;
 		}
@@ -1527,7 +1471,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return new String(result, 0, lastCharIndex);
 	}
 
-	// ==================================== Lambda ====================================
+	//---------------------------------------------------------------------
+	// 转换
+	//---------------------------------------------------------------------
 
     public static void commaArrayWithOperation(Collection<String> arrays, Consumer<String> consumer) {
         arrays.forEach(consumer);
@@ -1552,8 +1498,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return sb;
     }
 
-    // ==================================== Private Other
-    // ====================================
+	//---------------------------------------------------------------------
+	// Private
+	//---------------------------------------------------------------------
 
     /**
      * 将字符串加入 list 中.
@@ -1571,15 +1518,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             list.add(part);
         }
         return list;
-    }
-
-    /**
-     * List 转 array.
-     * @param list list
-     * @return array
-     */
-    private static String[] toArray(List<String> list) {
-        return list.toArray(new String[0]);
     }
 
 }
