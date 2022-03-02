@@ -1,6 +1,6 @@
-//package com.jcohy.framework.utils;
+// package com.jcohy.framework.utils;
 //
-///**
+/// **
 // * 描述: .
 // *
 // * <p>
@@ -11,5 +11,5 @@
 // * @version 2022.0.1 3/2/22:15:08
 // * @since 2022.0.1
 // */
-//public class CollectionUtils extends org.apache.commons.collections4.CollectionUtils {
-//}
+// public class CollectionUtils extends org.apache.commons.collections4.CollectionUtils {
+// }

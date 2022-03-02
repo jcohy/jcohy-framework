@@ -293,25 +293,25 @@ public interface StringPools {
      */
     String MINUS_ONE = "-1";
 
-	/**
-	 * FOLDER_SEPARATOR.
-	 */
-	String FOLDER_SEPARATOR = StringPools.SLASH;
+    /**
+     * FOLDER_SEPARATOR.
+     */
+    String FOLDER_SEPARATOR = StringPools.SLASH;
 
-	/**
-	 * WINDOWS_FOLDER_SEPARATOR.
-	 */
-	String WINDOWS_FOLDER_SEPARATOR = "\\";
+    /**
+     * WINDOWS_FOLDER_SEPARATOR.
+     */
+    String WINDOWS_FOLDER_SEPARATOR = "\\";
 
-	/**
-	 * TOP_PATH.
-	 */
-	String TOP_PATH = "..";
+    /**
+     * TOP_PATH.
+     */
+    String TOP_PATH = "..";
 
-	/**
-	 * CURRENT_PATH.
-	 */
-	String CURRENT_PATH = StringPools.DOT;
+    /**
+     * CURRENT_PATH.
+     */
+    String CURRENT_PATH = StringPools.DOT;
 
     /**
      * 接口应描述一种类型，从而必须拥有方法.
