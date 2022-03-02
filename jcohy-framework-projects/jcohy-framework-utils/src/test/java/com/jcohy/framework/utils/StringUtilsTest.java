@@ -154,7 +154,7 @@ public class StringUtilsTest {
         String qualified = "i.am.not.unqualified";
         String qualified2 = "i:am:not:unqualified";
         assertThat(StringUtils.unqualify(qualified)).isEqualTo("unqualified");
-        assertThat(StringUtils.unqualify(qualified2)).isEqualTo("unqualified");
+        assertThat(StringUtils.unqualify(qualified2,':')).isEqualTo("unqualified");
     }
 
     @Test
@@ -171,19 +171,11 @@ public class StringUtilsTest {
         String capitalized2 = "Bob";
         assertThat(StringUtils.uncapitalize(capitalized)).isEqualTo("i am capitalized");
         assertThat(StringUtils.uncapitalize(capitalized2)).isEqualTo("bob");
-
     }
 
     // ---------------------------------------------------------------------
     // 拆分 TEST
     // ---------------------------------------------------------------------
-
-    @Test
-    public void defaultSplit() {
-        String str2 = "Hello World,  ,  I , am , Iron Man.";
-        assertThat(StringUtils.defaultSplit(str2)).hasSize(5);
-        assertThat(StringUtils.defaultSplit(str2, 4)).hasSize(4).contains("").doesNotContain("  I ");
-    }
 
     @Test
     public void splitPath() {
@@ -201,12 +193,92 @@ public class StringUtilsTest {
 
     }
 
+//	@Test
+//	void defaultSplit() {
+//		String str = "Hello World : ,,  I , am :, Iron Man.";
+//		StringUtils.defaultSplit(str).forEach(System.out::println);
+//		assertThat(StringUtils.defaultSplit(str)).hasSize(4).contains("Hello World :", "I", "am :", "Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, CharPools.COLON)).hasSize(3).contains("Hello World", ",,  I , am",
+//				", Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, false, false)).hasSize(5).contains("Hello World : ", "",
+//				"  I ", " am :", " Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, true, false)).hasSize(5).contains("Hello World :", "", "I",
+//				"am :", "Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, false, true)).hasSize(4).contains("Hello World : ", "  I ",
+//				" am :", " Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, true, true)).hasSize(4).contains("Hello World :", "I",
+//				"am :", "Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, 3, false, false)).hasSize(3).contains("Hello World : ", "",
+//				"  I , am :, Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, 3, true, false)).hasSize(3).contains("Hello World :", "",
+//				"I , am :, Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, 3, false, true)).hasSize(3).contains("Hello World : ",
+//				"  I ", " am :, Iron Man.");
+//		assertThat(StringUtils.defaultSplit(str, StringPools.COMMA, 3, true, true)).hasSize(3).contains("Hello World :", "I",
+//				"am :, Iron Man.");
+//	}
+//
+//
+//	@Test
+//	public void splitTrim() {
+//		String str = "Hello World,  ,  I , am , Iron Man.";
+//		assertThat(StringUtils.splitTrim(str, ",", true)).hasSize(4).doesNotContain("  I ");
+//		assertThat(StringUtils.splitTrim(str, ",", false)).hasSize(5).contains("").doesNotContain("  I ");
+//		assertThat(StringUtils.splitTrim(str, ",", 3, true)).hasSize(3).doesNotContain("  I ");
+//		assertThat(StringUtils.splitTrim(str, ",", 3, false)).hasSize(3).contains("").doesNotContain("  I ");
+//		String str4 = "Hello World, I am,  Iron Man.";
+//		assertThat(StringUtils.splitToArray(str4, "I", -1, true, true)).hasSize(3).contains("Hello World,", "am,",
+//				"ron Man.");
+//	}
+//
+//	@Test
+//	public void testStringSplit() {
+//		// 通过 char 类型拆分
+//		String str2 = "Hello World,  ,  I , am , Iron Man.";
+//		assertThat(StringUtils.splitTrim(str2, StringPools.COMMA, true)).hasSize(4).doesNotContain("  I ");
+//		assertThat(StringUtils.splitTrim(str2, StringPools.COMMA, false)).hasSize(5).contains("")
+//				.doesNotContain("  I ");
+//		assertThat(StringUtils.splitTrim(str2, StringPools.COMMA, 3, true)).hasSize(3).doesNotContain("  I ");
+//		assertThat(StringUtils.splitTrim(str2, StringPools.COMMA, 3, false)).hasSize(3).contains("")
+//				.doesNotContain("  I ");
+//
+//		String str3 = "Hello World : ,,  I , am :, Iron Man.";
+//		assertThat(StringUtils.split(str3)).hasSize(4).contains("Hello World :", "I", "am :", "Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COLON)).hasSize(3).contains("Hello World ", " ,,  I , am ",
+//				", Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, false, false)).hasSize(5).contains("Hello World : ", "",
+//				"  I ", " am :", " Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, true, false)).hasSize(5).contains("Hello World :", "",
+//				"I", "am :", "Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, false, true)).hasSize(4).contains("Hello World : ",
+//				"  I ", " am :", " Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, true, true)).hasSize(4).contains("Hello World :", "I",
+//				"am :", "Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, 3, false, false)).hasSize(3).contains("Hello World : ",
+//				"", "  I , am :, Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, 3, true, false)).hasSize(3).contains("Hello World :", "",
+//				"I , am :, Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, 3, false, true)).hasSize(3).contains("Hello World : ",
+//				"  I ", " am :, Iron Man.");
+//		assertThat(StringUtils.split(str3, StringPools.COMMA, 3, true, true)).hasSize(3).contains("Hello World :", "I",
+//				"am :, Iron Man.");
+//
+//		String str4 = "Hello World, I am,  Iron Man.";
+//		// assertThat(StringUtils.splitIgnoreCase(str4, "I", -1, true,
+//		// true)).hasSize(3).contains("Hello World,", "am,",
+//		// "ron Man.");
+//		// assertThat(StringUtils.splitIgnoreCase(str4, "i", -1, true,
+//		// true)).hasSize(3).contains("Hello World,", "am,",
+//		// "ron Man.");
+//		assertThat(StringUtils.splitToArray(str4, "I", -1, true, true)).hasSize(3).contains("Hello World,", "am,",
+//				"ron Man.");
+//	}
+
     @Test
     public void splitByLength() {
 
         // Whitespace
         String str = " Hello World, I am,  Iron Man. ";
-        assertThat(StringUtils.split(str, null, 1)).hasSize(1).contains("Hello World, I am,  Iron Man.");
         // 通过长度拆分
         assertThat(StringUtils.splitByLength(str, 8)).hasSize(4).contains(" Hello W", "orld, I ", "am,  Iro",
                 "n Man. ");
@@ -349,7 +421,7 @@ public class StringUtilsTest {
         assertThat(StringUtils.indexOf(str, 'f')).isEqualTo(5);
 
         String str1 = "asdfEe";
-        assertThat(StringUtils.indexOf(str1, "e", 0)).isEqualTo(4);
+        assertThat(StringUtils.indexOf(str1, "e", 0)).isEqualTo(5);
 
         assertThat(StringUtils.indexOfIgnoreCase("", "", 0)).isEqualTo(0);
         assertThat(StringUtils.indexOfIgnoreCase("aabaabaa", "A", 0)).isEqualTo(0);
@@ -391,30 +463,41 @@ public class StringUtilsTest {
     // Remove TEST
     // ---------------------------------------------------------------------
 
+	@Test
+	public void removeStart() {
+		assertThat(StringUtils.removeStart(null, "abc")).isNull();
+		assertThat(StringUtils.removeEnd("", "efg")).isEmpty();
+		assertThat(StringUtils.removeStart("Abcdefg", null)).isEqualTo("Abcdefg");
+		assertThat(StringUtils.removeStart("www.domain.com", "www.")).isEqualTo("domain.com");
+		assertThat(StringUtils.removeStart("domain.com", "www.")).isEqualTo("domain.com");
+		assertThat(StringUtils.removeStart("www.domain.com", "domain")).isEqualTo("www.domain.com");
+		assertThat(StringUtils.removeStart("abc", "")).isEqualTo("abc");
+	}
+
+	public void removeEnd() {
+		assertThat(StringUtils.removeEnd(null, "efg")).isNull();
+		assertThat(StringUtils.removeEnd("", "efg")).isEmpty();
+		assertThat(StringUtils.removeEnd("Abcdefg", null)).isEqualTo("Abcdefg");
+		assertThat(StringUtils.removeEnd("www.domain.com", ".com.")).isEqualTo("www.domain.com");
+		assertThat(StringUtils.removeEnd("www.domain.com", ".com")).isEqualTo("www.domain");
+		assertThat(StringUtils.removeEnd("www.domain.com", "domain")).isEqualTo("www.domain.com");
+		assertThat(StringUtils.removeEnd("abc", "")).isEqualTo("abc");
+	}
+
+	public void removeEndIgnoreCase() {
+		assertThat(StringUtils.removeIgnoreCase(null, "*")).isEqualTo("Abcdefg");
+		assertThat(StringUtils.removeIgnoreCase("", "*")).isEmpty();
+		assertThat(StringUtils.removeIgnoreCase("Abcdefg", null)).isEqualTo("Abcdefg");
+		assertThat(StringUtils.removeIgnoreCase("Abcdefg", "")).isEqualTo("Abcdefg");
+		assertThat(StringUtils.removeIgnoreCase("queued", "ue")).isEqualTo("qd");
+		assertThat(StringUtils.removeIgnoreCase("queued", "zz")).isEqualTo("queued");
+		assertThat(StringUtils.removeIgnoreCase("quEUed", "UE")).isEqualTo("qd");
+		assertThat(StringUtils.removeIgnoreCase("queued", "zZ")).isEqualTo("queued");
+	}
+
     @Test
     public void removeEndAndLowerFirst() {
         String str = "Abcdefg";
-
-        // Prefix
-        assertThat(StringUtils.removeStart(null, "abc")).isEmpty();
-        assertThat(StringUtils.removeStart(str, null)).isEmpty();
-        assertThat(StringUtils.removeStart(str, "")).isEmpty();
-        assertThat(StringUtils.removeStart(str, "Abc")).isEqualTo("defg");
-        assertThat(StringUtils.removeStart(str, "efg")).isEqualTo(str);
-
-        // Suffix
-        assertThat(StringUtils.removeEnd(null, "efg")).isEmpty();
-        assertThat(StringUtils.removeEnd(str, null)).isEmpty();
-        assertThat(StringUtils.removeEnd(str, "")).isEmpty();
-        assertThat(StringUtils.removeEnd(str, "gfd")).isEqualTo(str);
-        assertThat(StringUtils.removeEnd(str, "efg")).isEqualTo("Abcd");
-        assertThat(StringUtils.removeEnd(str, "EFG")).isEqualTo(str);
-
-        assertThat(StringUtils.removeEndIgnoreCase(str, "EFG")).isEqualTo("Abcd");
-        assertThat(StringUtils.removeEndIgnoreCase(str, "efg")).isEqualTo("Abcd");
-
-        assertThat(StringUtils.removeEndAndLowerFirst(str, "efg")).isNotEqualTo("Abcd");
-        assertThat(StringUtils.removeEndAndLowerFirst(str, "efg")).isEqualTo("abcd");
 
     }
 
@@ -524,9 +607,9 @@ public class StringUtilsTest {
         // substring
         String str = "Abcdefg";
         assertThat(StringUtils.substring(null, 2)).isNull();
-        assertThat(StringUtils.substring(str, 2)).isEqualTo("Ab");
-        assertThat(StringUtils.substring(str, -1)).isEqualTo("Abcdef");
-        assertThat(StringUtils.substring(str, -2)).isEqualTo("Abcde");
+        assertThat(StringUtils.substring(str, 2)).isEqualTo("cdefg");
+        assertThat(StringUtils.substring(str, -1)).isEqualTo("g");
+        assertThat(StringUtils.substring(str, -2)).isEqualTo("fg");
     }
 
     @Test
@@ -544,10 +627,7 @@ public class StringUtilsTest {
 
     @Test
     public void substringAfter() {
-        assertThat(StringUtils.substringAfter(null, 2)).isEmpty();
-        assertThat(StringUtils.substringAfter("Abcdefg", 2)).isEqualTo("cdefg");
-        assertThat(StringUtils.substringAfter("Abcdefg", -1)).isEqualTo("g");
-        assertThat(StringUtils.substringAfter("Abcdefg", -2)).isEqualTo("fg");
+        assertThat(StringUtils.substringAfter(null, 2)).isNull();
         assertThat(StringUtils.substringAfter(null, "a")).isNull();
         assertThat(StringUtils.substringAfter("", "a")).isEmpty();
         assertThat(StringUtils.substringAfter("null", null)).isEmpty();
