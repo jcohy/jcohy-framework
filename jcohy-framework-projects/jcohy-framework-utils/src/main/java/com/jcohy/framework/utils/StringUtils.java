@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -211,7 +212,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * <p>
-     * 根据指定的分隔符将文本拆分为一个集合，默认分隔符为逗号 {@link StringPools#COMMA}.
+     * 根据指定的分隔符将文本拆分为一个集合，默认分隔符为逗号 {@link StringPools#COMMA}，,去除空元素，去除前后空白符，并且区分大小写.
      *
      * <p>
      * NOTE: 注意 {@link StringUtils#split(String)} 的区别： {@link StringUtils#split(String)}
@@ -230,7 +231,27 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 根据指定的分隔符将文本拆分为一个集合,默认分隔符为逗号 {@link StringPools#COMMA}.
+     * 根据指定的分隔符将文本拆分为一个集合,指定分隔符,排空，去除空元素，并且区分大小写.
+     *
+     * <p>
+     * NOTE: 注意 {@link StringUtils#split(String)} 的区别： {@link StringUtils#split(String)}
+     * 默认以空白符拆分
+     * </p>
+     * <p>
+     * 返回的字符串数组中不包含分隔符。相邻的分隔符被视为一个分隔度.
+     * </p>
+     * @param str 待拆分的字符串，可能为空
+     * @param separator 分隔符
+     * @return 拆分后的数组, 如果输入为 null, 则输出为 {@code null}
+     * @since 2022.0.1
+     * @see StringUtils#split(String)
+     */
+    public static List<String> defaultSplit(String str, String separator) {
+        return defaultSplit(str, separator, -1);
+    }
+
+    /**
+     * 根据指定的分隔符将文本拆分为一个集合,默认分隔符为逗号 {@link StringPools#COMMA},去除空元素，去除前后空白符，并且区分大小写.
      *
      * <p>
      * NOTE: 注意 {@link StringUtils#split(String)} 的区别： {@link StringUtils#split(String)}
@@ -246,7 +267,28 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @see StringUtils#split(String)
      */
     public static List<String> defaultSplit(String str, int max) {
-        return Arrays.asList(split(str, StringPools.COMMA, max));
+        return defaultSplit(str, StringPools.COMMA, max);
+    }
+
+    /**
+     * 根据指定的分隔符将文本拆分为一个集合,指定分隔符 {@link StringPools#COMMA},去除空元素，去除前后空白符，并且区分大小写.
+     *
+     * <p>
+     * NOTE: 注意 {@link StringUtils#split(String)} 的区别： {@link StringUtils#split(String)}
+     * 默认以空白符拆分
+     * </p>
+     * <p>
+     * 返回的字符串数组中不包含分隔符。相邻的分隔符被视为一个分隔度.
+     * </p>
+     * @param str 待拆分的字符串，可能为空
+     * @param separator 分隔符
+     * @param max 数组的最大长度. 零或负值意味着没有限制
+     * @return 拆分后的数组, 如果输入为 null, 则输出为 {@code null}
+     * @since 2022.0.1
+     * @see StringUtils#split(String)
+     */
+    public static List<String> defaultSplit(String str, String separator, int max) {
+        return split(str, separator, max, true, true, false);
     }
 
     /**
@@ -289,6 +331,206 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static List<String> splitPathToList(String str, int limit) {
         return Arrays.asList(splitPath(str, limit));
+    }
+
+    /**
+     * 切分字符串，去除每个元素两边空格，不忽略大小写.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符串
+     * @param ignoreEmpty 是否忽略空串
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> splitTrim(String str, String separator, boolean ignoreEmpty) {
+        return split(str, separator, -1, true, ignoreEmpty, false);
+    }
+
+    /**
+     * 切分字符串，去除每个元素两边空格，不忽略大小写.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符串
+     * @param limit 限制分片数
+     * @param ignoreEmpty 是否忽略空串
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> splitTrim(String str, String separator, int limit, boolean ignoreEmpty) {
+        return split(str, separator, limit, true, ignoreEmpty, false);
+    }
+
+    /**
+     * 切分字符串，忽略大小写.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符串
+     * @param isTrim 是否去除切分字符串后每个元素两边的空格
+     * @param ignoreEmpty 是否忽略空串
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> splitIgnoreCase(String str, String separator, boolean isTrim, boolean ignoreEmpty) {
+        return split(str, separator, -1, isTrim, ignoreEmpty, true);
+    }
+
+    /**
+     * 切分字符串，忽略大小写.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符串
+     * @param limit 限制分片数
+     * @param isTrim 是否去除切分字符串后每个元素两边的空格
+     * @param ignoreEmpty 是否忽略空串
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> splitIgnoreCase(String str, String separator, int limit, boolean isTrim,
+            boolean ignoreEmpty) {
+        return split(str, separator, limit, isTrim, ignoreEmpty, true);
+    }
+
+    /**
+     * 切分字符串，去除每个元素两边空格，忽略大小写.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符串
+     * @param limit 限制分片数
+     * @param ignoreEmpty 是否忽略空串
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> splitTrimIgnoreCase(String str, String separator, int limit, boolean ignoreEmpty) {
+        return split(str, separator, limit, true, ignoreEmpty, true);
+    }
+
+    /**
+     * 切分字符串为字符串数组.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符
+     * @param limit 限制分片数
+     * @param isTrim 是否去除切分字符串后每个元素两边的空格
+     * @param ignoreEmpty 是否忽略空串
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static String[] splitToArray(String str, String separator, int limit, boolean isTrim, boolean ignoreEmpty) {
+        return toArray(split(str, separator, limit, isTrim, ignoreEmpty, false));
+    }
+
+    /**
+     * 使用空白符切分字符串<br>
+     * 切分后的字符串两边不包含空白符，空串或空白符串并不做为元素之一.
+     * @param str 被切分的字符串
+     * @param limit 限制分片数
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> split(String str, int limit) {
+        if (isEmpty(str)) {
+            return new ArrayList<String>(0);
+        }
+        if (limit == 1) {
+            return addToList(new ArrayList<String>(1), str, true, true);
+        }
+
+        final ArrayList<String> list = new ArrayList<>();
+        int len = str.length();
+        int start = 0;
+        for (int i = 0; i < len; i++) {
+            if (ObjectUtils.isEmpty(str.charAt(i))) {
+                addToList(list, str.substring(start, i), true, true);
+                start = i + 1;
+                if (limit > 0 && list.size() > limit - 2) {
+                    break;
+                }
+            }
+        }
+        return addToList(list, str.substring(start, len), true, true);
+    }
+
+    /**
+     * 切分字符串.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符串
+     * @param limit 限制分片数
+     * @param isTrim 是否去除切分字符串后每个元素两边的空格
+     * @param ignoreEmpty 是否忽略空串
+     * @param ignoreCase 是否忽略大小写
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> split(String str, String separator, int limit, boolean isTrim, boolean ignoreEmpty,
+            boolean ignoreCase) {
+        if (isEmpty(str)) {
+            return new ArrayList<String>(0);
+        }
+        if (limit == 1) {
+            return addToList(new ArrayList<String>(1), str, isTrim, ignoreEmpty);
+        }
+
+        if (isEmpty(separator)) {
+            return split(str, limit);
+        }
+        else if (separator.length() == 1) {
+            return split(str, separator.charAt(0), limit, isTrim, ignoreEmpty, ignoreCase);
+        }
+
+        final ArrayList<String> list = new ArrayList<>();
+        int len = str.length();
+        int separatorLen = separator.length();
+        int start = 0;
+        int i = 0;
+        while (i < len) {
+            i = StringUtils.indexOf(str, separator, start, ignoreCase);
+            if (i > -1) {
+                addToList(list, str.substring(start, i), isTrim, ignoreEmpty);
+                start = i + separatorLen;
+
+                // 检查是否超出范围（最大允许limit-1个，剩下一个留给末尾字符串）
+                if (limit > 0 && list.size() > limit - 2) {
+                    break;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        return addToList(list, str.substring(start, len), isTrim, ignoreEmpty);
+    }
+
+    /**
+     * 切分字符串.
+     * @param str 被切分的字符串
+     * @param separator 分隔符字符
+     * @param limit 限制分片数，-1不限制
+     * @param isTrim 是否去除切分字符串后每个元素两边的空格
+     * @param ignoreEmpty 是否忽略空串
+     * @param ignoreCase 是否忽略大小写
+     * @return 切分后的集合
+     * @since 2022.0.1
+     */
+    public static List<String> split(String str, char separator, int limit, boolean isTrim, boolean ignoreEmpty,
+            boolean ignoreCase) {
+        if (isEmpty(str)) {
+            return new ArrayList<String>(0);
+        }
+        if (limit == 1) {
+            return addToList(new ArrayList<String>(1), str, isTrim, ignoreEmpty);
+        }
+
+        final ArrayList<String> list = new ArrayList<>((limit > 0) ? limit : 16);
+        int len = str.length();
+        int start = 0;
+        for (int i = 0; i < len; i++) {
+            char c = str.charAt(i);
+            if (CharUtils.asciiAlphaEquals(separator, str.charAt(i), ignoreCase)
+                    || Objects.equals(separator, str.charAt(i))) {
+                addToList(list, str.substring(start, i), isTrim, ignoreEmpty);
+                start = i + 1;
+
+                // 检查是否超出范围（最大允许limit-1个，剩下一个留给末尾字符串）
+                if (limit > 0 && list.size() > limit - 2) {
+                    break;
+                }
+            }
+        }
+        return addToList(list, str.substring(start, len), isTrim, ignoreEmpty);
     }
 
     /**
@@ -550,6 +792,44 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
         }
         return -1;
+    }
+
+    /**
+     * 指定范围内反向查找字符串.
+     * @param str 字符串
+     * @param searchStr 需要查找位置的字符串
+     * @param fromIndex 起始位置
+     * @param ignoreCase 是否忽略大小写
+     * @return 位置
+     * @since 2022.0.1
+     */
+    public static int indexOf(final CharSequence str, CharSequence searchStr, int fromIndex, boolean ignoreCase) {
+        if (str == null || searchStr == null) {
+            return INDEX_NOT_FOUND;
+        }
+        if (fromIndex < 0) {
+            fromIndex = 0;
+        }
+
+        final int endLimit = str.length() - searchStr.length() + 1;
+        if (fromIndex > endLimit) {
+            return INDEX_NOT_FOUND;
+        }
+        if (searchStr.length() == 0) {
+            return fromIndex;
+        }
+
+        if (!ignoreCase) {
+            // 不忽略大小写调用JDK方法
+            return str.toString().indexOf(searchStr.toString(), fromIndex);
+        }
+
+        for (int i = fromIndex; i < endLimit; i++) {
+            if (isSubEquals(str, i, searchStr, 0, searchStr.length(), true)) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
     }
 
     // ---------------------------------------------------------------------
@@ -1557,6 +1837,15 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             list.add(part);
         }
         return list;
+    }
+
+    /**
+     * List 转 array.
+     * @param list list
+     * @return array
+     */
+    private static String[] toArray(List<String> list) {
+        return list.toArray(new String[list.size()]);
     }
 
 }
