@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 public class StringUtilsTest {
 
     @Test
-    public void isBlank() {
+    void isBlank() {
         assertThat(StringUtils.isBlank(null)).isTrue();
         assertThat(StringUtils.isBlank("")).isTrue();
         assertThat(StringUtils.isBlank(" ")).isTrue();
@@ -64,7 +64,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void isEmpty() {
+    void isEmpty() {
         assertThat(StringUtils.isEmpty(null)).isTrue();
         assertThat(StringUtils.isEmpty("")).isTrue();
         assertThat(StringUtils.isEmpty(" ")).isFalse();
@@ -107,7 +107,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void isNumeric() {
+    void isNumeric() {
         assertThat(StringUtils.isNumeric("bob")).isFalse();
         assertThat(StringUtils.isNumeric(" bob1 23")).isFalse();
         assertThat(StringUtils.isNumeric(" 123")).isFalse();
@@ -121,7 +121,7 @@ public class StringUtilsTest {
     // ---------------------------------------------------------------------
 
     @Test
-    public void format() {
+    void format() {
         String value = "I am Bob, I like Java";
         String message = "I am {}, I like {}";
         String message2 = "I am %s, I like %s";
@@ -174,12 +174,23 @@ public class StringUtilsTest {
         assertThat(StringUtils.uncapitalize(capitalized2)).isEqualTo("bob");
     }
 
+    @Test
+    public void toUnderlineCaseTest() {
+        assertThat(StringUtils.toUnderlineCase("customerNickV2")).isEqualTo("customer_nick_v2");
+    }
+
+    @Test
+    public void toUnderLineCaseTest2() {
+        final String wPRunOZTime = StringUtils.toUnderlineCase("wPRunOZTime");
+        assertThat("w_P_run_OZ_time").isEqualTo(wPRunOZTime);
+    }
+
     // ---------------------------------------------------------------------
     // 拆分 TEST
     // ---------------------------------------------------------------------
 
     @Test
-    public void splitPath() {
+    void splitPath() {
         // 通过 char 类型拆分
         String str1 = "/User/jcohy/idea";
         assertThat(StringUtils.splitPath(str1)).hasSize(3).contains("User", "jcohy", "idea");
@@ -187,7 +198,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void splitPathToList() {
+    void splitPathToList() {
         String str1 = "/User/jcohy/idea";
         assertThat(StringUtils.splitPathToList(str1)).hasSize(3).contains("User", "jcohy", "idea");
         assertThat(StringUtils.splitPathToList(str1, 2)).hasSize(2).contains("User", "jcohy/idea");
@@ -195,7 +206,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void splitTrim() {
+    void splitTrim() {
         String str = "Hello World,  ,  I , am , Iron Man.";
         assertThat(StringUtils.splitTrim(str, ",", true)).hasSize(4).doesNotContain("  I ");
         assertThat(StringUtils.splitTrim(str, ",", false)).hasSize(5).contains("").doesNotContain("  I ");
@@ -233,7 +244,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void defaultSplit() {
+    void defaultSplit() {
         String str3 = "Hello World : ,,  I , am :, Iron Man.";
         assertThat(StringUtils.defaultSplit(str3)).hasSize(4).contains("Hello World :", "I", "am :", "Iron Man.");
         assertThat(StringUtils.defaultSplit(str3, ":")).hasSize(3).contains("Hello World", ",,  I , am", ", Iron Man.");
@@ -244,7 +255,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void splitByLength() {
+    void splitByLength() {
 
         // Whitespace
         String str = " Hello World, I am,  Iron Man. ";
@@ -254,7 +265,7 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void splitByReg() {
+    void splitByReg() {
         String str = " Hello World, I am,  Iron Man. ";
         // 通过正则拆分
         Pattern pattern = Pattern.compile("Hello");
@@ -383,7 +394,7 @@ public class StringUtilsTest {
     // ---------------------------------------------------------------------
 
     @Test
-    public void indexOf() {
+    void indexOf() {
         String str = "sadadfgfgd";
         assertThat(StringUtils.indexOf(str, 'a', 2, 10)).isEqualTo(3);
         assertThat(StringUtils.indexOf(str, 'd', 3)).isEqualTo(4);
