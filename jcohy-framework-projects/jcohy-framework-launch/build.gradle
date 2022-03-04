@@ -1,0 +1,14 @@
+plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "The launch is useful for launcher Spring application,add start vars,loading spi services"
+
+dependencies {
+	api (project(":jcohy-framework-projects:jcohy-framework-commons"))
+	api ("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	api ("org.springframework.boot:spring-boot-starter-undertow")
+}
