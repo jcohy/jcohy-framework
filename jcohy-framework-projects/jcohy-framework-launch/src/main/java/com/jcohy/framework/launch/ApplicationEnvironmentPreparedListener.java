@@ -17,16 +17,18 @@ import org.springframework.util.StringUtils;
  * @version 2022.0.1 3/4/22:10:45
  * @since 2022.0.1
  */
-public class ApplicationEnvironmentPreparedListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
+public class ApplicationEnvironmentPreparedListener
+        implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
 
-	@Override
-	public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
-		// 设置默认的 profile，并设置 jcohy.env 属性
-		String activeProfiles = StringUtils.arrayToCommaDelimitedString(event.getEnvironment().getActiveProfiles());
-		String defaultProfiles = StringUtils.arrayToCommaDelimitedString(event.getEnvironment().getDefaultProfiles());
-		Properties defaultProperties = System.getProperties();
-		defaultProperties.setProperty("jcohy.env",
-				StringUtils.hasText(activeProfiles) ? activeProfiles : defaultProfiles);
-		event.getSpringApplication().setDefaultProperties(defaultProperties);
-	}
+    @Override
+    public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
+        // 设置默认的 profile，并设置 jcohy.env 属性
+        String activeProfiles = StringUtils.arrayToCommaDelimitedString(event.getEnvironment().getActiveProfiles());
+        String defaultProfiles = StringUtils.arrayToCommaDelimitedString(event.getEnvironment().getDefaultProfiles());
+        Properties defaultProperties = System.getProperties();
+        defaultProperties.setProperty("jcohy.env",
+                StringUtils.hasText(activeProfiles) ? activeProfiles : defaultProfiles);
+        event.getSpringApplication().setDefaultProperties(defaultProperties);
+    }
+
 }

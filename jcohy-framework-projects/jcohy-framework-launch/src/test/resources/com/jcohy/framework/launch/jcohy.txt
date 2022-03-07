@@ -11,4 +11,4 @@ ${AnsiColor.RED} Copyright ©2020 https://www.jcohy.com
 ${AnsiColor.BLUE} :: Application Name			:: ${AnsiColor.RED} ${spring.application.name}
 ${AnsiColor.BLUE} :: Application Profile			:: ${AnsiColor.RED} ${jcohy.env}
 ${AnsiColor.YELLOW} :: Running Jcohy Framework		:: ${AnsiColor.RED} ${jcohy.version}
-${AnsiColor.MAGENTA} :: Running SpringBoot Version 	:: ${AnsiColor.RED} ${spring-boot.version}
+${AnsiColor.MAGENTA} :: Running SpringBoot Version	:: ${AnsiColor.RED} ${spring-boot.version}

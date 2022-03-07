@@ -16,31 +16,32 @@ import org.springframework.core.Ordered;
  */
 public interface LauncherService extends Ordered, Comparable<LauncherService> {
 
-	/**
-	 * 启动时加载 spi.
-	 * @param builder builder
-	 * @param applicationName 应用名
-	 * @param profile 环境
-	 * @param isLocalDev 是否是测试环境
-	 */
-	void launcher(SpringApplicationBuilder builder, String applicationName, String profile, boolean isLocalDev);
+    /**
+     * 启动时加载 spi.
+     * @param builder builder
+     * @param applicationName 应用名
+     * @param profile 环境
+     * @param isLocalDev 是否是测试环境
+     */
+    void launcher(SpringApplicationBuilder builder, String applicationName, String profile, boolean isLocalDev);
 
-	/**
-	 * 获取排列顺序.
-	 * @return order
-	 */
-	@Override
-	default int getOrder() {
-		return 0;
-	}
+    /**
+     * 获取排列顺序.
+     * @return order
+     */
+    @Override
+    default int getOrder() {
+        return 0;
+    }
 
-	/**
-	 * 对比排序.
-	 * @param launcherService startupService
-	 * @return compare
-	 */
-	@Override
-	default int compareTo(LauncherService launcherService) {
-		return Integer.compare(this.getOrder(), launcherService.getOrder());
-	}
+    /**
+     * 对比排序.
+     * @param launcherService startupService
+     * @return compare
+     */
+    @Override
+    default int compareTo(LauncherService launcherService) {
+        return Integer.compare(this.getOrder(), launcherService.getOrder());
+    }
+
 }

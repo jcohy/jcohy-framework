@@ -1,7 +1,5 @@
 package com.jcohy.framework.launch;
 
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +14,10 @@ import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -38,79 +39,96 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(OutputCaptureExtension.class)
 class JcohyApplicationTest {
 
-	private ConfigurableApplicationContext context;
+    private ConfigurableApplicationContext context;
 
-	private Environment getEnvironment() {
-		if (this.context != null) {
-			return this.context.getEnvironment();
-		}
-		throw new IllegalStateException("Could not obtain Environment");
-	}
+    private Environment getEnvironment() {
+        if (this.context != null) {
+            return this.context.getEnvironment();
+        }
+        throw new IllegalStateException("Could not obtain Environment");
+    }
 
-	@Test
-	void sourceMustNotNull() {
-		Assertions.assertThatIllegalArgumentException()
-				.isThrownBy(() -> JcohyApplication.run("Jcohy", null))
-				.withMessage("Source must not be null");
-	}
+    @Test
+    void sourceMustNotNull() {
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> JcohyApplication.run("Jcohy", null))
+                .withMessage("Source must not be null");
+    }
 
-	@Test
-	void applicationMustNameNotNull() {
-		Assertions.assertThatIllegalArgumentException()
-				.isThrownBy(() -> JcohyApplication.run(null,JcohyApplication.class))
-				.withMessage("[applicationName] 服务名不能为空");
-	}
+    @Test
+    void applicationMustNameNotNull() {
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> JcohyApplication.run(null, JcohyApplication.class))
+                .withMessage("[applicationName] 服务名不能为空");
+    }
 
-	@Test
-	void customBanner(CapturedOutput output) {
-		SpringApplication application = JcohyApplication.build("Jcohy", ExampleConfig.class);
-		MockResourceLoader resourceLoader = new MockResourceLoader();
-		resourceLoader.addResource("banner.txt", "jcohy.txt");
-		application.setWebApplicationType(WebApplicationType.NONE);
-		application.setResourceLoader(resourceLoader);
-		application.run();
-		assertThat(output).contains(" :: Application Name			::  Jcohy");
-	}
+    @Test
+    void customBanner(CapturedOutput output) {
+        SpringApplication application = JcohyApplication.build("Jcohy", ExampleConfig.class);
+        MockResourceLoader resourceLoader = new MockResourceLoader();
+        resourceLoader.addResource("banner.txt", "jcohy.txt");
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.setResourceLoader(resourceLoader);
+        application.run();
+        assertThat(output).contains("----启动中，jar地址:");
+        assertThat(output).contains(" Copyright ©2020 https://www.jcohy.com");
+        assertThat(output).contains(" :: Application Profile			::  dev");
+        assertThat(output).contains(" :: Application Name			::  Jcohy");
+        assertThat(output).contains(" :: Running Jcohy Framework		::  2022.0.1");
+        assertThat(output).contains(" :: Running SpringBoot Version	::  2.4.6");
+    }
 
-	@Configuration(proxyBeanMethods = false)
-	static class ExampleConfig {
+    @Test
+    void addProfile() {
+        SpringApplication application = JcohyApplication.build("Jcohy", ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.setAdditionalProfiles("foo");
+        ConfigurableEnvironment environment = new StandardEnvironment();
+        application.setEnvironment(environment);
+        this.context = application.run();
+        assertThat(environment.acceptsProfiles(Profiles.of("foo"))).isTrue();
+    }
 
-		@Bean
-		String someBean() {
-			return "test";
-		}
-	}
+    @Test
+    void addProfilesOrder() {
+        SpringApplication application = JcohyApplication.build("Jcohy", ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.setAdditionalProfiles("foo");
+        ConfigurableEnvironment environment = new StandardEnvironment();
+        application.setEnvironment(environment);
+        this.context = application.run("--spring.profiles.active=bar,spam");
+        // 从 SpringBoot 2.4 后，addition 始终是第一个。
+        assertThat(environment.getActiveProfiles()).containsExactly("foo", "bar", "spam");
+    }
 
-	static class MockResourceLoader implements ResourceLoader {
+    @Configuration(proxyBeanMethods = false)
+    static class ExampleConfig {
 
-		private final Map<String,Resource> resources = new HashMap<>();
+        @Bean
+        String someBean() {
+            return "test";
+        }
 
-		void addResource(String source, String path) {
-			this.resources.put(source,new ClassPathResource(path, getClass()));
-		}
+    }
 
-		@Override
-		public Resource getResource(String path) {
-			Resource resource = this.resources.get(path);
-			try {
-				if(resource != null ) {
-					boolean exists = resource.exists();
-					String s = resource.getURL().toExternalForm();
-					System.out.println();
-					System.out.println();
-				}
+    static class MockResourceLoader implements ResourceLoader {
 
-//				System.out.println(resource.exists() && !resource.getURL().toExternalForm().contains("liquibase-core"));
-			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-			return (resource != null) ? resource : new ClassPathResource("doesnotexist");
-		}
+        private final Map<String, Resource> resources = new HashMap<>();
 
-		@Override
-		public ClassLoader getClassLoader() {
-			return getClass().getClassLoader();
-		}
-	}
+        void addResource(String source, String path) {
+            this.resources.put(source, new ClassPathResource(path, getClass()));
+        }
+
+        @Override
+        public Resource getResource(String path) {
+            Resource resource = this.resources.get(path);
+            return (resource != null) ? resource : new ClassPathResource("doesnotexist");
+        }
+
+        @Override
+        public ClassLoader getClassLoader() {
+            return getClass().getClassLoader();
+        }
+
+    }
+
 }

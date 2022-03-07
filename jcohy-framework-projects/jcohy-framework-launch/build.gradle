@@ -11,4 +11,5 @@ dependencies {
 		exclude module: "spring-boot-starter-tomcat"
 	}
 	api ("org.springframework.boot:spring-boot-starter-undertow")
+	testImplementation(project(":jcohy-framework-projects:jcohy-framework-configuration-processor"))
 }
