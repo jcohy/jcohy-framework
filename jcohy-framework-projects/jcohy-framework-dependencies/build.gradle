@@ -103,6 +103,8 @@ dependencies {
 		// cache
 		api("net.sf.ehcache:ehcache:2.10.5")
 
+		api("com.google.code.findbugs:annotations:3.0.1")
+
 		//test
 		api(
 				[group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: "1.50.5"]

@@ -14,7 +14,6 @@ import org.springframework.util.Assert;
 /**
  * 描述: .
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
@@ -22,14 +21,14 @@ import org.springframework.util.Assert;
  * @version 2022.0.1 3/8/22:14:12
  * @since 2022.0.1
  */
-@ConfigurationProperties("saga")
-public class SagaProperties implements EnvironmentAware, EnvironmentCapable {
+@ConfigurationProperties("jcohy")
+public class JcohyProperties implements EnvironmentAware, EnvironmentCapable {
 
     @Nullable
     private Environment environment;
 
     /**
-     * 装载自定义配置 saga.prop.xxx.
+     * 装载自定义配置 jcohy.prop.xxx.
      */
     private final Map<String, String> prop = new HashMap<>();
 
@@ -174,8 +173,8 @@ public class SagaProperties implements EnvironmentAware, EnvironmentCapable {
      */
     public String getEnv() {
         Objects.requireNonNull(this.environment, "Spring boot 环境下 Environment 不可能为null");
-        String env = this.environment.getProperty("saga.env");
-        Assert.notNull(env, "请使用 SagaApplication 启动...");
+        String env = this.environment.getProperty("jcohy.env");
+        Assert.notNull(env, "请使用 JcohyApplication 启动...");
         return env;
     }
 
@@ -186,7 +185,7 @@ public class SagaProperties implements EnvironmentAware, EnvironmentCapable {
     public String getName() {
         Objects.requireNonNull(this.environment, "Spring boot 环境下 Environment 不可能为 null");
         return this.environment.getProperty("spring.application.name",
-                this.environment.getProperty("saga.application.name", ""));
+                this.environment.getProperty("jcohy.application.name", ""));
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.jcohy.framework.utils.SimpleCache;
  * 描述: 常用正则表达式集合，更多正则见: <a href="https://any86.github.io/any-rule/" target=
  * "_blank">https://any86.github.io/any-rule/</a>.
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *

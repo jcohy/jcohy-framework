@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * 描述: 响应结果构建.
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *

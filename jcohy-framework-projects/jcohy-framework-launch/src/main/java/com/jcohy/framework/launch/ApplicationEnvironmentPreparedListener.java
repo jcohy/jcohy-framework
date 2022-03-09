@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
 /**
  * 描述: 此事件是在 Environment 被上下文使用,但是在上下文创建之前发布..
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *

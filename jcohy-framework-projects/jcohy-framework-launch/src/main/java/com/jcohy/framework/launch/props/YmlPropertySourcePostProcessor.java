@@ -33,7 +33,6 @@ import org.springframework.util.StringUtils;
 /**
  * 描述: .
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
@@ -136,7 +135,7 @@ public class YmlPropertySourcePostProcessor implements BeanFactoryPostProcessor,
     private static void loadPropertySource(String location, Resource resource, PropertySourceLoader loader,
             List<PropertySource> sourceList) {
         if (resource.exists()) {
-            String name = "sagaPropertySource: [" + location + "]";
+            String name = "jcohyPropertySource: [" + location + "]";
             try {
                 sourceList.addAll(loader.load(name, resource));
             }

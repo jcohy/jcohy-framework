@@ -3,7 +3,6 @@ package com.jcohy.framework.utils.constant;
 /**
  * 描述: 字符串常量池.
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *

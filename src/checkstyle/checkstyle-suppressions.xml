@@ -5,6 +5,7 @@
 <suppressions>
 	<suppress files=".+Configuration\.java" checks="HideUtilityClassConstructor" />
 	<suppress files=".+Application\.java" checks="HideUtilityClassConstructor" />
+	<suppress files=".+(Utils|Util|Converter|Helper|Properties|Prop|Filter|Dto|Excel|Builder).java$" checks="MagicNumberCheck" />
 	<suppress files="[\\/]jcohy-framework-configuration-processor[\\/]" checks="AbstractClassNameCheck" />
 	<suppress files="[\\/]jcohy-framework-utils[\\/]" checks="MagicNumberCheck" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="MagicNumberCheck" />

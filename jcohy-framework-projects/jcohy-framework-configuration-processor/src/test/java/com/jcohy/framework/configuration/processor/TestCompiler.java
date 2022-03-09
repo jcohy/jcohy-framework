@@ -17,7 +17,6 @@ import javax.tools.ToolProvider;
 /**
  * 描述: Wrapper to make the {@link JavaCompiler} easier to use in tests.
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *

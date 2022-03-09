@@ -32,7 +32,6 @@ import com.jcohy.framework.utils.constant.StringPools;
 /**
  * 描述: 继承 {@link org.springframework.util.StringUtils}.
  *
- * <p>
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
@@ -1982,6 +1981,29 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static void commaArrayWithOperation(String array, Consumer<String> consumer) {
         Set<String> result = commaDelimitedListToSet(array);
         commaArrayWithOperation(result, consumer);
+    }
+
+    // ---------------------------------------------------------------------
+    // Default
+    // ---------------------------------------------------------------------
+
+    /**
+     * <p>
+     * 返回传入的 String，如果 String 为 {@code null}，则返回 {@code defaultStr} 的值.
+     *
+     * <pre>
+     * StringUtils.defaultString(null, "NULL")  = "NULL"
+     * StringUtils.defaultString("", "NULL")    = ""
+     * StringUtils.defaultString("bat", "NULL") = "bat"
+     * </pre>
+     * @param str 传入的 String
+     * @param defaultStr 默认返回的 String
+     * @return 传入的字符串，如果为 null，则为默认值
+     * @see ObjectUtils#toString(Object,String)
+     * @see String#valueOf(Object)
+     */
+    public static String defaultString(final Object str, final String defaultStr) {
+        return defaultString(String.valueOf(str), defaultStr);
     }
 
     // ---------------------------------------------------------------------
