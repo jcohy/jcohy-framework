@@ -8,6 +8,7 @@ description = "jcohy-framework-utils module provide some utils class"
 dependencies {
 	api (project(":jcohy-framework-projects:jcohy-framework-commons"))
 	api ("org.apache.commons:commons-lang3")
+	api("commons-io:commons-io")
 	api ("org.apache.commons:commons-collections4")
 	optional ("javax.servlet:javax.servlet-api")
 
@@ -17,7 +18,6 @@ dependencies {
 //	}
 //	implementation ("org.springframework.boot:spring-boot-starter-undertow")
 //	optional ("com.google.guava:guava")
-	optional ("commons-io:commons-io")
 	optional ("io.springfox:springfox-swagger2")
 	optional ("io.swagger:swagger-models")
 	optional ("org.springframework.boot:spring-boot-starter-json")

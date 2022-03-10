@@ -15,13 +15,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.DecimalFormat;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 
-import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,7 +39,7 @@ import com.jcohy.framework.utils.exceptions.SagaException;
  */
 public class FileUtils extends FileCopyUtils {
 
-    private String[] UNIT_NAME = new String[] { "PB", "TB", "GB", "MB", "KB", "B" };
+    private final String[] UNIT_NAME = new String[] { "PB", "TB", "GB", "MB", "KB", "B" };
 
     /**
      * FILENAME_PATTERN.
@@ -67,114 +65,12 @@ public class FileUtils extends FileCopyUtils {
             "pdf" };
 
     /**
-     * 文件大小 转换为 字符串.
-     * @param fileSize fileSize
-     * @return 字符串表示形式
-     */
-    public static String getHumanReadableFileSize(long fileSize) {
-        if (fileSize < 0) {
-            return String.valueOf(fileSize);
-        }
-        String result = getHumanReadableFileSize(fileSize, NumberConstant.ONE_PB, "PB");
-        if (result != null) {
-            return result;
-        }
-        result = getHumanReadableFileSize(fileSize, NumberConstant.ONE_TB, "TB");
-        if (result != null) {
-            return result;
-        }
-        result = getHumanReadableFileSize(fileSize, NumberConstant.ONE_GB, "GB");
-        if (result != null) {
-            return result;
-        }
-        result = getHumanReadableFileSize(fileSize, NumberConstant.ONE_MB, "MB");
-        if (result != null) {
-            return result;
-        }
-        result = getHumanReadableFileSize(fileSize, NumberConstant.ONE_KB, "KB");
-        if (result != null) {
-            return result;
-        }
-        return String.valueOf(fileSize) + "B";
-    }
-
-    /**
-     * 文件大小 转换为 字符串.
-     * @param fileSize 文件大小
-     * @param unit 单位
-     * @param unitName 单位名
-     * @return 字符串
-     */
-    private static String getHumanReadableFileSize(long fileSize, long unit, String unitName) {
-        if (fileSize == 0) {
-            return "0";
-        }
-
-        if (fileSize / unit >= 1) {
-            double value = fileSize / (double) unit;
-            DecimalFormat df = new DecimalFormat("######.##" + unitName);
-            return df.format(value);
-        }
-        return null;
-    }
-
-    /**
-     * 字符串 转换为 文件大小.
-     * @param fileSize 字符串
-     * @param unit 单位
-     * @param unitName 单位名
-     * @return 文件大小
-     */
-    private static long getFileSizeByte(String fileSize, long unit, String unitName) {
-        long size = Long.valueOf(fileSize.substring(0, fileSize.lastIndexOf(unitName)));
-        return size * unit;
-    }
-
-    private static String getFileUnit(String filesize) {
-        if (filesize.endsWith("BB")) {
-            return "B";
-        }
-        else {
-            return filesize.substring(filesize.length() - 2, filesize.length());
-        }
-    }
-
-    /**
-     * 字符串 转换为 文件大小.
-     * @param filesize 字符串
-     * @return 文件大小
-     */
-    public static long getFileSizeByte(String filesize) {
-        String unitName = getFileUnit(filesize);
-
-        if ("PB".equalsIgnoreCase(unitName)) {
-            return getFileSizeByte(filesize, NumberConstant.ONE_PB, "PB");
-        }
-        if ("TB".equalsIgnoreCase(unitName)) {
-            return getFileSizeByte(filesize, NumberConstant.ONE_TB, "TB");
-        }
-        if ("GB".equalsIgnoreCase(unitName)) {
-            return getFileSizeByte(filesize, NumberConstant.ONE_GB, "GB");
-        }
-        if ("MB".equalsIgnoreCase(unitName)) {
-            return getFileSizeByte(filesize, NumberConstant.ONE_MB, "MB");
-        }
-        if ("KB".equalsIgnoreCase(unitName)) {
-            return getFileSizeByte(filesize, NumberConstant.ONE_KB, "KB");
-        }
-        return getFileSizeByte(filesize, NumberConstant.ONE_BYTE, "BB");
-    }
-
-    /**
      * 获取文件后缀名.
      * @param fullName 文件全名
      * @return {string}
      */
     public static String getFileExtension(String fullName) {
-        Assert.notNull(fullName, "file fullName is null.");
-        String fileName = new File(fullName).getName();
-        int dotIndex = fileName.lastIndexOf(StringPools.DOT);
-        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
+        return StringUtils.getFilenameExtension(fullName);
     }
 
     /**
@@ -183,10 +79,7 @@ public class FileUtils extends FileCopyUtils {
      * @return {string}
      */
     public static String getNameWithoutExtension(String file) {
-        Assert.notNull(file, "file is null.");
-        String fileName = new File(file).getName();
-        int dotIndex = fileName.lastIndexOf(StringPools.DOT);
-        return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+        return StringUtils.getFilename(file);
     }
 
     public static String getNetFileName(String fileUrl) {

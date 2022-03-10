@@ -1999,11 +1999,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param str 传入的 String
      * @param defaultStr 默认返回的 String
      * @return 传入的字符串，如果为 null，则为默认值
-     * @see ObjectUtils#toString(Object,String)
-     * @see String#valueOf(Object)
+     * @see Objects#toString(Object, String)
      */
     public static String defaultString(final Object str, final String defaultStr) {
-        return defaultString(String.valueOf(str), defaultStr);
+        return Objects.toString(str, defaultStr);
     }
 
     // ---------------------------------------------------------------------
