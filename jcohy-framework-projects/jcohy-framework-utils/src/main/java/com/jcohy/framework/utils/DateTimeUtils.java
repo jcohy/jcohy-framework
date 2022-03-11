@@ -66,6 +66,7 @@ public final class DateTimeUtils {
      *
      * 获取今日日期.
      * @return string 只返回年月日
+     * @since 2022.0.1
      */
     public static String simpleToday() {
         return format(nowLocalDateTime(), PATTERN_DATE);
@@ -77,16 +78,16 @@ public final class DateTimeUtils {
      * DateTimeUtils.simpleToday("/") == 2021/09/15;
      * @param delimiter delimiter
      * @return string 只返回年月日
+     * @since 2022.0.1
      */
     public static String simpleToday(String delimiter) {
         return format(LocalDateTime.now(), PATTERN_DATE.replace(StringPools.DASH, delimiter));
     }
 
     /**
-     * 返回今日日期.
-     *
-     * DateTimeUtils.today() == 2021-09-15 12:58:39
+     * 返回今日日期. DateTimeUtils.today() == 2021-09-15 12:58:39
      * @return /
+     * @since 2022.0.1
      */
     public static String today() {
         return format(LocalDateTime.now(), PATTERN_DATETIME);
@@ -95,6 +96,7 @@ public final class DateTimeUtils {
     /**
      * 获取今天的时间.
      * @return 时间
+     * @since 2022.0.1
      */
     public static String time() {
         return format(nowLocalDateTime(), PATTERN_DATETIME_MINI);
@@ -103,6 +105,7 @@ public final class DateTimeUtils {
     /**
      * 获取当前日期(jdk 8). Wed Sep 15 12:59:27 CST 2021
      * @return 当前日期
+     * @since 2022.0.1
      */
     public static Date nowDate() {
         return Date.from(DateTimeUtils.toInstant(DateTimeUtils.nowLocalDateTime()));
@@ -111,6 +114,7 @@ public final class DateTimeUtils {
     /**
      * 获取当前日期.
      * @return 当前日期
+     * @since 2022.0.1
      */
     public static LocalDateTime nowLocalDateTime() {
         return LocalDateTime.now();
@@ -126,6 +130,7 @@ public final class DateTimeUtils {
      * 时间转 instant.
      * @param dateTime 时间
      * @return instant
+     * @since 2022.0.1
      */
     public static Instant toInstant(LocalDateTime dateTime) {
         return dateTime.atZone(ZoneId.systemDefault()).toInstant();
@@ -134,6 +139,7 @@ public final class DateTimeUtils {
     /**
      * localDateTime 转换成毫秒数.
      * @return long
+     * @since 2022.0.1
      */
     public static long toMilliseconds() {
         return LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -143,6 +149,7 @@ public final class DateTimeUtils {
      * localDateTime 转换成毫秒数.
      * @param localDateTime localDateTime
      * @return long
+     * @since 2022.0.1
      */
     public static long toMilliseconds(final LocalDateTime localDateTime) {
         return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -153,6 +160,7 @@ public final class DateTimeUtils {
      * @param dateStr 时间字符串
      * @param pattern 表达式
      * @return 时间
+     * @since 2022.0.1
      */
     public static Date parse(String dateStr, String pattern) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern(pattern);

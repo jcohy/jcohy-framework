@@ -30,6 +30,7 @@ public final class CollectionUtils extends org.springframework.util.CollectionUt
      * @param collection 被加入的集合 {@link Collection}
      * @param iterator 要加入的{@link Iterator}
      * @return 原集合
+     * @since 2022.0.1
      */
     public static <T> Collection<T> addAll(Collection<T> collection, Iterator<T> iterator) {
         if (null != collection && null != iterator) {
@@ -46,6 +47,7 @@ public final class CollectionUtils extends org.springframework.util.CollectionUt
      * @param collection 被加入的集合 {@link Collection}
      * @param iterable 要加入的内容{@link Iterable}
      * @return 原集合
+     * @since 2022.0.1
      */
     public static <T> Collection<T> addAll(Collection<T> collection, Iterable<T> iterable) {
         if (iterable == null) {
@@ -59,6 +61,7 @@ public final class CollectionUtils extends org.springframework.util.CollectionUt
      * @param <T> 集合元素类型
      * @param list 被加入的集合 {@link List}
      * @return 原集合
+     * @since 2022.0.1
      */
     public static <T> List<T> nullToEmpty(List<T> list) {
         return (list != null) ? list : Collections.emptyList();
@@ -70,6 +73,7 @@ public final class CollectionUtils extends org.springframework.util.CollectionUt
      * @param element the element to look for
      * @param <T> the generic tag
      * @return {@code true} if found, {@code false} else
+     * @since 2022.0.1
      */
     public static <T> boolean contains(@Nullable T[] array, final T element) {
         if (array == null) {
@@ -82,6 +86,7 @@ public final class CollectionUtils extends org.springframework.util.CollectionUt
      * 集合是否为非空.
      * @param collection 集合
      * @return 是否为非空
+     * @since 2022.0.1
      */
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);

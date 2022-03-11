@@ -1,11 +1,13 @@
 package com.jcohy.framework.utils.unit;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
 
+import com.jcohy.framework.utils.FileUtils;
 import com.jcohy.framework.utils.StringUtils;
 import com.jcohy.framework.utils.constant.StringPools;
 
@@ -54,6 +56,7 @@ import com.jcohy.framework.utils.constant.StringPools;
  * <td>1,125,899,906,842,624</td>
  * </tr>
  * </table>
+ * long 类型最大只能表示拍字节数的大小，如需表示更大的类型，可以参考 {@link FileUtils} 类中的相关方法
  *
  * Copyright © 2022
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
@@ -62,6 +65,7 @@ import com.jcohy.framework.utils.constant.StringPools;
  * @version 2022.0.1 3/10/22:11:59
  * @since 2022.0.1
  * @see DataUnit
+ * @see FileUtils
  */
 public final class DataSize implements Comparable<DataSize>, Serializable {
 
@@ -173,7 +177,7 @@ public final class DataSize implements Comparable<DataSize>, Serializable {
      * @return {@link DataSize}
      */
     public static String formatBytes(long bytes) {
-        return ofBytes(bytes).toBytes() + "B";
+        return ofBytes(bytes).toBytes() + " bytes";
     }
 
     /**
@@ -182,7 +186,7 @@ public final class DataSize implements Comparable<DataSize>, Serializable {
      * @return {@link DataSize}
      */
     public static String formatKiloBytes(long bytes) {
-        return ofBytes(bytes).toKilobytes() + "KB";
+        return ofBytes(bytes).toKilobytes() + " KB";
     }
 
     /**
@@ -191,7 +195,7 @@ public final class DataSize implements Comparable<DataSize>, Serializable {
      * @return {@link DataSize}
      */
     public static String formatMegaBytes(long bytes) {
-        return ofBytes(bytes).toMegabytes() + "MB";
+        return ofBytes(bytes).toMegabytes() + " MB";
     }
 
     /**
@@ -200,7 +204,7 @@ public final class DataSize implements Comparable<DataSize>, Serializable {
      * @return {@link DataSize}
      */
     public static String formatGigaBytes(long bytes) {
-        return ofBytes(bytes).toGigabytes() + "GB";
+        return ofBytes(bytes).toGigabytes() + " GB";
     }
 
     /**
@@ -209,7 +213,7 @@ public final class DataSize implements Comparable<DataSize>, Serializable {
      * @return {@link DataSize}
      */
     public static String formatTeraBytes(long bytes) {
-        return ofBytes(bytes).toTerabytes() + "TB";
+        return ofBytes(bytes).toTerabytes() + " TB";
     }
 
     /**
@@ -218,7 +222,31 @@ public final class DataSize implements Comparable<DataSize>, Serializable {
      * @return {@link DataSize}
      */
     public static String formatPetaBytes(long bytes) {
-        return ofBytes(bytes).toPetabyte() + "PB";
+        return ofBytes(bytes).toPetabyte() + " PB";
+    }
+
+    /**
+     * 获取可读性的文件大小表示. 如果大小超过 1GB，则返回 GB，即向下四舍五入到最接近 GB 的边界。MB，KB 同理。
+     * <p>
+     * 注意使用此方法的精度。
+     * </p>
+     * @param size 大小
+     * @return 返回可读性值
+     */
+    public static String format(final long size) {
+        return FileUtils.byteCountToDisplaySize(size);
+    }
+
+    /**
+     * 获取可读性的文件大小表示. 如果大小超过 1GB，则返回 GB，即向下四舍五入到最接近 GB 的边界。MB，KB 同理。
+     * <p>
+     * 注意使用此方法的精度。
+     * </p>
+     * @param size 大小
+     * @return 返回可读性值
+     */
+    public static String format(final BigInteger size) {
+        return FileUtils.byteCountToDisplaySize(size);
     }
 
     /**

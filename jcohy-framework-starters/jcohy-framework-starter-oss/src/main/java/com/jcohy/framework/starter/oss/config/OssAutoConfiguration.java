@@ -14,7 +14,8 @@ import com.jcohy.framework.starter.oss.props.OssProperties;
 /**
  * 描述: .
  *
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
  * @version 2022.0.1 3/9/22:16:25
@@ -24,19 +25,19 @@ import com.jcohy.framework.starter.oss.props.OssProperties;
 @EnableConfigurationProperties(OssProperties.class)
 @ConditionalOnProperty(value = "jcohy.oss.enable", havingValue = "true")
 @Import({ AliOssAutoConfiguration.class, QiniuAutoConfiguration.class, TencentOssAutoConfiguration.class,
-		MinioOssAutoConfiguration.class })
+        MinioOssAutoConfiguration.class })
 public class OssAutoConfiguration {
 
-	private final OssProperties ossProperties;
+    private final OssProperties ossProperties;
 
-	public OssAutoConfiguration(OssProperties ossProperties) {
-		this.ossProperties = ossProperties;
-	}
+    public OssAutoConfiguration(OssProperties ossProperties) {
+        this.ossProperties = ossProperties;
+    }
 
-	@Bean
-	@ConditionalOnMissingBean(OssRules.class)
-	public OssRules ossRule() {
-		return new DefaultOssRule(this.ossProperties.getTenantMode());
-	}
+    @Bean
+    @ConditionalOnMissingBean(OssRules.class)
+    public OssRules ossRule() {
+        return new DefaultOssRule(this.ossProperties.getTenantMode());
+    }
 
 }

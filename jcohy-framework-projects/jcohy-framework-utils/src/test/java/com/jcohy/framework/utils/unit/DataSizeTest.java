@@ -1,5 +1,8 @@
 package com.jcohy.framework.utils.unit;
 
+import java.math.BigInteger;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,32 +107,94 @@ public class DataSizeTest {
 
     @Test
     void formatWithBytes() {
-        assertThat(DataSize.formatBytes(1024)).isEqualTo("1024B");
+        assertThat(DataSize.formatBytes(1024)).isEqualTo("1024 bytes");
     }
 
     @Test
     void formatWithKiloBytes() {
-        assertThat(DataSize.formatKiloBytes(1024)).isEqualTo("1KB");
+        assertThat(DataSize.formatKiloBytes(1024)).isEqualTo("1 KB");
     }
 
     @Test
     void formatWithMegaBytes() {
-        assertThat(DataSize.formatMegaBytes(1048576)).isEqualTo("1MB");
+        assertThat(DataSize.formatMegaBytes(1048576)).isEqualTo("1 MB");
+
     }
 
     @Test
     void formatWithGigaBytes() {
-        assertThat(DataSize.formatGigaBytes(1073741824)).isEqualTo("1GB");
+        assertThat(DataSize.formatGigaBytes(1073741824)).isEqualTo("1 GB");
     }
 
     @Test
     void formatWithTeraBytes() {
-        assertThat(DataSize.formatTeraBytes(DataSize.ofTerabytes(1).toBytes())).isEqualTo("1TB");
+        assertThat(DataSize.formatTeraBytes(DataSize.ofTerabytes(1).toBytes())).isEqualTo("1 TB");
     }
 
     @Test
     void formatWithPetaBytes() {
-        assertThat(DataSize.formatPetaBytes(DataSize.ofPetabyte(1).toBytes())).isEqualTo("1PB");
+        assertThat(DataSize.formatPetaBytes(DataSize.ofPetabyte(1).toBytes())).isEqualTo("1 PB");
+        assertThat(FileUtils.byteCountToDisplaySize(Long.MAX_VALUE)).isEqualTo("7 EB");
+    }
+
+    @Test
+    void formatWithBigIntegerSize() {
+        final BigInteger b1023 = BigInteger.valueOf(1023);
+        final BigInteger b1025 = BigInteger.valueOf(1025);
+        final BigInteger KB1 = BigInteger.valueOf(1024);
+        final BigInteger MB1 = KB1.multiply(KB1);
+        final BigInteger GB1 = MB1.multiply(KB1);
+        final BigInteger GB2 = GB1.add(GB1);
+        final BigInteger TB1 = GB1.multiply(KB1);
+        final BigInteger PB1 = TB1.multiply(KB1);
+        final BigInteger EB1 = PB1.multiply(KB1);
+
+        assertThat(DataSize.format(BigInteger.ZERO)).isEqualTo("0 bytes");
+        assertThat(DataSize.format(BigInteger.ONE)).isEqualTo("1 bytes");
+        assertThat(DataSize.format(b1023)).isEqualTo("1023 bytes");
+        assertThat(DataSize.format(KB1)).isEqualTo("1 KB");
+        assertThat(DataSize.format(b1025)).isEqualTo("1 KB");
+        assertThat(DataSize.format(MB1.subtract(BigInteger.ONE))).isEqualTo("1023 KB");
+        assertThat(DataSize.format(MB1)).isEqualTo("1 MB");
+        assertThat(DataSize.format(MB1.add(BigInteger.ONE))).isEqualTo("1 MB");
+        assertThat(DataSize.format(GB1.subtract(BigInteger.ONE))).isEqualTo("1023 MB");
+        assertThat(DataSize.format(GB1)).isEqualTo("1 GB");
+        assertThat(DataSize.format(GB1.add(BigInteger.ONE))).isEqualTo("1 GB");
+        assertThat(DataSize.format(GB2)).isEqualTo("2 GB");
+        assertThat(DataSize.format(GB2.subtract(BigInteger.ONE))).isEqualTo("1 GB");
+        assertThat(DataSize.format(TB1)).isEqualTo("1 TB");
+        assertThat(DataSize.format(PB1)).isEqualTo("1 PB");
+        assertThat(DataSize.format(EB1)).isEqualTo("1 EB");
+        assertThat(DataSize.format(Long.MAX_VALUE)).isEqualTo("7 EB");
+
+        assertThat(DataSize.format(BigInteger.valueOf(Character.MAX_VALUE))).isEqualTo("63 KB");
+        assertThat(DataSize.format(BigInteger.valueOf(Short.MAX_VALUE))).isEqualTo("31 KB");
+        assertThat(DataSize.format(BigInteger.valueOf(Integer.MAX_VALUE))).isEqualTo("1 GB");
+    }
+
+    @Test
+    void formatWithLongSize() {
+        assertThat(DataSize.format(0)).isEqualTo("0 bytes");
+        assertThat(DataSize.format(1)).isEqualTo("1 bytes");
+        assertThat(DataSize.format(1023)).isEqualTo("1023 bytes");
+        assertThat(DataSize.format(1024)).isEqualTo("1 KB");
+        assertThat(DataSize.format(1025)).isEqualTo("1 KB");
+        assertThat(DataSize.format(1024 * 1023)).isEqualTo("1023 KB");
+        assertThat(DataSize.format(1024 * 1024)).isEqualTo("1 MB");
+        assertThat(DataSize.format(1024 * 1025)).isEqualTo("1 MB");
+        assertThat(DataSize.format(1024 * 1024 * 1023)).isEqualTo("1023 MB");
+        assertThat(DataSize.format(1024 * 1024 * 1024)).isEqualTo("1 GB");
+        assertThat(DataSize.format(1024 * 1024 * 1025)).isEqualTo("1 GB");
+        assertThat(DataSize.format(1024L * 1024 * 1024 * 2)).isEqualTo("2 GB");
+        assertThat(DataSize.format(1024L * 1024 * 1024 * 2 - 1)).isEqualTo("1 GB");
+        assertThat(DataSize.format(1024L * 1024 * 1024 * 1024)).isEqualTo("1 TB");
+        assertThat(DataSize.format(1024L * 1024 * 1024 * 1024 * 1024)).isEqualTo("1 PB");
+        assertThat(DataSize.format(1024L * 1024 * 1024 * 1024 * 1024 * 1024)).isEqualTo("1 EB");
+        assertThat(DataSize.format(Long.MAX_VALUE)).isEqualTo("7 EB");
+
+        assertThat(DataSize.format(BigInteger.valueOf(Character.MAX_VALUE))).isEqualTo("63 KB");
+        assertThat(DataSize.format(BigInteger.valueOf(Short.MAX_VALUE))).isEqualTo("31 KB");
+        assertThat(DataSize.format(BigInteger.valueOf(Integer.MAX_VALUE))).isEqualTo("1 GB");
     }
 
     @Test

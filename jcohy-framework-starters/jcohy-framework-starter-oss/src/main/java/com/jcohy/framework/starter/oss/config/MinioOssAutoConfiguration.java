@@ -14,7 +14,8 @@ import com.jcohy.framework.starter.oss.props.OssProperties;
 /**
  * 描述: .
  *
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
  * @version 2022.0.1 3/9/22:16:25
@@ -23,24 +24,24 @@ import com.jcohy.framework.starter.oss.props.OssProperties;
 @ConditionalOnProperty(name = "jcohy.oss.name", havingValue = "minio")
 public class MinioOssAutoConfiguration {
 
-	private final OssProperties ossProperties;
+    private final OssProperties ossProperties;
 
-	public MinioOssAutoConfiguration(OssProperties ossProperties) {
-		this.ossProperties = ossProperties;
-	}
+    public MinioOssAutoConfiguration(OssProperties ossProperties) {
+        this.ossProperties = ossProperties;
+    }
 
-	@Bean
-	@ConditionalOnMissingBean(MinioClient.class)
-	public MinioClient minioClient() {
-		return MinioClient.builder().endpoint(this.ossProperties.getEndpoint())
-				.credentials(this.ossProperties.getAccessKey(), this.ossProperties.getSecretKey()).build();
-	}
+    @Bean
+    @ConditionalOnMissingBean(MinioClient.class)
+    public MinioClient minioClient() {
+        return MinioClient.builder().endpoint(this.ossProperties.getEndpoint())
+                .credentials(this.ossProperties.getAccessKey(), this.ossProperties.getSecretKey()).build();
+    }
 
-	@Bean
-	@ConditionalOnBean({ MinioClient.class, OssRules.class })
-	@ConditionalOnMissingBean(MinioOssTemplate.class)
-	public MinioOssTemplate minioTemplate(MinioClient minioClient, OssRules ossRule) {
-		return new MinioOssTemplate(minioClient, ossRule, this.ossProperties);
-	}
+    @Bean
+    @ConditionalOnBean({ MinioClient.class, OssRules.class })
+    @ConditionalOnMissingBean(MinioOssTemplate.class)
+    public MinioOssTemplate minioTemplate(MinioClient minioClient, OssRules ossRule) {
+        return new MinioOssTemplate(minioClient, ossRule, this.ossProperties);
+    }
 
 }

@@ -53,6 +53,7 @@ public final class JsonUtils {
      * @param value javaBean
      * @param <T> t
      * @return t jsonString json字符串
+     * @since 2022.0.1
      */
     public static <T> String toJson(T value) {
         try {
@@ -68,6 +69,7 @@ public final class JsonUtils {
      * 将对象序列化成 json byte 数组.
      * @param object javaBean
      * @return jsonString json字符串
+     * @since 2022.0.1
      */
     public static byte[] toJsonAsBytes(Object object) {
         try {
@@ -84,6 +86,7 @@ public final class JsonUtils {
      * @param valueType class
      * @param <T> t 泛型标记
      * @return bean
+     * @since 2022.0.1
      */
     public static <T> T parse(String content, Class<T> valueType) {
         try {
@@ -101,6 +104,7 @@ public final class JsonUtils {
      * @param typeReference 泛型类型
      * @param <T> t 泛型标记
      * @return bean
+     * @since 2022.0.1
      */
     public static <T> T parse(String content, TypeReference<?> typeReference) {
         try {
@@ -117,6 +121,7 @@ public final class JsonUtils {
      * @param valueType class
      * @param <T> t 泛型标记
      * @return bean
+     * @since 2022.0.1
      */
     public static <T> T parse(byte[] bytes, Class<T> valueType) {
         try {
@@ -133,6 +138,7 @@ public final class JsonUtils {
      * @param typeReference 泛型类型
      * @param <T> t 泛型标记
      * @return bean
+     * @since 2022.0.1
      */
     public static <T> T parse(byte[] bytes, TypeReference<?> typeReference) {
         try {
@@ -149,6 +155,7 @@ public final class JsonUtils {
      * @param valueType class
      * @param <T> t 泛型标记
      * @return bean
+     * @since 2022.0.1
      */
     public static <T> T parse(InputStream in, Class<T> valueType) {
         try {
@@ -165,6 +172,7 @@ public final class JsonUtils {
      * @param typeReference 泛型类型
      * @param <T> t 泛型标记
      * @return bean
+     * @since 2022.0.1
      */
     public static <T> T parse(InputStream in, TypeReference<?> typeReference) {
         try {
@@ -181,6 +189,7 @@ public final class JsonUtils {
      * @param valueTypeRef class
      * @param <T> t 泛型标记
      * @return t
+     * @since 2022.0.1
      */
     public static <T> List<T> parseArray(String content, Class<T> valueTypeRef) {
         try {
@@ -239,6 +248,7 @@ public final class JsonUtils {
      * 将json字符串转成 jsonNode.
      * @param jsonString jsonString
      * @return jsonString json字符串
+     * @since 2022.0.1
      */
     public static JsonNode readTree(String jsonString) {
         try {
@@ -253,6 +263,7 @@ public final class JsonUtils {
      * 将json字符串转成 jsonNode.
      * @param in inputStream
      * @return jsonString json字符串
+     * @since 2022.0.1
      */
     public static JsonNode readTree(InputStream in) {
         try {
@@ -267,6 +278,7 @@ public final class JsonUtils {
      * 将json字符串转成 jsonNode.
      * @param content content
      * @return jsonString json字符串
+     * @since 2022.0.1
      */
     public static JsonNode readTree(byte[] content) {
         try {
@@ -281,6 +293,7 @@ public final class JsonUtils {
      * 将json字符串转成 jsonNode.
      * @param jsonParser jsonParser
      * @return jsonString json字符串
+     * @since 2022.0.1
      */
     public static JsonNode readTree(JsonParser jsonParser) {
         try {
@@ -297,6 +310,7 @@ public final class JsonUtils {
      * @param valueType class
      * @param <T> 泛型标记
      * @return 泛型对象
+     * @since 2022.0.1
      */
     @Nullable
     public static <T> T readValue(@Nullable byte[] content, Class<T> valueType) {
@@ -323,6 +337,7 @@ public final class JsonUtils {
      * @param parametrized class
      * @param <T> t
      * @return t
+     * @since 2022.0.1
      */
     @SuppressWarnings("deprecation")
     public static <T> T readValue(String json, Class<?> parametrized, Class<?> parametersFor,
@@ -383,6 +398,7 @@ public final class JsonUtils {
      * 判断是否可以序列化.
      * @param value 对象
      * @return 是否可以序列化
+     * @since 2022.0.1
      */
     public static boolean canSerialize(@Nullable Object value) {
         if (value == null) {
