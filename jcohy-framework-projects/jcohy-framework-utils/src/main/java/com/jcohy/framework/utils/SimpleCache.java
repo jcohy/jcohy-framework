@@ -15,11 +15,9 @@ import com.jcohy.framework.utils.function.Func0;
 
 /**
  * 描述: 简单缓存，无超时实现，默认使用{@link WeakHashMap}实现缓存自动清理.
- *
  * <p>
- * Copyright © 2022
- * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
- *
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @param <K> 键类型
  * @param <V> 值类型
  * @author jiac

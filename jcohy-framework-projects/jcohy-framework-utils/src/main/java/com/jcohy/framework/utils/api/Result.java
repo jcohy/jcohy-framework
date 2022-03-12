@@ -7,11 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 描述: 响应结果构建.
- *
  * <p>
- * Copyright © 2022
- * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
- *
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @param <T> 实体类型
  * @author jiac
  * @version 2022.0.1 2/18/22:15:04
@@ -130,20 +128,32 @@ public final class Result<T> implements Serializable {
     }
 
     /**
-     * 成功时返回，替换 message 消息.
+     * 成功时返回，替换 message 消息，默认使用 {@link ServiceStatusCode#SUCCESS}.
+     * <p>
+     * 如需定义其他返回状态吗，请使用 {@link #success(ResultStatusCode, Object)} 或
+     * {@link #success(ResultStatusCode, String)} 或 {@link #success(ResultStatusCode)}.
+     * </p>
      * @param message 消息
      * @param <T> 泛型数据
      * @return 结果
+     * @see #success(ResultStatusCode, Object)
+     * @see #success(ResultStatusCode, String)
+     * @see #success(ResultStatusCode)
      */
     public static <T> Result<T> success(String message) {
         return new Result<>(ServiceStatusCode.SUCCESS, message);
     }
 
     /**
-     * 成功时返回.
+     * 成功时返回,默认使用 {@link ServiceStatusCode#SUCCESS}. 如需定义其他返回状态吗，请使用
+     * {@link #success(ResultStatusCode, Object)} 或
+     * {@link #success(ResultStatusCode, String)} 或 {@link #success(ResultStatusCode)}.
      * @param data 数据
      * @param <T> 泛型数据
      * @return 结果
+     * @see #success(ResultStatusCode, Object)
+     * @see #success(ResultStatusCode, String)
+     * @see #success(ResultStatusCode)
      */
     public static <T> Result<T> success(T data) {
         return new Result<>(ServiceStatusCode.SUCCESS, data);

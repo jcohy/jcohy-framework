@@ -16,8 +16,8 @@ import org.gradle.api.plugins.JavaPlugin;
  *     <li>annotationProcessor("jcohy-framework-projects:jcohy-framework-configuration-processor")</li>
  * </ul>
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
- *
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @author jiac
  * @version 2022.0.1 2022/2/7:16:12
  * @since 2022.0.1

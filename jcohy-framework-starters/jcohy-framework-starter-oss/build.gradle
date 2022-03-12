@@ -1,0 +1,15 @@
+	plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "Oss module include ali,qiniu,mino,tencent Oss"
+
+dependencies {
+	api (project(":jcohy-framework-projects:jcohy-framework-utils"))
+	api ("com.aliyun.oss:aliyun-sdk-oss")
+	api ("com.qcloud:cos_api")
+	api ("com.qiniu:qiniu-java-sdk")
+	api ("io.minio:minio")
+	implementation ("org.springframework.boot:spring-boot-starter-web")
+}
