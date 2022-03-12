@@ -23,8 +23,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.lang.Nullable;
-
 import com.jcohy.framework.commons.JcohyFrameworkVersion;
 import com.jcohy.framework.utils.constant.StringPools;
 import com.jcohy.framework.utils.exceptions.Exceptions;
@@ -32,10 +30,9 @@ import com.jcohy.framework.utils.jackson.JcohyJavaTimeModule;
 
 /**
  * 描述: .
- *
- * Copyright © 2022
- * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
- *
+ * <p>
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @author jiac
  * @version 2022.0.1 3/9/22:15:52
  * @since 2022.0.1
@@ -312,8 +309,7 @@ public final class JsonUtils {
      * @return 泛型对象
      * @since 2022.0.1
      */
-    @Nullable
-    public static <T> T readValue(@Nullable byte[] content, Class<T> valueType) {
+    public static <T> T readValue(byte[] content, Class<T> valueType) {
         if (ObjectUtils.isEmpty(content)) {
             return null;
         }
@@ -400,7 +396,7 @@ public final class JsonUtils {
      * @return 是否可以序列化
      * @since 2022.0.1
      */
-    public static boolean canSerialize(@Nullable Object value) {
+    public static boolean canSerialize(Object value) {
         if (value == null) {
             return true;
         }

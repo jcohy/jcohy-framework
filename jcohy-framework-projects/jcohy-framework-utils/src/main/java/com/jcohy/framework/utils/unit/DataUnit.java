@@ -45,8 +45,9 @@ package com.jcohy.framework.utils.unit;
  * <td>1,099,511,627,776</td>
  * </tr>
  * </table>
- * Copyright © 2022
- * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * <p>
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @author jiac
  * @version 2022.0.1 3/10/22:11:57
  * @since 2022.0.1

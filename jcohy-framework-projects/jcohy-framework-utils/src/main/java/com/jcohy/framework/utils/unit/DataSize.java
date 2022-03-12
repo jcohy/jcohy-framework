@@ -57,10 +57,9 @@ import com.jcohy.framework.utils.constant.StringPools;
  * </tr>
  * </table>
  * long 类型最大只能表示拍字节数的大小，如需表示更大的类型，可以参考 {@link FileUtils} 类中的相关方法
- *
- * Copyright © 2022
- * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
- *
+ * <p>
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @author jiac
  * @version 2022.0.1 3/10/22:11:59
  * @since 2022.0.1

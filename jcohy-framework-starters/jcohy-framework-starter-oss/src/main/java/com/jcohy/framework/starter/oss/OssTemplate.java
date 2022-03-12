@@ -8,10 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 描述: .
- *
- * Copyright © 2022
- * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
- *
+ * <p>
+ *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * </p>
  * @author jiac
  * @version 2022.0.1 3/9/22:15:36
  * @since 2022.0.1
