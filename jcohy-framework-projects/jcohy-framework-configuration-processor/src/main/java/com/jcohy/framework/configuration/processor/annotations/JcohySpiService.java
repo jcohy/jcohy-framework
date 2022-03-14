@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
  * 描述: {@link java.util.ServiceLoader} 中描述的服务提供商的提供的注解一样，此注解处理器可以自动生成 被注解的类的配置文件，然后被
  * {@link java.util.ServiceLoader#load(Class)} 加载..
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  * <p>
  * 被注解的类必须符合服务提供商规范

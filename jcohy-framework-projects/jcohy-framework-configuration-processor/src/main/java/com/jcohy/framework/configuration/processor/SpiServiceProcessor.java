@@ -35,8 +35,10 @@ import com.jcohy.framework.configuration.processor.value.ValueExtractor;
 /**
  * 描述: .
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
+ *
  * @author jiac
  * @version 2022.0.1 2022/2/11:11:24
  * @since 2022.0.1

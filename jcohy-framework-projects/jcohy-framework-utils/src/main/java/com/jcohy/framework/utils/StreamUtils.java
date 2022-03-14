@@ -13,8 +13,10 @@ import org.apache.commons.lang3.stream.Streams;
 /**
  * 描述: .
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
+ *
  * @author jiac
  * @version 2022.0.1 3/2/22:15:02
  * @since 2022.0.1
