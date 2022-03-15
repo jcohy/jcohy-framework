@@ -1,0 +1,22 @@
+saga:
+  sms:
+    name: tencent
+    accessKey: AKIDZvHcedXO8kEZqz0shQ3b2NbhfXGqIdqu
+    secretKey: 2whKqDRXUIyUt7INLCydDjAUhWEtRq37
+    signName: 壹肆零伍
+    regionId: ap-beijing
+    endpoint: sms.tencentcloudapi.com
+    sms-sdk-app-id: 1400530571
+spring:
+  profiles: tencent
+
+---
+saga:
+  sms:
+    name: ali
+    accessKey: LTAI5tKxkSkXteZZFgK6pnBY
+    secretKey: PVfTedeebPl0SFJ1sPv3KZs1Iato3i
+    signName: 玄武科技
+    regionId: cn-hangzhou
+spring:
+  profiles: ali

@@ -1,13 +1,13 @@
 plugins {
-	id "com.saga.module"
-	id "com.saga.auto-configuration"
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
 }
 
-description = "Saga Boot Description"
+description = "Sms"
 
 dependencies {
 	api (project(":jcohy-framework-projects:jcohy-framework-utils"))
-	api (project(":jcohy-framework-starters:jcohy-framework-redis"))
+	api (project(":jcohy-framework-starters:jcohy-framework-starter-redis"))
 	api ("org.springframework.boot:spring-boot-starter-json")
 	api ("com.aliyun:aliyun-java-sdk-core")
 	api ("com.tencentcloudapi:tencentcloud-sdk-java")

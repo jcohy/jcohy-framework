@@ -29,7 +29,7 @@ public interface Func0<R> extends Serializable {
     /**
      * 执行函数，异常包装为 RuntimeException.
      * @return 函数执行结果
-     * @since 5.3.6
+     * @since 2022.0.1
      */
     default R callWithRuntimeException() {
         try {

@@ -2,6 +2,8 @@ package com.jcohy.framework.starter.redis.support;
 
 import java.util.concurrent.TimeUnit;
 
+import com.jcohy.framework.utils.exceptions.JcohyException;
+
 /**
  * 描述: .
  * <p>
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @version 2022.0.1 3/14/22:17:22
  * @since 2022.0.1
  */
-public class RateLimiterException extends RuntimeException {
+public class RateLimiterException extends JcohyException {
 
     private final String key;
 

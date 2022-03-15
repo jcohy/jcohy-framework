@@ -25,6 +25,7 @@ import com.jcohy.framework.starter.redis.serializer.StringRedisSerializer;
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
+ * @param <T> value 范型类型
  * @author jiac
  * @version 2022.0.1 3/14/22:17:14
  * @since 2022.0.1
@@ -33,7 +34,7 @@ import com.jcohy.framework.starter.redis.serializer.StringRedisSerializer;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(RedisAutoConfiguration.class)
 @EnableConfigurationProperties(RedisProperties.class)
-public class RedisTemplateConfiguration implements RedisSerializerConfigAble {
+public class RedisTemplateConfiguration<T> implements RedisSerializerConfigAble {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisTemplateConfiguration.class);
 
@@ -51,9 +52,9 @@ public class RedisTemplateConfiguration implements RedisSerializerConfigAble {
     @SuppressWarnings("all")
     @Bean(name = "redisTemplate")
     @ConditionalOnMissingBean(name = "redisTemplate")
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory,
+    public RedisTemplate<String, T> redisTemplate(RedisConnectionFactory redisConnectionFactory,
             RedisSerializer<Object> redisSerializer) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        RedisTemplate<String, T> template = new RedisTemplate<>();
         // 序列化
         // key 的序列化采用 StringRedisSerializer
         template.setKeySerializer(new StringRedisSerializer());
@@ -67,8 +68,8 @@ public class RedisTemplateConfiguration implements RedisSerializerConfigAble {
         return template;
     }
 
-    @Bean
-    public <T> RedisUtils<String, T> sagaRedis(RedisTemplate<String, T> redisTemplate) {
+    @ConditionalOnMissingBean(name = "redisUtils")
+    public RedisUtils<String, T> redisUtils(RedisTemplate<String, T> redisTemplate) {
         return new RedisUtils<>(redisTemplate);
     }
 
