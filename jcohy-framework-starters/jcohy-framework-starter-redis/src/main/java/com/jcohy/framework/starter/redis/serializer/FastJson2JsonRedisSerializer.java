@@ -18,6 +18,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
+ * @param <T> 范型类型
  * @author jiac
  * @version 2022.0.1 3/14/22:17:11
  * @since 2022.0.1
