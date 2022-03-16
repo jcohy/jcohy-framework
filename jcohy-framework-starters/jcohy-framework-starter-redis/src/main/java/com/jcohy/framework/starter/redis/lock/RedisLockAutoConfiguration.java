@@ -40,79 +40,79 @@ public class RedisLockAutoConfiguration {
     private static Config singleConfig(RedisProperties properties) {
         Config config = new Config();
         SingleServerConfig serversConfig = config.useSingleServer();
-        Locks sagaRedisLock = properties.getLock();
-        serversConfig.setAddress(sagaRedisLock.getAddress());
-        String password = sagaRedisLock.getPassword();
+        Locks locks = properties.getLock();
+        serversConfig.setAddress(locks.getAddress());
+        String password = locks.getPassword();
         if (StringUtils.isNotEmpty(password)) {
             serversConfig.setPassword(password);
         }
-        serversConfig.setDatabase(sagaRedisLock.getDatabase());
-        serversConfig.setConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setIdleConnectionTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setConnectTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setTimeout(sagaRedisLock.getTimeout());
+        serversConfig.setDatabase(locks.getDatabase());
+        serversConfig.setConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setIdleConnectionTimeout(locks.getConnectionTimeout());
+        serversConfig.setConnectTimeout(locks.getConnectionTimeout());
+        serversConfig.setTimeout(locks.getTimeout());
         return config;
     }
 
     private static Config masterSlaveConfig(RedisProperties properties) {
         Config config = new Config();
-        Locks sagaRedisLock = properties.getLock();
+        Locks locks = properties.getLock();
         MasterSlaveServersConfig serversConfig = config.useMasterSlaveServers();
-        serversConfig.setMasterAddress(sagaRedisLock.getMasterAddress());
-        serversConfig.addSlaveAddress(sagaRedisLock.getSlaveAddress());
-        String password = sagaRedisLock.getPassword();
+        serversConfig.setMasterAddress(locks.getMasterAddress());
+        serversConfig.addSlaveAddress(locks.getSlaveAddress());
+        String password = locks.getPassword();
         if (StringUtils.isNotEmpty(password)) {
             serversConfig.setPassword(password);
         }
-        serversConfig.setDatabase(sagaRedisLock.getDatabase());
-        serversConfig.setMasterConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setMasterConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setSlaveConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setSlaveConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setIdleConnectionTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setConnectTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setTimeout(sagaRedisLock.getTimeout());
+        serversConfig.setDatabase(locks.getDatabase());
+        serversConfig.setMasterConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setMasterConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setSlaveConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setSlaveConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setIdleConnectionTimeout(locks.getConnectionTimeout());
+        serversConfig.setConnectTimeout(locks.getConnectionTimeout());
+        serversConfig.setTimeout(locks.getTimeout());
         return config;
     }
 
     private static Config sentinelConfig(RedisProperties properties) {
         Config config = new Config();
-        Locks sagaRedisLock = properties.getLock();
+        Locks locks = properties.getLock();
         SentinelServersConfig serversConfig = config.useSentinelServers();
-        serversConfig.setMasterName(sagaRedisLock.getMasterName());
-        serversConfig.addSentinelAddress(sagaRedisLock.getSentinelAddress());
-        String password = sagaRedisLock.getPassword();
+        serversConfig.setMasterName(locks.getMasterName());
+        serversConfig.addSentinelAddress(locks.getSentinelAddress());
+        String password = locks.getPassword();
         if (StringUtils.isNotEmpty(password)) {
             serversConfig.setPassword(password);
         }
-        serversConfig.setDatabase(sagaRedisLock.getDatabase());
-        serversConfig.setMasterConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setMasterConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setSlaveConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setSlaveConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setIdleConnectionTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setConnectTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setTimeout(sagaRedisLock.getTimeout());
+        serversConfig.setDatabase(locks.getDatabase());
+        serversConfig.setMasterConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setMasterConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setSlaveConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setSlaveConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setIdleConnectionTimeout(locks.getConnectionTimeout());
+        serversConfig.setConnectTimeout(locks.getConnectionTimeout());
+        serversConfig.setTimeout(locks.getTimeout());
         return config;
     }
 
     private static Config clusterConfig(RedisProperties properties) {
         Config config = new Config();
-        Locks sagaRedisLock = properties.getLock();
+        Locks locks = properties.getLock();
         ClusterServersConfig serversConfig = config.useClusterServers();
-        serversConfig.addNodeAddress(sagaRedisLock.getNodeAddress());
-        String password = sagaRedisLock.getPassword();
+        serversConfig.addNodeAddress(locks.getNodeAddress());
+        String password = locks.getPassword();
         if (StringUtils.isNotEmpty(password)) {
             serversConfig.setPassword(password);
         }
-        serversConfig.setMasterConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setMasterConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setSlaveConnectionPoolSize(sagaRedisLock.getPoolSize());
-        serversConfig.setSlaveConnectionMinimumIdleSize(sagaRedisLock.getIdleSize());
-        serversConfig.setIdleConnectionTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setConnectTimeout(sagaRedisLock.getConnectionTimeout());
-        serversConfig.setTimeout(sagaRedisLock.getTimeout());
+        serversConfig.setMasterConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setMasterConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setSlaveConnectionPoolSize(locks.getPoolSize());
+        serversConfig.setSlaveConnectionMinimumIdleSize(locks.getIdleSize());
+        serversConfig.setIdleConnectionTimeout(locks.getConnectionTimeout());
+        serversConfig.setConnectTimeout(locks.getConnectionTimeout());
+        serversConfig.setTimeout(locks.getTimeout());
         return config;
     }
 

@@ -35,7 +35,7 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         // 建议使用这种方式，小范围指定白名单.
         // 如果遇到反序列化 autoType is not support 错误，请添加并修改一下报名到 bean 的路径
-        // ParserConfig.getGlobalInstance().addAccept("com.saga.boot");
+        // ParserConfig.getGlobalInstance().addAccept("com.jcohy.framework");
     }
 
     public FastJson2JsonRedisSerializer(Class<T> clazz) {

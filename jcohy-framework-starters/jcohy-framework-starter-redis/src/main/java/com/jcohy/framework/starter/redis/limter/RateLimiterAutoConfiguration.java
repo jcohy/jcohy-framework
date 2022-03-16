@@ -32,7 +32,7 @@ public class RateLimiterAutoConfiguration {
     private RedisScript<List<Long>> redisRateLimiterScript() {
         DefaultRedisScript redisScript = new DefaultRedisScript<>();
         redisScript.setScriptSource(
-                new ResourceScriptSource(new ClassPathResource("META-INF/scripts/saga_rate_limiter.lua")));
+                new ResourceScriptSource(new ClassPathResource("META-INF/scripts/jcohy_rate_limiter.lua")));
         redisScript.setResultType(List.class);
         return redisScript;
     }
