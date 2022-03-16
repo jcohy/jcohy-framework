@@ -9,6 +9,7 @@ dependencies {
 	api (project(":jcohy-framework-projects:jcohy-framework-utils"))
 	api (project(":jcohy-framework-starters:jcohy-framework-starter-redis"))
 	api ("org.springframework.boot:spring-boot-starter-json")
-	api ("com.aliyun:aliyun-java-sdk-core")
+//	api ("com.aliyun:aliyun-java-sdk-core")
+	api("com.aliyun:dysmsapi20170525")
 	api ("com.tencentcloudapi:tencentcloud-sdk-java")
 }

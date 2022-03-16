@@ -1,7 +1,6 @@
 package com.jcohy.framework.starter.sms;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,10 +24,16 @@ public class SmsRequest implements Serializable {
     /**
      * 号码列表,如果有多个号码，请使用逗号隔开 例如： String phone = "123,256".
      */
-    private String[] phones;
+    private String phones;
 
+    /**
+     * 短信消息.
+     */
     private String message;
 
+    /**
+     * 是否需要验证.
+     */
     private boolean validate;
 
     /**
@@ -36,11 +41,11 @@ public class SmsRequest implements Serializable {
      */
     private Map<String, Map<String, String>> store;
 
-    public String[] getPhones() {
+    public String getPhones() {
         return this.phones;
     }
 
-    public void setPhones(String[] phones) {
+    public void setPhones(String phones) {
         this.phones = phones;
     }
 
@@ -77,13 +82,13 @@ public class SmsRequest implements Serializable {
             return false;
         }
         SmsRequest that = (SmsRequest) o;
-        return isValidate() == that.isValidate() && Arrays.equals(getPhones(), that.getPhones())
+        return isValidate() == that.isValidate() && Objects.equals(getPhones(), that.getPhones())
                 && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(getStore(), that.getStore());
     }
 
     @Override
     public int hashCode() {
-        int result = Arrays.hashCode(getPhones());
+        int result = ((getPhones() != null) ? getMessage().hashCode() : 0);
         result = 31 * result + ((getMessage() != null) ? getMessage().hashCode() : 0);
         result = 31 * result + (isValidate() ? 1 : 0);
         result = 31 * result + ((getStore() != null) ? getStore().hashCode() : 0);
@@ -92,7 +97,7 @@ public class SmsRequest implements Serializable {
 
     @Override
     public String toString() {
-        return "SmsRequest{" + "phones=" + Arrays.toString(this.phones) + ", message='" + this.message + '\''
+        return "SmsRequest{" + "phones=" + this.phones + ", message='" + this.message + '\''
                 + ", validate=" + this.validate + ", store=" + this.store + '}';
     }
 

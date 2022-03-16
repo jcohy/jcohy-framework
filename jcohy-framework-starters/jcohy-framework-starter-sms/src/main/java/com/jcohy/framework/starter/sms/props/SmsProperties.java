@@ -17,7 +17,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @version 2022.0.1 3/15/22:10:30
  * @since 2022.0.1
  */
-@ConfigurationProperties(prefix = "saga.sms", ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = "jcohy.sms", ignoreInvalidFields = true)
 public class SmsProperties {
 
     /**
@@ -41,9 +41,9 @@ public class SmsProperties {
     private String signName;
 
     /**
-     * 缓存 key 的前缀，此选项只有在开启了验证才有效。默认为 SAGA:SMS:.
+     * 缓存 key 的前缀，此选项只有在开启了验证才有效。默认为 JCOHY:SMS:.
      */
-    private String cacheKey = "SAGA:SMS:";
+    private String cacheKey = "JCOHY:SMS:";
 
     /**
      * 缓存 key 失效时间，此选项只有在开启了验证才有效.默认为 15 分钟.
