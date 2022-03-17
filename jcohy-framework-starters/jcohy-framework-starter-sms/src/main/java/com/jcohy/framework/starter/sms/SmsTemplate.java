@@ -1,7 +1,12 @@
-package com.jcohy.framework.starter.sms.request;
+package com.jcohy.framework.starter.sms;
 
-import com.jcohy.framework.starter.sms.SmsRequest;
-import com.jcohy.framework.starter.sms.request.*;
+import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
+import com.jcohy.framework.starter.sms.request.SmsRequest;
+import com.jcohy.framework.starter.sms.request.SmsSendRequest;
+import com.jcohy.framework.starter.sms.request.SmsShortUrlRequest;
+import com.jcohy.framework.starter.sms.request.SmsSignRequest;
+import com.jcohy.framework.starter.sms.request.SmsTagRequest;
+import com.jcohy.framework.starter.sms.request.SmsTemplateRequest;
 import com.jcohy.framework.utils.api.Result;
 
 import java.util.Map;
@@ -24,38 +29,38 @@ public interface SmsTemplate {
      * 发送短信.
      * @param request request
      * @return 发送短信结果
-     * @see SmsRequest
+     * @see SmsSendRequest
      * @since 2022.0.1
      */
-    Result<Object> send(SmsRequest request);
+    Result<Object> send(SmsSendRequest request);
 
 
     /**
      * 批量发送短信.
      * @param request request
      * @return 发送短信结果
-     * @see SmsBatchRequest
+     * @see SmsSendRequest
      * @since 2022.0.1
      */
-    Result<Object> sendBatch(SmsBatchRequest request);
+    Result<Object> sendBatch(SmsSendRequest request);
 
     /**
      * 查询短信发送详情.
      * @param request request
      * @return 返回查询结果
-     * @see SmsDetailsRequest
+     * @see SmsQueryDetailsRequest
      * @since 2022.0.1
      */
-    Result<Object> querySmsDetails(SmsDetailsRequest request);
+    Result<Object> querySmsDetails(SmsQueryDetailsRequest request);
 
     /**
      * 查询统计信息.
      * @param request request
      * @return 返回查询结果
-     * @see SmsDetailsRequest
+     * @see SmsQueryDetailsRequest
      * @since 2022.0.1
      */
-    Result<Object> querySmsStatistics(SmsDetailsRequest request);
+    Result<Object> querySmsStatistics(SmsQueryDetailsRequest request);
 
     /**
      * 添加短信签名.
@@ -217,7 +222,7 @@ public interface SmsTemplate {
      * @since 2022.0.1
      */
     static void store(SmsRequest request, BiConsumer<String, Map<String, String>> consumer) {
-        Map<String, Map<String, String>> store = request.getStore();
+        Map<String, Map<String, String>> store = request.store();
         for (Map.Entry<String, Map<String, String>> params : store.entrySet()) {
             String key = params.getKey();
             Map<String, String> value = params.getValue();

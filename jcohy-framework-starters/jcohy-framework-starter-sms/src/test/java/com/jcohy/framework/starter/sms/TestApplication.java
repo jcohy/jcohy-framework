@@ -1,7 +1,12 @@
 package com.jcohy.framework.starter.sms;
 
+import com.jcohy.framework.starter.sms.request.SmsSignRequest;
+import com.jcohy.framework.utils.StringUtils;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 描述: .
@@ -21,5 +26,13 @@ public class TestApplication {
         SpringApplication.run(TestApplication.class, args);
     }
 
+
+    @Test
+    void test() {
+
+        assertThat(SmsAction.ADD_SMS_SIGN.getAction().contains("sign")).isFalse();
+
+        assertThat(StringUtils.containsIgnoreCase(SmsAction.ADD_SMS_SIGN.getAction(),"sign")).isTrue();
+    }
 }
 

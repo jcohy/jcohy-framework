@@ -7,8 +7,8 @@ package com.jcohy.framework.starter.sms.request;
  * </p>
  *
  * @author jiac
- * @version 2022.0.1 3/16/22:18:13
+ * @version 2022.0.1 3/17/22:10:34
  * @since 2022.0.1
  */
-public interface SmsBatchRequest {
+public class SmsSendRequest extends SmsRequest {
 }

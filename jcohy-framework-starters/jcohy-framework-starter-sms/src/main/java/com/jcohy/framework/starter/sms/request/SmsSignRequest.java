@@ -10,5 +10,5 @@ package com.jcohy.framework.starter.sms.request;
  * @version 2022.0.1 3/16/22:18:25
  * @since 2022.0.1
  */
-public interface SmsSignRequest {
+public class SmsSignRequest extends SmsRequest {
 }
