@@ -3,6 +3,7 @@ package com.jcohy.framework.starter.sms;
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.teaopenapi.models.Config;
 
+import com.jcohy.framework.starter.sms.ali.AliSmsTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -32,23 +33,23 @@ public class SmsAutoConfiguration {
         this.redisUtils = redisUtils;
     }
 
-//    /**
-//     * 阿里的配置文件 {@link SmsProperties}.
-//     * @param smsProperties smsProperties
-//     * @return aliSmsTemplate
-//     */
-//    @Bean
-//    @ConditionalOnProperty(name = "jcohy.sms.name", havingValue = "ali")
-//    public AliSmsTemplate aliSmsTemplate(SmsProperties smsProperties) throws Exception {
-//        Config config = new Config()
-//                .setAccessKeyId(smsProperties.getAccessKey())
-//                .setAccessKeySecret(smsProperties.getSecretKey())
-//                .setRegionId(smsProperties.getRegionId());
-//        config.endpoint = "dysmsapi.aliyuncs.com";
-//        Client client = new Client(config);
-////        IAcsClient client = new DefaultAcsClient(profile);
-//        return new AliSmsTemplate(smsProperties, client, this.redisUtils);
-//    }
+    /**
+     * 阿里的配置文件 {@link SmsProperties}.
+     * @param smsProperties smsProperties
+     * @return aliSmsTemplate
+     */
+    @Bean
+    @ConditionalOnProperty(name = "jcohy.sms.name", havingValue = "ali")
+    public AliSmsTemplate aliSmsTemplate(SmsProperties smsProperties) throws Exception {
+        Config config = new Config()
+                .setAccessKeyId(smsProperties.getAccessKey())
+                .setAccessKeySecret(smsProperties.getSecretKey())
+                .setRegionId(smsProperties.getRegionId());
+        config.endpoint = "dysmsapi.aliyuncs.com";
+        Client client = new Client(config);
+//        IAcsClient client = new DefaultAcsClient(profile);
+        return new AliSmsTemplate(smsProperties, client, this.redisUtils);
+    }
 
 //    /**
 //     * 腾讯的配置文件 {@link SmsProperties}.

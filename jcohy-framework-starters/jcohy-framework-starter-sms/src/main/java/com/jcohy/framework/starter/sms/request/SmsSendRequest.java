@@ -1,14 +1,13 @@
 package com.jcohy.framework.starter.sms.request;
 
+import com.jcohy.framework.starter.sms.SmsAction;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -29,73 +28,74 @@ public class SmsSendRequest extends SmsRequest {
 
     private String templateCode;
 
-    private Map<String,String> templateParams;
+    private Map<String,String> templateParams = new LinkedHashMap<>();
 
     private final Map<String, Supplier<String>> valueSupplier = new HashMap<>();
 
 
-    public SmsSendRequest(String action) {
+    public SmsSendRequest(SmsAction action) {
         super(action);
+        Validate.notNull(action,"action 不能为空 !");
     }
 
     public SmsSendRequest phones(String phones) {
-        Assert.notNull(phones, "手机号不能为空");
+        Assert.notNull(phones, "手机号不能为空!");
         this.phones = phones;
         return this;
     }
 
     public SmsSendRequest phones(Collection<String> phones) {
-        Assert.notNull(phones, "手机号不能为空");
+        Assert.notNull(phones, "手机号不能为空!");
         this.phones = StringUtils.collectionToCommaDelimitedString(phones);
         return this;
     }
 
     public SmsSendRequest phones(String... phones) {
-        Assert.notNull(phones, "手机号不能为空");
+        Assert.notNull(phones, "手机号不能为空!");
         this.phones = StringUtils.arrayToCommaDelimitedString(phones);
         return this;
     }
 
     public SmsSendRequest signs(String signs) {
-        Assert.notNull(signs, "短信签名不能为空");
+        Assert.notNull(signs, "短信签名不能为空!");
         this.signs = signs;
         return this;
     }
 
     public SmsSendRequest signs(Collection<String> signs) {
-        Assert.notNull(signs, "手机号不能为空");
+        Assert.notNull(signs, "短信签名不能为空!");
         this.signs = StringUtils.collectionToCommaDelimitedString(signs);
         return this;
     }
 
     public SmsSendRequest signs(String... signs) {
-        Assert.notNull(signs, "手机号不能为空");
+        Assert.notNull(signs, "短信签名不能为空!");
         this.signs = StringUtils.arrayToCommaDelimitedString(signs);
         return this;
     }
 
     public SmsSendRequest templateCode(String templateCode) {
-        Assert.notNull(templateCode, "模版编码不能为空");
+        Assert.notNull(templateCode, "模版编码不能为空!");
         this.templateCode = templateCode;
         return this;
     }
 
     public SmsSendRequest templateParams(String key, String value) {
-        Assert.notNull(key, "模板变量的 key 不能为空");
-        Assert.notNull(value, "模板变量的 value 不能为空");
+        Assert.notNull(key, "模板变量的 key 不能为空!");
+        Assert.notNull(value, "模板变量的 value 不能为空!");
         this.templateParams.put(key,value);
         return this;
     }
 
     public SmsSendRequest templateParams(String key, Supplier<String> supplier) {
-        Assert.notNull(key, "模板变量的 key 不能为空");
-        Assert.notNull(supplier, "模板变量的 supplier 不能为空");
+        Assert.notNull(key, "模板变量的 key 不能为空!");
+        Assert.notNull(supplier, "模板变量的 supplier 不能为空!");
         this.templateParams.put(key, supplier.get());
         return this;
     }
 
     public SmsSendRequest templateParams(Map<String, String> params) {
-        Assert.notNull(params, "params must be set");
+        Assert.notNull(params, "params must be set!");
         this.templateParams.putAll(params);
         return this;
     }
@@ -124,23 +124,41 @@ public class SmsSendRequest extends SmsRequest {
     }
 
     public Map<String, String> getTemplateParams() {
-        return templateParams;
+        return this.templateParams;
+    }
+
+    public Map<String, Supplier<String>> getValueSupplier() {
+        return this.valueSupplier;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         SmsSendRequest that = (SmsSendRequest) o;
-        return Objects.equals(getPhones(), that.getPhones()) && Objects.equals(getSigns(), that.getSigns()) && Objects.equals(getTemplateCode(), that.getTemplateCode()) && Objects.equals(getTemplateParams(), that.getTemplateParams());
+        return Objects.equals(getPhones(), that.getPhones()) &&
+                Objects.equals(getSigns(), that.getSigns()) &&
+                Objects.equals(getTemplateCode(), that.getTemplateCode()) &&
+                Objects.equals(getTemplateParams(), that.getTemplateParams()) &&
+                Objects.equals(getValueSupplier(), that.getValueSupplier());
     }
 
-    /**
-     * TODO 替换方法
-     * @return /
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(getPhones(), getSigns(), getTemplateCode(), getTemplateParams());
+        return Objects.hash(super.hashCode(), getPhones(), getSigns(), getTemplateCode(), getTemplateParams(), getValueSupplier());
+    }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SmsSendRequest{");
+        sb.append("phones='").append(this.phones).append('\'');
+        sb.append(", signs='").append(this.signs).append('\'');
+        sb.append(", templateCode='").append(this.templateCode).append('\'');
+        sb.append(", templateParams=").append(this.templateParams);
+        sb.append(", valueSupplier=").append(this.valueSupplier);
+        sb.append('}');
+        return sb.toString();
     }
 }

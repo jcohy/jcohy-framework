@@ -1,5 +1,8 @@
 package com.jcohy.framework.starter.sms.request;
 
+import com.jcohy.framework.starter.sms.SmsAction;
+import org.apache.commons.lang3.Validate;
+
 /**
  * 描述: .
  * <p>
@@ -11,7 +14,8 @@ package com.jcohy.framework.starter.sms.request;
  * @since 2022.0.1
  */
 public class SmsTemplateRequest extends SmsRequest {
-    public SmsTemplateRequest(String action) {
+    public SmsTemplateRequest(SmsAction action) {
         super(action);
+        Validate.notNull(action,"action 不能为空 !");
     }
 }

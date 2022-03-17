@@ -222,7 +222,7 @@ public interface SmsTemplate {
      * @since 2022.0.1
      */
     static void store(SmsRequest request, BiConsumer<String, Map<String, String>> consumer) {
-        Map<String, Map<String, String>> store = request.store();
+        Map<String, Map<String, String>> store = request.getStore();
         for (Map.Entry<String, Map<String, String>> params : store.entrySet()) {
             String key = params.getKey();
             Map<String, String> value = params.getValue();
