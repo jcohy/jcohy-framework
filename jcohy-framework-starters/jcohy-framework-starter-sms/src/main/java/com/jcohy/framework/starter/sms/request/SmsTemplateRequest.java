@@ -11,4 +11,7 @@ package com.jcohy.framework.starter.sms.request;
  * @since 2022.0.1
  */
 public class SmsTemplateRequest extends SmsRequest {
+    public SmsTemplateRequest(String action) {
+        super(action);
+    }
 }

@@ -21,22 +21,22 @@ public class SmsRequestFactory {
         String action = smsAction.getAction();
         Validate.notNull(action,"action not be null !");
         if(SmsAction.SEND_SMS.getAction().equals(action) || SmsAction.SEND_BATCH_SMS.getAction().equals(action)) {
-            return new SmsSendRequest();
+            return new SmsSendRequest(action);
         }
         if(SmsAction.QUERY_SMS_DETAILS.getAction().equals(action) || SmsAction.QUERY_SMS_STATISTICS.getAction().equals(action)) {
-            return new SmsQueryDetailsRequest();
+            return new SmsQueryDetailsRequest(action);
         }
         if(StringUtils.containsIgnoreCase(action,"sign")) {
-            return new SmsSignRequest();
+            return new SmsSignRequest(action);
         }
         if(StringUtils.containsIgnoreCase(action,"template")) {
-            return new SmsTemplateRequest();
+            return new SmsTemplateRequest(action);
         }
         if(StringUtils.containsIgnoreCase(action,"ShortUrl")) {
-            return new SmsShortUrlRequest();
+            return new SmsShortUrlRequest(action);
         }
         if(StringUtils.containsIgnoreCase(action,"tag")) {
-            return new SmsTagRequest();
+            return new SmsTagRequest(action);
         }
         return null;
     }

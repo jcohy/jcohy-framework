@@ -19,7 +19,7 @@ public class SmsRequest implements Serializable {
 
     private static final long serialVersionUID = JcohyFrameworkVersion.SERIAL_VERSION_UID;
 
-
+    private final String action;
     private boolean validate;
 
     /**
@@ -28,7 +28,11 @@ public class SmsRequest implements Serializable {
     private Map<String, Map<String, String>> store;
 
     public boolean validate() {
-        return validate;
+        return this.validate;
+    }
+
+    public SmsRequest(String action) {
+        this.action = action;
     }
 
     public SmsRequest setValidate(boolean validate) {
@@ -37,11 +41,15 @@ public class SmsRequest implements Serializable {
     }
 
     public Map<String, Map<String, String>> store() {
-        return store;
+        return this.store;
     }
 
     public SmsRequest setStore(Map<String, Map<String, String>> store) {
         this.store = store;
         return this;
+    }
+
+    public String action() {
+        return this.action;
     }
 }
