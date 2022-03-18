@@ -1,6 +1,8 @@
 package com.jcohy.framework.starter.sms.ali;
 
 import com.aliyun.dysmsapi20170525.Client;
+import com.aliyun.dysmsapi20170525.models.SendBatchSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendBatchSmsResponse;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.tea.TeaModel;
@@ -53,7 +55,14 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> sendBatch(SmsSendRequest request) {
-        return null;
+        SendBatchSmsRequest model = (SendBatchSmsRequest) converter.convert(request);
+        SendBatchSmsResponse response = null;
+        try {
+            response = client.sendBatchSms(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data(response);
     }
 
     @Override

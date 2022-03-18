@@ -3,6 +3,7 @@ package com.jcohy.framework.starter.sms;
 import com.jcohy.framework.starter.sms.request.SmsSendRequest;
 import com.jcohy.framework.utils.RandomUtils;
 import com.jcohy.framework.utils.StringUtils;
+import com.jcohy.framework.utils.api.Result;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,11 +35,23 @@ public class AliSmsTest {
 
         assertThat(StringUtils.containsIgnoreCase(SmsAction.ADD_SMS_SIGN.getAction(),"sign")).isTrue();
         SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS)
-                .phones("15529021191")
+                .phones("18392638109")
                 .signs("玄武科技")
                 .templateCode("SMS_167745198")
                 .templateParams("code", RandomUtils::number)
                 .validate(true);
         template.send(request);
+    }
+
+    @Test
+    void testSmsSendBatchRequest() {
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS)
+                .phones("18392638109,15529021191")
+                .signs("玄武科技")
+                .templateCode("SMS_167745198")
+                .templateParams("code", RandomUtils::number)
+                .validate(true);
+        Result<Object> objectResult = template.sendBatch(request);
+        System.out.println(objectResult);
     }
 }
