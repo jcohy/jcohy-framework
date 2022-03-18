@@ -57,7 +57,7 @@ dependencies {
 		// sms
 		api("com.tencentcloudapi:tencentcloud-sdk-java:3.1.281")
 		api("com.aliyun:dysmsapi20170525:2.0.9")
-		api("com.github.qcloudsms:qcloudsms:1.0.6")
+//		api("com.github.qcloudsms:qcloudsms:1.0.6")
 		api("com.yunpian.sdk:yunpian-java-sdk:1.2.7")
 
 		// auth

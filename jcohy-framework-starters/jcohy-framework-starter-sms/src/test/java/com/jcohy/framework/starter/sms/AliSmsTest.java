@@ -30,12 +30,8 @@ public class AliSmsTest {
 
     @Test
     void testSmsSendRequest() {
-
-        assertThat(SmsAction.ADD_SMS_SIGN.getAction().contains("sign")).isFalse();
-
-        assertThat(StringUtils.containsIgnoreCase(SmsAction.ADD_SMS_SIGN.getAction(),"sign")).isTrue();
         SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS)
-                .phones("18392638109")
+                .phones("15529021191")
                 .signs("玄武科技")
                 .templateCode("SMS_167745198")
                 .templateParams("code", RandomUtils::number)
@@ -46,7 +42,7 @@ public class AliSmsTest {
     @Test
     void testSmsSendBatchRequest() {
         SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS)
-                .phones("18392638109,15529021191")
+                .phones("15529021191","13152088219")
                 .signs("玄武科技")
                 .templateCode("SMS_167745198")
                 .templateParams("code", RandomUtils::number)

@@ -11,6 +11,10 @@ import com.jcohy.framework.starter.sms.SmsTemplate;
 import com.jcohy.framework.starter.sms.props.SmsProperties;
 import com.jcohy.framework.starter.sms.request.*;
 import com.jcohy.framework.utils.api.Result;
+import com.jcohy.framework.utils.api.ResultStatusCode;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.Map;
@@ -27,10 +31,20 @@ import java.util.Map;
  */
 public class AliSmsTemplate implements SmsTemplate {
 
+    private static final Logger logger = LoggerFactory.getLogger(AliSmsTemplate.class);
 
+    /**
+     * 类型转换.
+     */
     public static final Converter<SmsRequest, TeaModel> converter = new AliSmsRequestConverter();
+    /**
+     * smsProperties
+     */
     private final SmsProperties smsProperties;
 
+    /**
+     * client 对象，用来发送短信.
+     */
     private final Client client;
 
     private final RedisUtils<String, String> redisUtils;
@@ -50,7 +64,7 @@ public class AliSmsTemplate implements SmsTemplate {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return Result.data(sendSmsResponse);
+        return Result.data(sendSmsResponse.getBody());
     }
 
     @Override
@@ -62,7 +76,7 @@ public class AliSmsTemplate implements SmsTemplate {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return Result.data(response);
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override

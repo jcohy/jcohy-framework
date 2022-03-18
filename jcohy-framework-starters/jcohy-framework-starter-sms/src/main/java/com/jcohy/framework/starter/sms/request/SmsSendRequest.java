@@ -2,10 +2,6 @@ package com.jcohy.framework.starter.sms.request;
 
 import com.jcohy.framework.starter.sms.SmsAction;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -22,80 +18,99 @@ import java.util.function.Supplier;
  */
 public class SmsSendRequest extends SmsRequest {
 
-    private String phones;
+    /**
+     * 手机号列表.
+     */
+    private Collection<String> phones;
 
-    private String signs;
+    /**
+     * 签名列表.
+     */
+    private Collection<String> signs;
 
+    /**
+     * 模版 Id.
+     */
     private String templateCode;
 
+    /**
+     * 模版参数.
+     * @see #templateParams(Map)
+     * @see #templateParams(String, String)
+     */
     private Map<String,String> templateParams = new LinkedHashMap<>();
 
+    /**
+     * 模版参数自定义.
+     * 当模版中有参数是动态的，可以提供一个函数来替代。
+     * @see #templateParams(String, Supplier)
+     */
     private final Map<String, Supplier<String>> valueSupplier = new HashMap<>();
 
 
     public SmsSendRequest(SmsAction action) {
         super(action);
-        Validate.notNull(action,"action 不能为空 !");
     }
 
     public SmsSendRequest phones(String phones) {
-        Assert.notNull(phones, "手机号不能为空!");
-        this.phones = phones;
+        Validate.notEmpty(phones, "手机号不能为空!");
+        this.phones = Collections.singletonList(phones);
         return this;
     }
 
     public SmsSendRequest phones(Collection<String> phones) {
-        Assert.notNull(phones, "手机号不能为空!");
-        this.phones = StringUtils.collectionToCommaDelimitedString(phones);
+        Validate.notEmpty(phones, "手机号不能为空!");
+        this.phones = phones;
         return this;
     }
 
     public SmsSendRequest phones(String... phones) {
-        Assert.notNull(phones, "手机号不能为空!");
-        this.phones = StringUtils.arrayToCommaDelimitedString(phones);
+        Validate.notEmpty(phones, "手机号不能为空!");
+        this.phones = Arrays.asList(phones);
         return this;
     }
 
     public SmsSendRequest signs(String signs) {
-        Assert.notNull(signs, "短信签名不能为空!");
-        this.signs = signs;
+        Validate.notEmpty(signs, "短信签名不能为空!");
+        this.signs = Collections.singletonList(signs);
         return this;
     }
 
     public SmsSendRequest signs(Collection<String> signs) {
-        Assert.notNull(signs, "短信签名不能为空!");
-        this.signs = StringUtils.collectionToCommaDelimitedString(signs);
+        Validate.notEmpty(signs, "短信签名不能为空!");
+        this.signs = signs;
         return this;
     }
 
     public SmsSendRequest signs(String... signs) {
-        Assert.notNull(signs, "短信签名不能为空!");
-        this.signs = StringUtils.arrayToCommaDelimitedString(signs);
+        Validate.notEmpty(signs, "短信签名不能为空!");
+        this.signs = Arrays.asList(signs);
         return this;
     }
 
     public SmsSendRequest templateCode(String templateCode) {
-        Assert.notNull(templateCode, "模版编码不能为空!");
+        Validate.notEmpty(templateCode, "模版编码不能为空!");
         this.templateCode = templateCode;
         return this;
     }
 
     public SmsSendRequest templateParams(String key, String value) {
-        Assert.notNull(key, "模板变量的 key 不能为空!");
-        Assert.notNull(value, "模板变量的 value 不能为空!");
+        Validate.notEmpty(key, "模板变量的 key 不能为空!");
+        Validate.notEmpty(value, "模板变量的 value 不能为空!");
         this.templateParams.put(key,value);
         return this;
     }
 
     public SmsSendRequest templateParams(String key, Supplier<String> supplier) {
-        Assert.notNull(key, "模板变量的 key 不能为空!");
-        Assert.notNull(supplier, "模板变量的 supplier 不能为空!");
+        Validate.notNull(key, "模板变量的 key 不能为空!");
+        Validate.notNull(supplier, "模板变量的 supplier 不能为空!");
         this.templateParams.put(key, supplier.get());
+        this.valueSupplier.put(key,supplier);
         return this;
     }
 
     public SmsSendRequest templateParams(Map<String, String> params) {
-        Assert.notNull(params, "params must be set!");
+        Validate.notNull(params, "params must be set!");
         this.templateParams.putAll(params);
         return this;
     }
@@ -111,11 +126,11 @@ public class SmsSendRequest extends SmsRequest {
         return this;
     }
 
-    public String getPhones() {
+    public Collection<String> getPhones() {
         return this.phones;
     }
 
-    public String getSigns() {
+    public Collection<String> getSigns() {
         return this.signs;
     }
 
