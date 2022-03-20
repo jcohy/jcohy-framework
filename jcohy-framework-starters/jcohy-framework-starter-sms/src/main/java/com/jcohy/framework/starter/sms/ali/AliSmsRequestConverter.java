@@ -38,40 +38,40 @@ public class AliSmsRequestConverter implements Converter<SmsRequest, TeaModel> {
             model = buildSmsSendRequestTeaModel((SmsSendRequest)request);
         }
         if(request instanceof SmsQueryDetailsRequest) {
-            model = buildSmsQueryDetailsRequestTeaModel((SmsSendRequest)request);
+            model = buildSmsQueryDetailsRequestTeaModel((SmsQueryDetailsRequest)request);
         }
         if( request instanceof SmsSignRequest) {
-            model = buildSmsSignRequestTeaModel((SmsSendRequest)request);
+            model = buildSmsSignRequestTeaModel((SmsSignRequest)request);
         }
         if( request instanceof SmsTemplateRequest) {
-            model = buildSmsTemplateRequestTeaModel((SmsSendRequest)request);
+            model = buildSmsTemplateRequestTeaModel((SmsTemplateRequest)request);
         }
         if( request instanceof SmsShortUrlRequest) {
-            model = buildSmsShortUrlRequestTeaModel((SmsSendRequest)request);
+            model = buildSmsShortUrlRequestTeaModel((SmsShortUrlRequest)request);
         }
         if( request instanceof SmsTagRequest) {
-            model = buildSmsTagRequestTeaModel((SmsSendRequest)request);
+            model = buildSmsTagRequestTeaModel((SmsTagRequest)request);
         }
         return model;
     }
 
-    private TeaModel buildSmsSignRequestTeaModel(SmsSendRequest request) {
+    private TeaModel buildSmsSignRequestTeaModel(SmsSignRequest request) {
         return null;
     }
 
-    private TeaModel buildSmsTemplateRequestTeaModel(SmsSendRequest request) {
+    private TeaModel buildSmsTemplateRequestTeaModel(SmsTemplateRequest request) {
         return null;
     }
 
-    private TeaModel buildSmsShortUrlRequestTeaModel(SmsSendRequest request) {
+    private TeaModel buildSmsShortUrlRequestTeaModel(SmsShortUrlRequest request) {
         return null;
     }
 
-    private TeaModel buildSmsTagRequestTeaModel(SmsSendRequest request) {
+    private TeaModel buildSmsTagRequestTeaModel(SmsTagRequest request) {
         return null;
     }
 
-    private TeaModel buildSmsQueryDetailsRequestTeaModel(SmsSendRequest request) {
+    private TeaModel buildSmsQueryDetailsRequestTeaModel(SmsQueryDetailsRequest request) {
         return null;
     }
 
