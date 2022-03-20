@@ -5,8 +5,7 @@ import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.tea.TeaModel;
 import com.jcohy.framework.starter.sms.SmsAction;
 import com.jcohy.framework.starter.sms.SmsException;
-import com.jcohy.framework.starter.sms.request.SmsRequest;
-import com.jcohy.framework.starter.sms.request.SmsSendRequest;
+import com.jcohy.framework.starter.sms.request.*;
 import com.jcohy.framework.utils.JsonUtils;
 import com.jcohy.framework.utils.Sets;
 import com.jcohy.framework.utils.StringUtils;
@@ -38,7 +37,42 @@ public class AliSmsRequestConverter implements Converter<SmsRequest, TeaModel> {
         if(request instanceof SmsSendRequest) {
             model = buildSmsSendRequestTeaModel((SmsSendRequest)request);
         }
+        if(request instanceof SmsQueryDetailsRequest) {
+            model = buildSmsQueryDetailsRequestTeaModel((SmsSendRequest)request);
+        }
+        if( request instanceof SmsSignRequest) {
+            model = buildSmsSignRequestTeaModel((SmsSendRequest)request);
+        }
+        if( request instanceof SmsTemplateRequest) {
+            model = buildSmsTemplateRequestTeaModel((SmsSendRequest)request);
+        }
+        if( request instanceof SmsShortUrlRequest) {
+            model = buildSmsShortUrlRequestTeaModel((SmsSendRequest)request);
+        }
+        if( request instanceof SmsTagRequest) {
+            model = buildSmsTagRequestTeaModel((SmsSendRequest)request);
+        }
         return model;
+    }
+
+    private TeaModel buildSmsSignRequestTeaModel(SmsSendRequest request) {
+        return null;
+    }
+
+    private TeaModel buildSmsTemplateRequestTeaModel(SmsSendRequest request) {
+        return null;
+    }
+
+    private TeaModel buildSmsShortUrlRequestTeaModel(SmsSendRequest request) {
+        return null;
+    }
+
+    private TeaModel buildSmsTagRequestTeaModel(SmsSendRequest request) {
+        return null;
+    }
+
+    private TeaModel buildSmsQueryDetailsRequestTeaModel(SmsSendRequest request) {
+        return null;
     }
 
     private TeaModel buildSmsSendRequestTeaModel(SmsSendRequest request) {
