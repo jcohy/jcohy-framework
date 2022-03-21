@@ -14,8 +14,54 @@ import org.apache.commons.lang3.Validate;
  * @since 2022.0.1
  */
 public class SmsShortUrlRequest extends SmsRequest {
+
+    private String sourceUrl;
+
+    private String shortUrlName;
+
+    private String effectiveDays;
+
+    private String shortUrl;
+
+
     public SmsShortUrlRequest(SmsAction action) {
         super(action);
         Validate.notNull(action,"action 不能为空 !");
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public SmsShortUrlRequest sourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+        return this;
+    }
+
+    public String getShortUrlName() {
+        return shortUrlName;
+    }
+
+    public SmsShortUrlRequest shortUrlName(String shortUrlName) {
+        this.shortUrlName = shortUrlName;
+        return this;
+    }
+
+    public String getEffectiveDays() {
+        return effectiveDays;
+    }
+
+    public SmsShortUrlRequest effectiveDays(String effectiveDays) {
+        this.effectiveDays = effectiveDays;
+        return this;
+    }
+
+    public String getShortUrl() {
+        return shortUrl;
+    }
+
+    public SmsShortUrlRequest shortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+        return this;
     }
 }

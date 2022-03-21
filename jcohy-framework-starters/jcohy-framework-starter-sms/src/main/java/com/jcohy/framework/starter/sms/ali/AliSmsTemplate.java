@@ -1,10 +1,7 @@
 package com.jcohy.framework.starter.sms.ali;
 
 import com.aliyun.dysmsapi20170525.Client;
-import com.aliyun.dysmsapi20170525.models.SendBatchSmsRequest;
-import com.aliyun.dysmsapi20170525.models.SendBatchSmsResponse;
-import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
-import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.aliyun.dysmsapi20170525.models.*;
 import com.aliyun.tea.TeaModel;
 import com.jcohy.framework.starter.redis.RedisUtils;
 import com.jcohy.framework.starter.sms.SmsTemplate;
@@ -70,7 +67,7 @@ public class AliSmsTemplate implements SmsTemplate {
     @Override
     public Result<Object> sendBatch(SmsSendRequest request) {
         SendBatchSmsRequest model = (SendBatchSmsRequest) converter.convert(request);
-        SendBatchSmsResponse response = null;
+        SendBatchSmsResponse response;
         try {
             response = client.sendBatchSms(model);
         } catch (Exception e) {
@@ -81,92 +78,218 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsDetails(SmsQueryDetailsRequest request) {
-        return null;
+        QuerySendDetailsRequest model = (QuerySendDetailsRequest) converter.convert(request);
+        QuerySendDetailsResponse response;
+        try {
+            response = client.querySendDetails(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> querySmsStatistics(SmsQueryDetailsRequest request) {
-        return null;
+        QuerySendStatisticsRequest model = (QuerySendStatisticsRequest) converter.convert(request);
+        QuerySendStatisticsResponse response;
+        try {
+            response = client.querySendStatistics(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> addSmsSign(SmsSignRequest request) {
-        return null;
+        AddSmsSignRequest model = (AddSmsSignRequest) converter.convert(request);
+        AddSmsSignResponse response;
+        try {
+            response = client.addSmsSign(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> deleteSmsSign(SmsSignRequest request) {
-        return null;
+        DeleteSmsSignRequest model = (DeleteSmsSignRequest) converter.convert(request);
+        DeleteSmsSignResponse response;
+        try {
+            response = client.deleteSmsSign(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> modifySmsSign(SmsSignRequest request) {
-        return null;
+        ModifySmsSignRequest model = (ModifySmsSignRequest) converter.convert(request);
+        ModifySmsSignResponse response;
+        try {
+            response = client.modifySmsSign(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> querySmsSign(SmsSignRequest request) {
-        return null;
+        QuerySmsSignListRequest model = (QuerySmsSignListRequest) converter.convert(request);
+        QuerySmsSignListResponse response;
+        try {
+            response = client.querySmsSignList(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> querySmsSignStatus(SmsSignRequest request) {
-        return null;
+        QuerySmsSignRequest model = (QuerySmsSignRequest) converter.convert(request);
+        QuerySmsSignResponse response;
+        try {
+            response = client.querySmsSign(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> addSmsTemplate(SmsTemplateRequest request) {
-        return null;
+        AddSmsTemplateRequest model = (AddSmsTemplateRequest) converter.convert(request);
+        AddSmsTemplateResponse response;
+        try {
+            response = client.addSmsTemplate(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> deleteSmsTemplate(SmsTemplateRequest request) {
-        return null;
+        DeleteSmsTemplateRequest model = (DeleteSmsTemplateRequest) converter.convert(request);
+        DeleteSmsTemplateResponse response;
+        try {
+            response = client.deleteSmsTemplate(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> modifySmsTemplate(SmsTemplateRequest request) {
-        return null;
+        ModifySmsTemplateRequest model = (ModifySmsTemplateRequest) converter.convert(request);
+        ModifySmsTemplateResponse response;
+        try {
+            response = client.modifySmsTemplate(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> querySmsTemplate(SmsTemplateRequest request) {
-        return null;
+        QuerySmsTemplateListRequest model = (QuerySmsTemplateListRequest) converter.convert(request);
+        QuerySmsTemplateListResponse response;
+        try {
+            response = client.querySmsTemplateList(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> querySmsTemplateStatus(SmsTemplateRequest request) {
-        return null;
+        QuerySmsTemplateRequest model = (QuerySmsTemplateRequest) converter.convert(request);
+        QuerySmsTemplateResponse response;
+        try {
+            response = client.querySmsTemplate(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> addShortUrl(SmsShortUrlRequest request) {
-        return null;
+        AddShortUrlRequest model = (AddShortUrlRequest) converter.convert(request);
+        AddShortUrlResponse response;
+        try {
+            response = client.addShortUrl(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> deleteShortUrl(SmsShortUrlRequest request) {
-        return null;
+        DeleteShortUrlRequest model = (DeleteShortUrlRequest) converter.convert(request);
+        DeleteShortUrlResponse response;
+        try {
+            response = client.deleteShortUrl(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> queryShortUrl(SmsShortUrlRequest request) {
-        return null;
+        QueryShortUrlRequest model = (QueryShortUrlRequest) converter.convert(request);
+        QueryShortUrlResponse response;
+        try {
+            response = client.queryShortUrl(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( 10000,response.getBody().message,response);
     }
 
     @Override
     public Result<Object> addTag(SmsTagRequest request) {
-        return null;
+        TagResourcesRequest model = (TagResourcesRequest) converter.convert(request);
+        TagResourcesResponse response;
+        try {
+            response = client.tagResources(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( response);
     }
 
     @Override
     public Result<Object> deleteTag(SmsTagRequest request) {
-        return null;
+        UntagResourcesRequest model = (UntagResourcesRequest) converter.convert(request);
+        UntagResourcesResponse response;
+        try {
+            response = client.untagResources(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( response);
     }
 
     @Override
     public Result<Object> queryTag(SmsTagRequest request) {
-        return null;
+        ListTagResourcesRequest model = (ListTagResourcesRequest) converter.convert(request);
+        ListTagResourcesResponse response;
+        try {
+            response = client.listTagResources(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return Result.data( response);
     }
 
     @Override
