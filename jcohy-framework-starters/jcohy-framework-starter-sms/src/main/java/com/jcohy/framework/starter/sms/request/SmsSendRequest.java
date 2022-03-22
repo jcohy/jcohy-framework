@@ -38,7 +38,7 @@ public class SmsSendRequest extends SmsRequest {
      * @see #templateParams(Map)
      * @see #templateParams(String, String)
      */
-    private Map<String,String> templateParams = new LinkedHashMap<>();
+    private final Map<String,String> templateParams = new LinkedHashMap<>();
 
     /**
      * 模版参数自定义.

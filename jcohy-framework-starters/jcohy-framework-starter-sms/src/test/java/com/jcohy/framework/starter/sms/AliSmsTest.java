@@ -1,8 +1,8 @@
 package com.jcohy.framework.starter.sms;
 
+import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
 import com.jcohy.framework.starter.sms.request.SmsSendRequest;
 import com.jcohy.framework.utils.RandomUtils;
-import com.jcohy.framework.utils.StringUtils;
 import com.jcohy.framework.utils.api.Result;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AliSmsTest {
     @Test
     void testSmsSendRequest() {
         SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS)
-                .phones("15529021191")
+                .phones("+8615529021191")
                 .signs("玄武科技")
                 .templateCode("SMS_167745198")
                 .templateParams("code", RandomUtils::number)
@@ -48,6 +48,18 @@ public class AliSmsTest {
                 .templateParams("code", RandomUtils::number)
                 .validate(true);
         Result<Object> objectResult = template.sendBatch(request);
+        System.out.println(objectResult);
+    }
+
+    @Test
+    void testSmsQueryDetailsRequest() {
+        SmsQueryDetailsRequest request = new SmsQueryDetailsRequest(SmsAction.QUERY_SMS_DETAILS)
+                .bizId("251124547846263954^0")
+                .phone("13152088219")
+                .sendDate("20220321")
+                .pageIndex(1L)
+                .pageSize(1L);
+        Result<Object> objectResult = template.querySmsDetails(request);
         System.out.println(objectResult);
     }
 }
