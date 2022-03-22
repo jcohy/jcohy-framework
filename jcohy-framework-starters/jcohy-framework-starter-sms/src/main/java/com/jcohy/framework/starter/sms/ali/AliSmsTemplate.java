@@ -1,26 +1,72 @@
 package com.jcohy.framework.starter.sms.ali;
 
+import java.util.Map;
+
 import com.aliyun.dysmsapi20170525.Client;
-import com.aliyun.dysmsapi20170525.models.*;
+import com.aliyun.dysmsapi20170525.models.AddShortUrlRequest;
+import com.aliyun.dysmsapi20170525.models.AddShortUrlResponse;
+import com.aliyun.dysmsapi20170525.models.AddSmsSignRequest;
+import com.aliyun.dysmsapi20170525.models.AddSmsSignResponse;
+import com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest;
+import com.aliyun.dysmsapi20170525.models.AddSmsTemplateResponse;
+import com.aliyun.dysmsapi20170525.models.DeleteShortUrlRequest;
+import com.aliyun.dysmsapi20170525.models.DeleteShortUrlResponse;
+import com.aliyun.dysmsapi20170525.models.DeleteSmsSignRequest;
+import com.aliyun.dysmsapi20170525.models.DeleteSmsSignResponse;
+import com.aliyun.dysmsapi20170525.models.DeleteSmsTemplateRequest;
+import com.aliyun.dysmsapi20170525.models.DeleteSmsTemplateResponse;
+import com.aliyun.dysmsapi20170525.models.ListTagResourcesRequest;
+import com.aliyun.dysmsapi20170525.models.ListTagResourcesResponse;
+import com.aliyun.dysmsapi20170525.models.ModifySmsSignRequest;
+import com.aliyun.dysmsapi20170525.models.ModifySmsSignResponse;
+import com.aliyun.dysmsapi20170525.models.ModifySmsTemplateRequest;
+import com.aliyun.dysmsapi20170525.models.ModifySmsTemplateResponse;
+import com.aliyun.dysmsapi20170525.models.QuerySendDetailsRequest;
+import com.aliyun.dysmsapi20170525.models.QuerySendDetailsResponse;
+import com.aliyun.dysmsapi20170525.models.QuerySendStatisticsRequest;
+import com.aliyun.dysmsapi20170525.models.QuerySendStatisticsResponse;
+import com.aliyun.dysmsapi20170525.models.QueryShortUrlRequest;
+import com.aliyun.dysmsapi20170525.models.QueryShortUrlResponse;
+import com.aliyun.dysmsapi20170525.models.QuerySmsSignListRequest;
+import com.aliyun.dysmsapi20170525.models.QuerySmsSignListResponse;
+import com.aliyun.dysmsapi20170525.models.QuerySmsSignRequest;
+import com.aliyun.dysmsapi20170525.models.QuerySmsSignResponse;
+import com.aliyun.dysmsapi20170525.models.QuerySmsTemplateListRequest;
+import com.aliyun.dysmsapi20170525.models.QuerySmsTemplateListResponse;
+import com.aliyun.dysmsapi20170525.models.QuerySmsTemplateRequest;
+import com.aliyun.dysmsapi20170525.models.QuerySmsTemplateResponse;
+import com.aliyun.dysmsapi20170525.models.SendBatchSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendBatchSmsResponse;
+import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.aliyun.dysmsapi20170525.models.TagResourcesRequest;
+import com.aliyun.dysmsapi20170525.models.TagResourcesResponse;
+import com.aliyun.dysmsapi20170525.models.UntagResourcesRequest;
+import com.aliyun.dysmsapi20170525.models.UntagResourcesResponse;
 import com.aliyun.tea.TeaModel;
+import org.apache.commons.lang3.Validate;
+
+import org.springframework.core.convert.converter.Converter;
+
 import com.jcohy.framework.starter.redis.RedisUtils;
 import com.jcohy.framework.starter.sms.SmsTemplate;
 import com.jcohy.framework.starter.sms.props.SmsProperties;
-import com.jcohy.framework.starter.sms.request.*;
+import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
+import com.jcohy.framework.starter.sms.request.SmsRequest;
+import com.jcohy.framework.starter.sms.request.SmsSendRequest;
+import com.jcohy.framework.starter.sms.request.SmsShortUrlRequest;
+import com.jcohy.framework.starter.sms.request.SmsSignRequest;
+import com.jcohy.framework.starter.sms.request.SmsTagRequest;
+import com.jcohy.framework.starter.sms.request.SmsTemplateRequest;
 import com.jcohy.framework.utils.api.Result;
-import com.jcohy.framework.utils.api.ResultStatusCode;
-import org.apache.commons.lang3.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
-
-import java.util.Map;
+import com.jcohy.framework.utils.api.ServiceStatusCode;
 
 /**
  * 描述: .
  *
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  *
  * @author jiac
  * @version 2022.0.1 2022/3/17:18:44
@@ -28,14 +74,13 @@ import java.util.Map;
  */
 public class AliSmsTemplate implements SmsTemplate {
 
-    private static final Logger logger = LoggerFactory.getLogger(AliSmsTemplate.class);
-
     /**
      * 类型转换.
      */
     public static final Converter<SmsRequest, TeaModel> converter = new AliSmsRequestConverter();
+
     /**
-     * smsProperties
+     * smsProperties.
      */
     private final SmsProperties smsProperties;
 
@@ -54,12 +99,17 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> send(SmsSendRequest request) {
+        Validate.validIndex(request.getPhones(), 2, "手机号只能有一个");
+        Validate.notEmpty(request.getSigns());
+        Validate.notEmpty(request.getTemplateCode());
+        Validate.notEmpty(request.getTemplateParams());
         SendSmsRequest model = (SendSmsRequest) converter.convert(request);
         SendSmsResponse sendSmsResponse = null;
         try {
-            sendSmsResponse = client.sendSms(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            sendSmsResponse = this.client.sendSms(model);
+        }
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
         return Result.data(sendSmsResponse.getBody());
     }
@@ -69,11 +119,12 @@ public class AliSmsTemplate implements SmsTemplate {
         SendBatchSmsRequest model = (SendBatchSmsRequest) converter.convert(request);
         SendBatchSmsResponse response;
         try {
-            response = client.sendBatchSms(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.sendBatchSms(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -81,11 +132,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QuerySendDetailsRequest model = (QuerySendDetailsRequest) converter.convert(request);
         QuerySendDetailsResponse response;
         try {
-            response = client.querySendDetails(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.querySendDetails(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -93,11 +145,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QuerySendStatisticsRequest model = (QuerySendStatisticsRequest) converter.convert(request);
         QuerySendStatisticsResponse response;
         try {
-            response = client.querySendStatistics(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.querySendStatistics(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -105,11 +158,12 @@ public class AliSmsTemplate implements SmsTemplate {
         AddSmsSignRequest model = (AddSmsSignRequest) converter.convert(request);
         AddSmsSignResponse response;
         try {
-            response = client.addSmsSign(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.addSmsSign(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -117,11 +171,12 @@ public class AliSmsTemplate implements SmsTemplate {
         DeleteSmsSignRequest model = (DeleteSmsSignRequest) converter.convert(request);
         DeleteSmsSignResponse response;
         try {
-            response = client.deleteSmsSign(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.deleteSmsSign(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -129,11 +184,12 @@ public class AliSmsTemplate implements SmsTemplate {
         ModifySmsSignRequest model = (ModifySmsSignRequest) converter.convert(request);
         ModifySmsSignResponse response;
         try {
-            response = client.modifySmsSign(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.modifySmsSign(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -141,11 +197,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QuerySmsSignListRequest model = (QuerySmsSignListRequest) converter.convert(request);
         QuerySmsSignListResponse response;
         try {
-            response = client.querySmsSignList(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.querySmsSignList(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -153,11 +210,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QuerySmsSignRequest model = (QuerySmsSignRequest) converter.convert(request);
         QuerySmsSignResponse response;
         try {
-            response = client.querySmsSign(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.querySmsSign(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -165,11 +223,12 @@ public class AliSmsTemplate implements SmsTemplate {
         AddSmsTemplateRequest model = (AddSmsTemplateRequest) converter.convert(request);
         AddSmsTemplateResponse response;
         try {
-            response = client.addSmsTemplate(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.addSmsTemplate(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -177,11 +236,12 @@ public class AliSmsTemplate implements SmsTemplate {
         DeleteSmsTemplateRequest model = (DeleteSmsTemplateRequest) converter.convert(request);
         DeleteSmsTemplateResponse response;
         try {
-            response = client.deleteSmsTemplate(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.deleteSmsTemplate(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -189,11 +249,12 @@ public class AliSmsTemplate implements SmsTemplate {
         ModifySmsTemplateRequest model = (ModifySmsTemplateRequest) converter.convert(request);
         ModifySmsTemplateResponse response;
         try {
-            response = client.modifySmsTemplate(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.modifySmsTemplate(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -201,11 +262,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QuerySmsTemplateListRequest model = (QuerySmsTemplateListRequest) converter.convert(request);
         QuerySmsTemplateListResponse response;
         try {
-            response = client.querySmsTemplateList(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.querySmsTemplateList(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -213,11 +275,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QuerySmsTemplateRequest model = (QuerySmsTemplateRequest) converter.convert(request);
         QuerySmsTemplateResponse response;
         try {
-            response = client.querySmsTemplate(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.querySmsTemplate(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -225,11 +288,12 @@ public class AliSmsTemplate implements SmsTemplate {
         AddShortUrlRequest model = (AddShortUrlRequest) converter.convert(request);
         AddShortUrlResponse response;
         try {
-            response = client.addShortUrl(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.addShortUrl(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -237,11 +301,12 @@ public class AliSmsTemplate implements SmsTemplate {
         DeleteShortUrlRequest model = (DeleteShortUrlRequest) converter.convert(request);
         DeleteShortUrlResponse response;
         try {
-            response = client.deleteShortUrl(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.deleteShortUrl(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -249,11 +314,12 @@ public class AliSmsTemplate implements SmsTemplate {
         QueryShortUrlRequest model = (QueryShortUrlRequest) converter.convert(request);
         QueryShortUrlResponse response;
         try {
-            response = client.queryShortUrl(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.queryShortUrl(model);
         }
-        return Result.data( 10000,response.getBody().message,response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
     @Override
@@ -261,11 +327,12 @@ public class AliSmsTemplate implements SmsTemplate {
         TagResourcesRequest model = (TagResourcesRequest) converter.convert(request);
         TagResourcesResponse response;
         try {
-            response = client.tagResources(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.tagResources(model);
         }
-        return Result.data( response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(response);
     }
 
     @Override
@@ -273,11 +340,12 @@ public class AliSmsTemplate implements SmsTemplate {
         UntagResourcesRequest model = (UntagResourcesRequest) converter.convert(request);
         UntagResourcesResponse response;
         try {
-            response = client.untagResources(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.untagResources(model);
         }
-        return Result.data( response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(response);
     }
 
     @Override
@@ -285,15 +353,17 @@ public class AliSmsTemplate implements SmsTemplate {
         ListTagResourcesRequest model = (ListTagResourcesRequest) converter.convert(request);
         ListTagResourcesResponse response;
         try {
-            response = client.listTagResources(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = this.client.listTagResources(model);
         }
-        return Result.data( response);
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return Result.data(response);
     }
 
     @Override
     public boolean validate(String phone, Map<String, String> params) {
         return false;
     }
+
 }

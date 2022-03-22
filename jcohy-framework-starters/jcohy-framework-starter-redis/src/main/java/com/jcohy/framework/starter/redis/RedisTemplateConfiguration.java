@@ -68,7 +68,7 @@ public class RedisTemplateConfiguration<T> implements RedisSerializerConfigAble 
         return template;
     }
 
-//    @ConditionalOnMissingBean(name = "redisUtils")
+    // @ConditionalOnMissingBean(name = "redisUtils")
     @Bean
     public RedisUtils<String, T> redisUtils(RedisTemplate<String, T> redisTemplate) {
         return new RedisUtils<>(redisTemplate);

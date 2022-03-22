@@ -1,14 +1,16 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.starter.sms.SmsAction;
+import java.util.List;
+
 import org.apache.commons.lang3.Validate;
 
-import java.util.List;
+import com.jcohy.framework.starter.sms.SmsAction;
 
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -35,7 +37,7 @@ public class SmsTagRequest extends SmsRequest {
 
     public SmsTagRequest(SmsAction action) {
         super(action);
-        Validate.notNull(action,"action 不能为空 !");
+        Validate.notNull(action, "action 不能为空 !");
     }
 
     public String getResourceType() {
@@ -102,7 +104,7 @@ public class SmsTagRequest extends SmsRequest {
     }
 
     public boolean isAll() {
-        return all;
+        return this.all;
     }
 
     public SmsTagRequest all(boolean all) {
@@ -135,4 +137,5 @@ public class SmsTagRequest extends SmsRequest {
         }
 
     }
+
 }

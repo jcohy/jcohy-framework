@@ -1,12 +1,14 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.starter.sms.SmsAction;
 import org.apache.commons.lang3.Validate;
+
+import com.jcohy.framework.starter.sms.SmsAction;
 
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -31,11 +33,11 @@ public class SmsTemplateRequest extends SmsRequest {
 
     public SmsTemplateRequest(SmsAction action) {
         super(action);
-        Validate.notNull(action,"action 不能为空 !");
+        Validate.notNull(action, "action 不能为空 !");
     }
 
     public Integer getTemplateType() {
-        return templateType;
+        return this.templateType;
     }
 
     public SmsTemplateRequest templateType(Integer templateType) {
@@ -44,7 +46,7 @@ public class SmsTemplateRequest extends SmsRequest {
     }
 
     public String getTemplateName() {
-        return templateName;
+        return this.templateName;
     }
 
     public SmsTemplateRequest templateName(String templateName) {
@@ -53,7 +55,7 @@ public class SmsTemplateRequest extends SmsRequest {
     }
 
     public String getTemplateContent() {
-        return templateContent;
+        return this.templateContent;
     }
 
     public SmsTemplateRequest templateContent(String templateContent) {
@@ -62,7 +64,7 @@ public class SmsTemplateRequest extends SmsRequest {
     }
 
     public String getRemark() {
-        return remark;
+        return this.remark;
     }
 
     public SmsTemplateRequest remark(String remark) {
@@ -71,7 +73,7 @@ public class SmsTemplateRequest extends SmsRequest {
     }
 
     public String getTemplateCode() {
-        return templateCode;
+        return this.templateCode;
     }
 
     public SmsTemplateRequest templateCode(String templateCode) {
@@ -80,7 +82,7 @@ public class SmsTemplateRequest extends SmsRequest {
     }
 
     public Integer getPageIndex() {
-        return pageIndex;
+        return this.pageIndex;
     }
 
     public SmsTemplateRequest pageIndex(Integer pageIndex) {
@@ -89,11 +91,12 @@ public class SmsTemplateRequest extends SmsRequest {
     }
 
     public Integer getPageSize() {
-        return pageSize;
+        return this.pageSize;
     }
 
     public SmsTemplateRequest pageSize(Integer pageSize) {
         this.pageSize = pageSize;
         return this;
     }
+
 }

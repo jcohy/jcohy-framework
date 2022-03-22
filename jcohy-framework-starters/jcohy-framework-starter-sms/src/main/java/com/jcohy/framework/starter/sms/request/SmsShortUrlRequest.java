@@ -1,12 +1,14 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.starter.sms.SmsAction;
 import org.apache.commons.lang3.Validate;
+
+import com.jcohy.framework.starter.sms.SmsAction;
 
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -23,14 +25,13 @@ public class SmsShortUrlRequest extends SmsRequest {
 
     private String shortUrl;
 
-
     public SmsShortUrlRequest(SmsAction action) {
         super(action);
-        Validate.notNull(action,"action 不能为空 !");
+        Validate.notNull(action, "action 不能为空 !");
     }
 
     public String getSourceUrl() {
-        return sourceUrl;
+        return this.sourceUrl;
     }
 
     public SmsShortUrlRequest sourceUrl(String sourceUrl) {
@@ -39,7 +40,7 @@ public class SmsShortUrlRequest extends SmsRequest {
     }
 
     public String getShortUrlName() {
-        return shortUrlName;
+        return this.shortUrlName;
     }
 
     public SmsShortUrlRequest shortUrlName(String shortUrlName) {
@@ -48,7 +49,7 @@ public class SmsShortUrlRequest extends SmsRequest {
     }
 
     public String getEffectiveDays() {
-        return effectiveDays;
+        return this.effectiveDays;
     }
 
     public SmsShortUrlRequest effectiveDays(String effectiveDays) {
@@ -57,11 +58,12 @@ public class SmsShortUrlRequest extends SmsRequest {
     }
 
     public String getShortUrl() {
-        return shortUrl;
+        return this.shortUrl;
     }
 
     public SmsShortUrlRequest shortUrl(String shortUrl) {
         this.shortUrl = shortUrl;
         return this;
     }
+
 }

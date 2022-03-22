@@ -1,5 +1,8 @@
 package com.jcohy.framework.starter.sms;
 
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
 import com.jcohy.framework.starter.sms.request.SmsRequest;
 import com.jcohy.framework.starter.sms.request.SmsSendRequest;
@@ -8,9 +11,6 @@ import com.jcohy.framework.starter.sms.request.SmsSignRequest;
 import com.jcohy.framework.starter.sms.request.SmsTagRequest;
 import com.jcohy.framework.starter.sms.request.SmsTemplateRequest;
 import com.jcohy.framework.utils.api.Result;
-
-import java.util.Map;
-import java.util.function.BiConsumer;
 
 /**
  * 描述: .
@@ -29,18 +29,17 @@ public interface SmsTemplate {
      * 发送短信.
      * @param request request
      * @return 发送短信结果
-     * @see SmsSendRequest
      * @since 2022.0.1
+     * @see SmsSendRequest
      */
     Result<Object> send(SmsSendRequest request);
-
 
     /**
      * 批量发送短信.
      * @param request request
      * @return 发送短信结果
-     * @see SmsSendRequest
      * @since 2022.0.1
+     * @see SmsSendRequest
      */
     Result<Object> sendBatch(SmsSendRequest request);
 
@@ -48,8 +47,8 @@ public interface SmsTemplate {
      * 查询短信发送详情.
      * @param request request
      * @return 返回查询结果
-     * @see SmsQueryDetailsRequest
      * @since 2022.0.1
+     * @see SmsQueryDetailsRequest
      */
     Result<Object> querySmsDetails(SmsQueryDetailsRequest request);
 
@@ -57,8 +56,8 @@ public interface SmsTemplate {
      * 查询统计信息.
      * @param request request
      * @return 返回查询结果
-     * @see SmsQueryDetailsRequest
      * @since 2022.0.1
+     * @see SmsQueryDetailsRequest
      */
     Result<Object> querySmsStatistics(SmsQueryDetailsRequest request);
 
@@ -66,8 +65,8 @@ public interface SmsTemplate {
      * 添加短信签名.
      * @param request request
      * @return 返回结果
-     * @see SmsSignRequest
      * @since 2022.0.1
+     * @see SmsSignRequest
      */
     Result<Object> addSmsSign(SmsSignRequest request);
 
@@ -75,8 +74,8 @@ public interface SmsTemplate {
      * 删除短信签名.
      * @param request request
      * @return 返回结果
-     * @see SmsSignRequest
      * @since 2022.0.1
+     * @see SmsSignRequest
      */
     Result<Object> deleteSmsSign(SmsSignRequest request);
 
@@ -84,8 +83,8 @@ public interface SmsTemplate {
      * 修改未审核通过的短信签名.
      * @param request request
      * @return 返回结果
-     * @see SmsSignRequest
      * @since 2022.0.1
+     * @see SmsSignRequest
      */
     Result<Object> modifySmsSign(SmsSignRequest request);
 
@@ -93,8 +92,8 @@ public interface SmsTemplate {
      * 查询短信签名列表.
      * @param request request
      * @return 返回结果
-     * @see SmsSignRequest
      * @since 2022.0.1
+     * @see SmsSignRequest
      */
     Result<Object> querySmsSign(SmsSignRequest request);
 
@@ -102,8 +101,8 @@ public interface SmsTemplate {
      * 查询短信签名申请状态.
      * @param request request
      * @return 返回结果
-     * @see SmsSignRequest
      * @since 2022.0.1
+     * @see SmsSignRequest
      */
     Result<Object> querySmsSignStatus(SmsSignRequest request);
 
@@ -111,8 +110,8 @@ public interface SmsTemplate {
      * 添加短信模版.
      * @param request request
      * @return 返回结果
-     * @see SmsTemplateRequest
      * @since 2022.0.1
+     * @see SmsTemplateRequest
      */
     Result<Object> addSmsTemplate(SmsTemplateRequest request);
 
@@ -120,8 +119,8 @@ public interface SmsTemplate {
      * 删除短信模版.
      * @param request request
      * @return 返回结果
-     * @see SmsTemplateRequest
      * @since 2022.0.1
+     * @see SmsTemplateRequest
      */
     Result<Object> deleteSmsTemplate(SmsTemplateRequest request);
 
@@ -129,8 +128,8 @@ public interface SmsTemplate {
      * 修改未通过审核的短信模版.
      * @param request request
      * @return 返回结果
-     * @see SmsTemplateRequest
      * @since 2022.0.1
+     * @see SmsTemplateRequest
      */
     Result<Object> modifySmsTemplate(SmsTemplateRequest request);
 
@@ -138,8 +137,8 @@ public interface SmsTemplate {
      * 查询短信模版列表.
      * @param request request
      * @return 返回结果
-     * @see SmsTemplateRequest
      * @since 2022.0.1
+     * @see SmsTemplateRequest
      */
     Result<Object> querySmsTemplate(SmsTemplateRequest request);
 
@@ -147,8 +146,8 @@ public interface SmsTemplate {
      * 查询短信模版申请状态.
      * @param request request
      * @return 返回结果
-     * @see SmsTemplateRequest
      * @since 2022.0.1
+     * @see SmsTemplateRequest
      */
     Result<Object> querySmsTemplateStatus(SmsTemplateRequest request);
 
@@ -156,8 +155,8 @@ public interface SmsTemplate {
      * 创建短链.
      * @param request request
      * @return 返回结果
-     * @see SmsShortUrlRequest
      * @since 2022.0.1
+     * @see SmsShortUrlRequest
      */
     Result<Object> addShortUrl(SmsShortUrlRequest request);
 
@@ -165,8 +164,8 @@ public interface SmsTemplate {
      * 删除短链.
      * @param request request
      * @return 返回结果
-     * @see SmsShortUrlRequest
      * @since 2022.0.1
+     * @see SmsShortUrlRequest
      */
     Result<Object> deleteShortUrl(SmsShortUrlRequest request);
 
@@ -174,8 +173,8 @@ public interface SmsTemplate {
      * 查询短链状态.
      * @param request request
      * @return 返回结果
-     * @see SmsShortUrlRequest
      * @since 2022.0.1
+     * @see SmsShortUrlRequest
      */
     Result<Object> queryShortUrl(SmsShortUrlRequest request);
 
@@ -183,8 +182,8 @@ public interface SmsTemplate {
      * 添加模版标签.
      * @param request 短信发送内容
      * @return 返回结果
-     * @see SmsTagRequest
      * @since 2022.0.1
+     * @see SmsTagRequest
      */
     Result<Object> addTag(SmsTagRequest request);
 
@@ -192,8 +191,8 @@ public interface SmsTemplate {
      * 删除模版标签.
      * @param request request
      * @return 返回结果
-     * @see SmsTagRequest
      * @since 2022.0.1
+     * @see SmsTagRequest
      */
     Result<Object> deleteTag(SmsTagRequest request);
 
@@ -201,8 +200,8 @@ public interface SmsTemplate {
      * 查询模版标签.
      * @param request request
      * @return 返回结果
-     * @see SmsTagRequest
      * @since 2022.0.1
+     * @see SmsTagRequest
      */
     Result<Object> queryTag(SmsTagRequest request);
 

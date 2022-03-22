@@ -1,16 +1,17 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.commons.JcohyFrameworkVersion;
-import com.jcohy.framework.starter.sms.SmsAction;
-
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
+import com.jcohy.framework.commons.JcohyFrameworkVersion;
+import com.jcohy.framework.starter.sms.SmsAction;
+
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -56,15 +57,17 @@ public class SmsRequest implements Serializable {
      */
     private Map<String, Map<String, String>> store;
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SmsRequest that = (SmsRequest) o;
-        return isValidate() == that.isValidate() &&
-                Objects.equals(getAction(), that.getAction()) &&
-                Objects.equals(getStore(), that.getStore());
+        return isValidate() == that.isValidate() && Objects.equals(getAction(), that.getAction())
+                && Objects.equals(getStore(), that.getStore());
     }
 
     @Override
@@ -81,4 +84,5 @@ public class SmsRequest implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
 }

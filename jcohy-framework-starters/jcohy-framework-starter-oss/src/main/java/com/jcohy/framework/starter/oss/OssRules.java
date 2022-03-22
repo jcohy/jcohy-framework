@@ -36,7 +36,6 @@ public interface OssRules {
      */
     String fileRule(String fileName);
 
-
     /**
      * 默认文件名生成规则.
      * @param fileName 文件名

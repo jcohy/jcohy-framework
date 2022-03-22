@@ -1,15 +1,22 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.starter.sms.SmsAction;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Supplier;
+
 import org.apache.commons.lang3.Validate;
 
-import java.util.*;
-import java.util.function.Supplier;
+import com.jcohy.framework.starter.sms.SmsAction;
 
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -34,19 +41,22 @@ public class SmsSendRequest extends SmsRequest {
     private String templateCode;
 
     /**
+     * 是否为国际电话.默认为 {@code false}.
+     */
+    private boolean global = false;
+
+    /**
      * 模版参数.
      * @see #templateParams(Map)
      * @see #templateParams(String, String)
      */
-    private final Map<String,String> templateParams = new LinkedHashMap<>();
+    private final Map<String, String> templateParams = new LinkedHashMap<>();
 
     /**
-     * 模版参数自定义.
-     * 当模版中有参数是动态的，可以提供一个函数来替代。
+     * 模版参数自定义. 当模版中有参数是动态的，可以提供一个函数来替代。
      * @see #templateParams(String, Supplier)
      */
-    private final Map<String, Supplier<String>> valueSupplier = new HashMap<>();
-
+    private final Map<String, Supplier<String>> valueSupplier = new LinkedHashMap<>();
 
     public SmsSendRequest(SmsAction action) {
         super(action);
@@ -97,7 +107,7 @@ public class SmsSendRequest extends SmsRequest {
     public SmsSendRequest templateParams(String key, String value) {
         Validate.notEmpty(key, "模板变量的 key 不能为空!");
         Validate.notEmpty(value, "模板变量的 value 不能为空!");
-        this.templateParams.put(key,value);
+        this.templateParams.put(key, value);
         return this;
     }
 
@@ -105,7 +115,7 @@ public class SmsSendRequest extends SmsRequest {
         Validate.notNull(key, "模板变量的 key 不能为空!");
         Validate.notNull(supplier, "模板变量的 supplier 不能为空!");
         this.templateParams.put(key, supplier.get());
-        this.valueSupplier.put(key,supplier);
+        this.valueSupplier.put(key, supplier);
         return this;
     }
 
@@ -115,6 +125,14 @@ public class SmsSendRequest extends SmsRequest {
         return this;
     }
 
+    public boolean isGlobal() {
+        return this.global;
+    }
+
+    public SmsSendRequest global(boolean global) {
+        this.global = global;
+        return this;
+    }
 
     /**
      * 设置是否需要验证.
@@ -148,22 +166,27 @@ public class SmsSendRequest extends SmsRequest {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         SmsSendRequest that = (SmsSendRequest) o;
-        return Objects.equals(getPhones(), that.getPhones()) &&
-                Objects.equals(getSigns(), that.getSigns()) &&
-                Objects.equals(getTemplateCode(), that.getTemplateCode()) &&
-                Objects.equals(getTemplateParams(), that.getTemplateParams()) &&
-                Objects.equals(getValueSupplier(), that.getValueSupplier());
+        return Objects.equals(getPhones(), that.getPhones()) && Objects.equals(getSigns(), that.getSigns())
+                && Objects.equals(getTemplateCode(), that.getTemplateCode())
+                && Objects.equals(getTemplateParams(), that.getTemplateParams())
+                && Objects.equals(getValueSupplier(), that.getValueSupplier());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPhones(), getSigns(), getTemplateCode(), getTemplateParams(), getValueSupplier());
+        return Objects.hash(super.hashCode(), getPhones(), getSigns(), getTemplateCode(), getTemplateParams(),
+                getValueSupplier());
     }
-
 
     @Override
     public String toString() {
@@ -176,4 +199,5 @@ public class SmsSendRequest extends SmsRequest {
         sb.append('}');
         return sb.toString();
     }
+
 }

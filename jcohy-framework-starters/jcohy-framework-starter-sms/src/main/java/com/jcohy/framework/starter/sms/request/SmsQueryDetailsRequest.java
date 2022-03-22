@@ -1,16 +1,18 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.starter.sms.SmsAction;
-import com.jcohy.framework.utils.DateTimeUtils;
-import org.apache.commons.lang3.Validate;
-
 import java.time.LocalDate;
 import java.util.Objects;
+
+import org.apache.commons.lang3.Validate;
+
+import com.jcohy.framework.starter.sms.SmsAction;
+import com.jcohy.framework.utils.DateTimeUtils;
 
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -37,9 +39,7 @@ public class SmsQueryDetailsRequest extends SmsRequest {
     private String startDate;
 
     /**
-     * 短信发送范围.
-     * 1.国内短信发送记录
-     * 2.国际/港澳台短信发送记录
+     * 短信发送范围. 1.国内短信发送记录 2.国际/港澳台短信发送记录
      */
     private Integer isGlobe;
 
@@ -67,10 +67,9 @@ public class SmsQueryDetailsRequest extends SmsRequest {
      */
     private Long pageSize;
 
-
     public SmsQueryDetailsRequest(SmsAction action) {
         super(action);
-        Validate.notNull(action,"action 不能为空 !");
+        Validate.notNull(action, "action 不能为空 !");
     }
 
     public String getPhone() {
@@ -101,7 +100,7 @@ public class SmsQueryDetailsRequest extends SmsRequest {
     }
 
     public SmsQueryDetailsRequest startDate(LocalDate startDate) {
-        this.startDate = DateTimeUtils.format(startDate,"yyyyMMdd");
+        this.startDate = DateTimeUtils.format(startDate, "yyyyMMdd");
         return this;
     }
 
@@ -124,9 +123,10 @@ public class SmsQueryDetailsRequest extends SmsRequest {
     }
 
     public SmsQueryDetailsRequest sendDate(LocalDate sendDate) {
-        this.sendDate = DateTimeUtils.format(sendDate,"yyyyMMdd");
+        this.sendDate = DateTimeUtils.format(sendDate, "yyyyMMdd");
         return this;
     }
+
     public String getEndDate() {
         return this.endDate;
     }
@@ -137,7 +137,7 @@ public class SmsQueryDetailsRequest extends SmsRequest {
     }
 
     public SmsQueryDetailsRequest endDate(LocalDate endDate) {
-        this.endDate = DateTimeUtils.format(endDate,"yyyyMMdd");;
+        this.endDate = DateTimeUtils.format(endDate, "yyyyMMdd");
         return this;
     }
 
@@ -161,29 +161,36 @@ public class SmsQueryDetailsRequest extends SmsRequest {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         SmsQueryDetailsRequest that = (SmsQueryDetailsRequest) o;
-        return Objects.equals(getPhone(), that.getPhone()) && Objects.equals(getBizId(), that.getBizId()) && Objects.equals(getStartDate(), that.getStartDate()) && Objects.equals(getIsGlobe(), that.getIsGlobe()) && Objects.equals(getSendDate(), that.getSendDate()) && Objects.equals(getEndDate(), that.getEndDate()) && Objects.equals(getPageIndex(), that.getPageIndex()) && Objects.equals(getPageSize(), that.getPageSize());
+        return Objects.equals(getPhone(), that.getPhone()) && Objects.equals(getBizId(), that.getBizId())
+                && Objects.equals(getStartDate(), that.getStartDate())
+                && Objects.equals(getIsGlobe(), that.getIsGlobe()) && Objects.equals(getSendDate(), that.getSendDate())
+                && Objects.equals(getEndDate(), that.getEndDate())
+                && Objects.equals(getPageIndex(), that.getPageIndex())
+                && Objects.equals(getPageSize(), that.getPageSize());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPhone(), getBizId(), getStartDate(), getIsGlobe(), getSendDate(), getEndDate(), getPageIndex(), getPageSize());
+        return Objects.hash(super.hashCode(), getPhone(), getBizId(), getStartDate(), getIsGlobe(), getSendDate(),
+                getEndDate(), getPageIndex(), getPageSize());
     }
 
     @Override
     public String toString() {
-        return "SmsQueryDetailsRequest{" +
-                "phone='" + phone + '\'' +
-                ", bizId='" + bizId + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", isGlobe=" + isGlobe +
-                ", sendDate='" + sendDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", pageIndex=" + pageIndex +
-                ", pageSize=" + pageSize +
-                '}';
+        return "SmsQueryDetailsRequest{" + "phone='" + this.phone + '\'' + ", bizId='" + this.bizId + '\''
+                + ", startDate='" + this.startDate + '\'' + ", isGlobe=" + this.isGlobe + ", sendDate='" + this.sendDate
+                + '\'' + ", endDate='" + this.endDate + '\'' + ", pageIndex=" + this.pageIndex + ", pageSize="
+                + this.pageSize + '}';
     }
+
 }

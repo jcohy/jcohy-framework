@@ -1,14 +1,16 @@
 package com.jcohy.framework.starter.sms.request;
 
-import com.jcohy.framework.starter.sms.SmsAction;
+import java.util.List;
+
 import org.apache.commons.lang3.Validate;
 
-import java.util.List;
+import com.jcohy.framework.starter.sms.SmsAction;
 
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -31,7 +33,7 @@ public class SmsSignRequest extends SmsRequest {
 
     public SmsSignRequest(SmsAction action) {
         super(action);
-        Validate.notNull(action,"action 不能为空 !");
+        Validate.notNull(action, "action 不能为空 !");
     }
 
     public String getSignName() {
@@ -71,7 +73,7 @@ public class SmsSignRequest extends SmsRequest {
     }
 
     public Integer getPageIndex() {
-        return pageIndex;
+        return this.pageIndex;
     }
 
     public SmsSignRequest pageIndex(Integer pageIndex) {
@@ -80,7 +82,7 @@ public class SmsSignRequest extends SmsRequest {
     }
 
     public Integer getPageSize() {
-        return pageSize;
+        return this.pageSize;
     }
 
     public SmsSignRequest pageSize(Integer pageSize) {
@@ -111,5 +113,7 @@ public class SmsSignRequest extends SmsRequest {
             this.fileSuffix = fileSuffix;
             return this;
         }
+
     }
+
 }
