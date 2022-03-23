@@ -11,6 +11,7 @@ import com.jcohy.framework.starter.sms.request.SmsSignRequest;
 import com.jcohy.framework.starter.sms.request.SmsTagRequest;
 import com.jcohy.framework.starter.sms.request.SmsTemplateRequest;
 import com.jcohy.framework.utils.api.Result;
+import com.jcohy.framework.utils.constant.StringPools;
 
 /**
  * 描述: .
@@ -24,6 +25,16 @@ import com.jcohy.framework.utils.api.Result;
  * @since 2022.0.1
  */
 public interface SmsTemplate {
+
+	/**
+	 * 缓存键值.
+	 * @param phone 手机号
+	 * @param id 键值
+	 * @return 缓存键值返回
+	 */
+	default String  cacheKey(String prefix ,String phone) {
+		return prefix + SmsConstant.CAPTCHA_KEY + phone;
+	}
 
     /**
      * 发送短信.

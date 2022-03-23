@@ -1,5 +1,7 @@
 package com.jcohy.framework.starter.sms.ali;
 
+import java.time.Duration;
+import java.util.Collections;
 import java.util.Map;
 
 import com.aliyun.dysmsapi20170525.Client;
@@ -77,7 +79,7 @@ public class AliSmsTemplate implements SmsTemplate {
     /**
      * 类型转换.
      */
-    public static final Converter<SmsRequest, TeaModel> converter = new AliSmsRequestConverter();
+    public static final Converter<SmsRequest, TeaModel> CONVERTER = new AliSmsRequestConverter();
 
     /**
      * smsProperties.
@@ -88,6 +90,12 @@ public class AliSmsTemplate implements SmsTemplate {
      * client 对象，用来发送短信.
      */
     private final Client client;
+
+	private static final int SUCCESS = 200;
+
+	private static final String FAIL = "fail";
+
+	private static final String OK = "ok";
 
     private final RedisUtils<String, String> redisUtils;
 
@@ -100,13 +108,16 @@ public class AliSmsTemplate implements SmsTemplate {
     @Override
     public Result<Object> send(SmsSendRequest request) {
         Validate.validIndex(request.getPhones(), 2, "手机号只能有一个");
-        Validate.notEmpty(request.getSigns());
-        Validate.notEmpty(request.getTemplateCode());
-        Validate.notEmpty(request.getTemplateParams());
-        SendSmsRequest model = (SendSmsRequest) converter.convert(request);
+		// 默认以 request 中的签名为准，如果不存在，则使用 properties 中的签名
+		String sign = this.smsProperties.getSignName();
+		request.signs(request.getSigns() != null ? request.getSigns() :  Collections.singletonList(sign));
+        SendSmsRequest model = (SendSmsRequest) CONVERTER.convert(request);
         SendSmsResponse sendSmsResponse = null;
         try {
             sendSmsResponse = this.client.sendSms(model);
+			if(request.isValidate() && sendSmsResponse.getBody().getMessage().equals(OK)) {
+				store(model.getPhoneNumbers(),model.getTemplateCode());
+			}
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -114,9 +125,14 @@ public class AliSmsTemplate implements SmsTemplate {
         return Result.data(sendSmsResponse.getBody());
     }
 
-    @Override
+	private void store(String phoneNumbers, String templateCode) {
+		String cacheKey = cacheKey(this.smsProperties.getCacheKey(),phoneNumbers);
+		this.redisUtils.setExpire(cacheKey, templateCode, this.smsProperties.getTimeout().toMillis());
+	}
+
+	@Override
     public Result<Object> sendBatch(SmsSendRequest request) {
-        SendBatchSmsRequest model = (SendBatchSmsRequest) converter.convert(request);
+        SendBatchSmsRequest model = (SendBatchSmsRequest) CONVERTER.convert(request);
         SendBatchSmsResponse response;
         try {
             response = this.client.sendBatchSms(model);
@@ -129,7 +145,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsDetails(SmsQueryDetailsRequest request) {
-        QuerySendDetailsRequest model = (QuerySendDetailsRequest) converter.convert(request);
+        QuerySendDetailsRequest model = (QuerySendDetailsRequest) CONVERTER.convert(request);
         QuerySendDetailsResponse response;
         try {
             response = this.client.querySendDetails(model);
@@ -142,7 +158,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsStatistics(SmsQueryDetailsRequest request) {
-        QuerySendStatisticsRequest model = (QuerySendStatisticsRequest) converter.convert(request);
+        QuerySendStatisticsRequest model = (QuerySendStatisticsRequest) CONVERTER.convert(request);
         QuerySendStatisticsResponse response;
         try {
             response = this.client.querySendStatistics(model);
@@ -155,7 +171,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> addSmsSign(SmsSignRequest request) {
-        AddSmsSignRequest model = (AddSmsSignRequest) converter.convert(request);
+        AddSmsSignRequest model = (AddSmsSignRequest) CONVERTER.convert(request);
         AddSmsSignResponse response;
         try {
             response = this.client.addSmsSign(model);
@@ -168,7 +184,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> deleteSmsSign(SmsSignRequest request) {
-        DeleteSmsSignRequest model = (DeleteSmsSignRequest) converter.convert(request);
+        DeleteSmsSignRequest model = (DeleteSmsSignRequest) CONVERTER.convert(request);
         DeleteSmsSignResponse response;
         try {
             response = this.client.deleteSmsSign(model);
@@ -181,7 +197,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> modifySmsSign(SmsSignRequest request) {
-        ModifySmsSignRequest model = (ModifySmsSignRequest) converter.convert(request);
+        ModifySmsSignRequest model = (ModifySmsSignRequest) CONVERTER.convert(request);
         ModifySmsSignResponse response;
         try {
             response = this.client.modifySmsSign(model);
@@ -194,7 +210,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsSign(SmsSignRequest request) {
-        QuerySmsSignListRequest model = (QuerySmsSignListRequest) converter.convert(request);
+        QuerySmsSignListRequest model = (QuerySmsSignListRequest) CONVERTER.convert(request);
         QuerySmsSignListResponse response;
         try {
             response = this.client.querySmsSignList(model);
@@ -207,7 +223,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsSignStatus(SmsSignRequest request) {
-        QuerySmsSignRequest model = (QuerySmsSignRequest) converter.convert(request);
+        QuerySmsSignRequest model = (QuerySmsSignRequest) CONVERTER.convert(request);
         QuerySmsSignResponse response;
         try {
             response = this.client.querySmsSign(model);
@@ -220,7 +236,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> addSmsTemplate(SmsTemplateRequest request) {
-        AddSmsTemplateRequest model = (AddSmsTemplateRequest) converter.convert(request);
+        AddSmsTemplateRequest model = (AddSmsTemplateRequest) CONVERTER.convert(request);
         AddSmsTemplateResponse response;
         try {
             response = this.client.addSmsTemplate(model);
@@ -233,7 +249,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> deleteSmsTemplate(SmsTemplateRequest request) {
-        DeleteSmsTemplateRequest model = (DeleteSmsTemplateRequest) converter.convert(request);
+        DeleteSmsTemplateRequest model = (DeleteSmsTemplateRequest) CONVERTER.convert(request);
         DeleteSmsTemplateResponse response;
         try {
             response = this.client.deleteSmsTemplate(model);
@@ -246,7 +262,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> modifySmsTemplate(SmsTemplateRequest request) {
-        ModifySmsTemplateRequest model = (ModifySmsTemplateRequest) converter.convert(request);
+        ModifySmsTemplateRequest model = (ModifySmsTemplateRequest) CONVERTER.convert(request);
         ModifySmsTemplateResponse response;
         try {
             response = this.client.modifySmsTemplate(model);
@@ -259,7 +275,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsTemplate(SmsTemplateRequest request) {
-        QuerySmsTemplateListRequest model = (QuerySmsTemplateListRequest) converter.convert(request);
+        QuerySmsTemplateListRequest model = (QuerySmsTemplateListRequest) CONVERTER.convert(request);
         QuerySmsTemplateListResponse response;
         try {
             response = this.client.querySmsTemplateList(model);
@@ -272,7 +288,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> querySmsTemplateStatus(SmsTemplateRequest request) {
-        QuerySmsTemplateRequest model = (QuerySmsTemplateRequest) converter.convert(request);
+        QuerySmsTemplateRequest model = (QuerySmsTemplateRequest) CONVERTER.convert(request);
         QuerySmsTemplateResponse response;
         try {
             response = this.client.querySmsTemplate(model);
@@ -285,7 +301,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> addShortUrl(SmsShortUrlRequest request) {
-        AddShortUrlRequest model = (AddShortUrlRequest) converter.convert(request);
+        AddShortUrlRequest model = (AddShortUrlRequest) CONVERTER.convert(request);
         AddShortUrlResponse response;
         try {
             response = this.client.addShortUrl(model);
@@ -298,7 +314,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> deleteShortUrl(SmsShortUrlRequest request) {
-        DeleteShortUrlRequest model = (DeleteShortUrlRequest) converter.convert(request);
+        DeleteShortUrlRequest model = (DeleteShortUrlRequest) CONVERTER.convert(request);
         DeleteShortUrlResponse response;
         try {
             response = this.client.deleteShortUrl(model);
@@ -311,7 +327,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> queryShortUrl(SmsShortUrlRequest request) {
-        QueryShortUrlRequest model = (QueryShortUrlRequest) converter.convert(request);
+        QueryShortUrlRequest model = (QueryShortUrlRequest) CONVERTER.convert(request);
         QueryShortUrlResponse response;
         try {
             response = this.client.queryShortUrl(model);
@@ -324,7 +340,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> addTag(SmsTagRequest request) {
-        TagResourcesRequest model = (TagResourcesRequest) converter.convert(request);
+        TagResourcesRequest model = (TagResourcesRequest) CONVERTER.convert(request);
         TagResourcesResponse response;
         try {
             response = this.client.tagResources(model);
@@ -337,7 +353,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> deleteTag(SmsTagRequest request) {
-        UntagResourcesRequest model = (UntagResourcesRequest) converter.convert(request);
+        UntagResourcesRequest model = (UntagResourcesRequest) CONVERTER.convert(request);
         UntagResourcesResponse response;
         try {
             response = this.client.untagResources(model);
@@ -350,7 +366,7 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> queryTag(SmsTagRequest request) {
-        ListTagResourcesRequest model = (ListTagResourcesRequest) converter.convert(request);
+        ListTagResourcesRequest model = (ListTagResourcesRequest) CONVERTER.convert(request);
         ListTagResourcesResponse response;
         try {
             response = this.client.listTagResources(model);

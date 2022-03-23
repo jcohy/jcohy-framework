@@ -41,9 +41,9 @@ public class SmsProperties {
     private String signName;
 
     /**
-     * 缓存 key 的前缀，此选项只有在开启了验证才有效。默认为 JCOHY:SMS:.
+     * 缓存 key 的前缀，此选项只有在开启了验证才有效。默认为 JCOHY:SMS::.
      */
-    private String cacheKey = "JCOHY:SMS:";
+    private String cacheKey = "JCOHY:SMS::";
 
     /**
      * 缓存 key 失效时间，此选项只有在开启了验证才有效.默认为 15 分钟.

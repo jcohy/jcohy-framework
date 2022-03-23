@@ -1,15 +1,15 @@
 package com.jcohy.framework.starter.sms;
 
-import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
-import com.jcohy.framework.starter.sms.request.SmsSendRequest;
-import com.jcohy.framework.utils.RandomUtils;
-import com.jcohy.framework.utils.api.Result;
-import com.tencentcloudapi.sms.v20190711.models.SendSmsResponse;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import com.jcohy.framework.starter.sms.request.SmsSendRequest;
+import com.jcohy.framework.utils.RandomUtils;
+import com.jcohy.framework.utils.api.Result;
 
 /**
  * 描述: .
@@ -34,7 +34,7 @@ public class TencentSmsTest {
     void testSmsSendRequest() {
         SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones("8615529021191").signs("壹肆零伍")
                 .templateCode("981666").templateParams("code", RandomUtils::number).validate(true);
-        Result<Object> result = template.send(request);
+        Result<Object> result = this.template.send(request);
     }
     //
     // @Test

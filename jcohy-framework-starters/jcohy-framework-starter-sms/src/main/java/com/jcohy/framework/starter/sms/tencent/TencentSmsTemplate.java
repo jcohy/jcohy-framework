@@ -1,5 +1,7 @@
 package com.jcohy.framework.starter.sms.tencent;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,7 @@ public class TencentSmsTemplate implements SmsTemplate {
     /**
      * 类型转换.
      */
-    public static final Converter<SmsRequest, SendSmsRequest> converter = new TencentSmsRequestConverter();
+    public static final Converter<SmsRequest, SendSmsRequest> CONVERTER = new TencentSmsRequestConverter();
 
     private final SmsProperties properties;
 
@@ -65,8 +67,11 @@ public class TencentSmsTemplate implements SmsTemplate {
             request.phones(request.getPhones().stream().filter((phone) -> !phone.startsWith("86"))
                     .filter((phone) -> !phone.startsWith("+86")).map("86"::concat).collect(Collectors.toList()));
         }
+		// 默认以 request 中的签名为准，如果不存在，则使用 properties 中的签名
+		String sign = this.properties.getSignName();
+		request.signs(request.getSigns() != null ? request.getSigns() :  Collections.singletonList(sign));
 
-        SendSmsRequest smsRequest = converter.convert(request);
+		SendSmsRequest smsRequest = CONVERTER.convert(request);
         smsRequest.setSmsSdkAppid(this.properties.getSmsSdkAppId());
         SendSmsResponse response;
         try {
