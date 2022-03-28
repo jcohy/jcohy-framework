@@ -1,6 +1,5 @@
 package com.jcohy.framework.starter.sms.ali;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 
@@ -51,6 +50,7 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.core.convert.converter.Converter;
 
 import com.jcohy.framework.starter.redis.RedisUtils;
+import com.jcohy.framework.starter.sms.SmsHelper;
 import com.jcohy.framework.starter.sms.SmsTemplate;
 import com.jcohy.framework.starter.sms.props.SmsProperties;
 import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
@@ -107,28 +107,26 @@ public class AliSmsTemplate implements SmsTemplate {
 
     @Override
     public Result<Object> send(SmsSendRequest request) {
-        Validate.validIndex(request.getPhones(), 2, "手机号只能有一个");
+        SmsHelper.validSize(request.getPhones(), 1, "手机号只能有一个！");
+		if (!request.isGlobal()) {
+			request.phones(SmsHelper.formatPhones(request.getPhones()));
+		}
 		// 默认以 request 中的签名为准，如果不存在，则使用 properties 中的签名
 		String sign = this.smsProperties.getSignName();
 		request.signs(request.getSigns() != null ? request.getSigns() :  Collections.singletonList(sign));
         SendSmsRequest model = (SendSmsRequest) CONVERTER.convert(request);
-        SendSmsResponse sendSmsResponse = null;
+        SendSmsResponse response = null;
         try {
-            sendSmsResponse = this.client.sendSms(model);
-			if(request.isValidate() && sendSmsResponse.getBody().getMessage().equals(OK)) {
+			response = this.client.sendSms(model);
+			if(request.isValidate() && response.getBody().getMessage().equals(OK)) {
 				store(model.getPhoneNumbers(),model.getTemplateCode());
 			}
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return Result.data(sendSmsResponse.getBody());
+        return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
-
-	private void store(String phoneNumbers, String templateCode) {
-		String cacheKey = cacheKey(this.smsProperties.getCacheKey(),phoneNumbers);
-		this.redisUtils.setExpire(cacheKey, templateCode, this.smsProperties.getTimeout().toMillis());
-	}
 
 	@Override
     public Result<Object> sendBatch(SmsSendRequest request) {
@@ -382,4 +380,9 @@ public class AliSmsTemplate implements SmsTemplate {
         return false;
     }
 
+
+	private void store(String phoneNumbers, String templateCode) {
+		String cacheKey = cacheKey(this.smsProperties.getCacheKey(),phoneNumbers);
+		this.redisUtils.setExpire(cacheKey, templateCode, this.smsProperties.getTimeout().toMillis());
+	}
 }

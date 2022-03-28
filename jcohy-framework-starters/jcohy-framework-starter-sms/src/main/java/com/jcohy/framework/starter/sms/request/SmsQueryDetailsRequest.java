@@ -41,7 +41,7 @@ public class SmsQueryDetailsRequest extends SmsRequest {
     /**
      * 短信发送范围. 1.国内短信发送记录 2.国际/港澳台短信发送记录
      */
-    private Integer isGlobe;
+    private Integer isGlobe = 1;
 
     /**
      * 发送时间.

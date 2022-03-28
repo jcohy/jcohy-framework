@@ -34,6 +34,7 @@ import org.springframework.core.convert.converter.Converter;
 
 import com.jcohy.framework.starter.sms.SmsAction;
 import com.jcohy.framework.starter.sms.SmsException;
+import com.jcohy.framework.starter.sms.SmsHelper;
 import com.jcohy.framework.starter.sms.request.SmsQueryDetailsRequest;
 import com.jcohy.framework.starter.sms.request.SmsRequest;
 import com.jcohy.framework.starter.sms.request.SmsSendRequest;
@@ -200,43 +201,14 @@ public class AliSmsRequestConverter implements Converter<SmsRequest, TeaModel> {
     }
 
     private TeaModel buildSmsSendRequestTeaModel(SmsSendRequest request) {
-        int phoneSize = request.getPhones().size();
-        int signsSize = request.getSigns().size();
-        Map<String, String> templateParams = request.getTemplateParams();
-        Map<String, Supplier<String>> valueSupplier = request.getValueSupplier();
 
-        // 如果签名数量大于 1 且和手机号不匹配
-        if (signsSize > 1 && signsSize != phoneSize) {
-            throw new SmsException("签名和手机号不匹配");
-        }
-        // 如果签名和手机号不匹配，则默认都使用第一个签名
-        if (phoneSize > 1 && signsSize != phoneSize) {
-            String repeat = StringUtils.repeat(request.getSigns().iterator().next(), StringPools.COMMA, phoneSize);
-            request.signs(StringUtils.defaultSplit(repeat));
-        }
+		SmsHelper.processSmsSendSign(request);
 
-        /*
-         * 处理模版参数。数量需要和手机号，签名保持一致 首先获取两个 map 中相同的 key. 动态定义的 value 会覆盖静态定义的 value.
-         */
-        List<Map<String, String>> templateParamsList = new ArrayList<>();
-        Set<String> sameKeys = Sets.getSameKeys(valueSupplier.keySet(), templateParams.keySet());
+		List<Map<String, String>> templateParamsList = SmsHelper.processSmsSendTemplateParams(request);
 
-        for (int i = 0; i < phoneSize; i++) {
-            Map<String, String> templateParamsMap = new HashMap<>();
-            for (Map.Entry<String, String> result : templateParams.entrySet()) {
-                String key = result.getKey();
-                String value = result.getValue();
-                if (sameKeys.contains(key)) {
-                    value = valueSupplier.get(key).get();
-                }
-                templateParamsMap.put(result.getKey(), value);
-            }
-            templateParamsList.add(templateParamsMap);
-        }
-
-        if (request.getAction().equals(SmsAction.SEND_SMS)) {
-            return new SendSmsRequest().setPhoneNumbers(JsonUtils.toJson(request.getPhones()))
-                    .setSignName(JsonUtils.toJson(request.getSigns())).setTemplateCode(request.getTemplateCode())
+		if (request.getAction().equals(SmsAction.SEND_SMS)) {
+            return new SendSmsRequest().setPhoneNumbers(request.getPhones().iterator().next())
+                    .setSignName(request.getSigns().iterator().next()).setTemplateCode(request.getTemplateCode())
                     .setTemplateParam(JsonUtils.toJson(request.getTemplateParams()));
         }
         if (request.getAction().equals(SmsAction.SEND_BATCH_SMS)) {

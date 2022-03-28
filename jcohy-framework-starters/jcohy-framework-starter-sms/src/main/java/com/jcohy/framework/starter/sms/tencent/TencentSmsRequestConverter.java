@@ -9,6 +9,7 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.core.convert.converter.Converter;
 
 import com.jcohy.framework.starter.sms.SmsAction;
+import com.jcohy.framework.starter.sms.SmsHelper;
 import com.jcohy.framework.starter.sms.request.SmsRequest;
 import com.jcohy.framework.starter.sms.request.SmsSendRequest;
 import com.jcohy.framework.utils.StringUtils;
@@ -53,18 +54,13 @@ public class TencentSmsRequestConverter implements Converter<SmsRequest, SendSms
     private SendSmsRequest buildSmsSendRequestTeaModel(SmsSendRequest request) {
         SendSmsRequest model = new SendSmsRequest();
         String[] phones = request.getPhones().toArray((new String[0]));
-        Collection<String> signs = request.getSigns();
-        Map<String, String> templateParams = request.getTemplateParams();
         if (request.getAction().equals(SmsAction.SEND_SMS)) {
-            Validate.validIndex(phones, 2, "如果需要向多个手机号发送信息，请使用 SmsAction.SEND_BATCH_SMS!");
+            SmsHelper.validSize(request.getPhones(), 1, "如果需要向多个手机号发送信息，请使用 SmsAction.SEND_BATCH_SMS!");
         }
         model.setPhoneNumberSet(phones);
         model.setSign(StringUtils.collectionToCommaDelimitedString(request.getSigns()));
         model.setTemplateID(request.getTemplateCode());
         model.setTemplateParamSet(request.getTemplateParams().values().toArray((new String[0])));
-        // model.setExtendCode();
-        // model.setSessionContext();
-        // model.setSenderId();
         return model;
     }
 
