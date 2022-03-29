@@ -58,12 +58,12 @@ public class SmsQueryDetailsRequest extends SmsRequest {
     private String endDate;
 
     /**
-     * 页码.
+     * 页码，腾讯云中的 offset.
      */
     private Long pageIndex;
 
     /**
-     * 页数.
+     * 页数，腾讯云中的 limit.
      */
     private Long pageSize;
 

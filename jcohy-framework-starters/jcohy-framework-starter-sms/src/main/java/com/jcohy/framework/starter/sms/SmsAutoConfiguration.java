@@ -5,7 +5,7 @@ import com.aliyun.teaopenapi.models.Config;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
-import com.tencentcloudapi.sms.v20190711.SmsClient;
+import com.tencentcloudapi.sms.v20210111.SmsClient;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -45,11 +45,17 @@ public class SmsAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty(name = "jcohy.sms.name", havingValue = "ali")
-    public AliSmsTemplate aliSmsTemplate(SmsProperties smsProperties) throws Exception {
-        Config config = new Config().setAccessKeyId(smsProperties.getAccessKey())
-                .setAccessKeySecret(smsProperties.getSecretKey()).setRegionId(smsProperties.getRegionId());
-        config.endpoint = "dysmsapi.aliyuncs.com";
-        Client client = new Client(config);
+    public AliSmsTemplate aliSmsTemplate(SmsProperties smsProperties) {
+        Client client;
+        try {
+            Config config = new Config().setAccessKeyId(smsProperties.getAccessKey())
+                    .setAccessKeySecret(smsProperties.getSecretKey()).setRegionId(smsProperties.getRegionId());
+            config.endpoint = "dysmsapi.aliyuncs.com";
+            client = new Client(config);
+        }
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         return new AliSmsTemplate(smsProperties, client, this.redisUtils);
     }
 

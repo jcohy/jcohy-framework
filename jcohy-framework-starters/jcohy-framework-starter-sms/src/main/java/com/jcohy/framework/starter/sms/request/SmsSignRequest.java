@@ -19,6 +19,8 @@ import com.jcohy.framework.starter.sms.SmsAction;
  */
 public class SmsSignRequest extends SmsRequest {
 
+    private Long signId;
+
     private String signName;
 
     private Integer signSource;
@@ -34,6 +36,15 @@ public class SmsSignRequest extends SmsRequest {
     public SmsSignRequest(SmsAction action) {
         super(action);
         Validate.notNull(action, "action 不能为空 !");
+    }
+
+    public Long getSignId() {
+        return this.signId;
+    }
+
+    public SmsSignRequest signId(Long signId) {
+        this.signId = signId;
+        return this;
     }
 
     public String getSignName() {

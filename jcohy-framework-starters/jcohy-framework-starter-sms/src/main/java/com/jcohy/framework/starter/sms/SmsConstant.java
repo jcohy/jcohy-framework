@@ -3,7 +3,8 @@ package com.jcohy.framework.starter.sms;
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -12,12 +13,12 @@ package com.jcohy.framework.starter.sms;
  */
 public final class SmsConstant {
 
-	private SmsConstant() {
-	}
+    private SmsConstant() {
+    }
 
-	/**
-	 * 通用缓存key.
-	 */
-	public static final String CAPTCHA_KEY = "CAPTCHA:";
+    /**
+     * 通用缓存key.
+     */
+    public static final String CAPTCHA_KEY = "CAPTCHA:";
 
 }

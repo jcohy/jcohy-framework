@@ -147,6 +147,18 @@ public final class DateTimeUtils {
     }
 
     /**
+     * String 类型的日期格式转换成毫秒数.
+     * @param date 日期
+     * @param pattern 日期格式
+     * @return long
+     * @since 2022.0.1
+     */
+    public static long toMilliseconds(String date, String pattern) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern(pattern);
+        return toMilliseconds(LocalDateTime.from(format.parse(date)));
+    }
+
+    /**
      * localDateTime 转换成毫秒数.
      * @param localDateTime localDateTime
      * @return long

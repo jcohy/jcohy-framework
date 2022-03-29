@@ -45,7 +45,6 @@ import com.aliyun.dysmsapi20170525.models.TagResourcesResponse;
 import com.aliyun.dysmsapi20170525.models.UntagResourcesRequest;
 import com.aliyun.dysmsapi20170525.models.UntagResourcesResponse;
 import com.aliyun.tea.TeaModel;
-import org.apache.commons.lang3.Validate;
 
 import org.springframework.core.convert.converter.Converter;
 
@@ -91,11 +90,11 @@ public class AliSmsTemplate implements SmsTemplate {
      */
     private final Client client;
 
-	private static final int SUCCESS = 200;
+    private static final int SUCCESS = 200;
 
-	private static final String FAIL = "fail";
+    private static final String FAIL = "fail";
 
-	private static final String OK = "ok";
+    private static final String OK = "ok";
 
     private final RedisUtils<String, String> redisUtils;
 
@@ -108,19 +107,19 @@ public class AliSmsTemplate implements SmsTemplate {
     @Override
     public Result<Object> send(SmsSendRequest request) {
         SmsHelper.validSize(request.getPhones(), 1, "手机号只能有一个！");
-		if (!request.isGlobal()) {
-			request.phones(SmsHelper.formatPhones(request.getPhones()));
-		}
-		// 默认以 request 中的签名为准，如果不存在，则使用 properties 中的签名
-		String sign = this.smsProperties.getSignName();
-		request.signs(request.getSigns() != null ? request.getSigns() :  Collections.singletonList(sign));
+        if (!request.isGlobal()) {
+            request.phones(SmsHelper.formatPhones(request.getPhones()));
+        }
+        // 默认以 request 中的签名为准，如果不存在，则使用 properties 中的签名
+        String sign = this.smsProperties.getSignName();
+        request.signs((request.getSigns() != null) ? request.getSigns() : Collections.singletonList(sign));
         SendSmsRequest model = (SendSmsRequest) CONVERTER.convert(request);
         SendSmsResponse response = null;
         try {
-			response = this.client.sendSms(model);
-			if(request.isValidate() && response.getBody().getMessage().equals(OK)) {
-				store(model.getPhoneNumbers(),model.getTemplateCode());
-			}
+            response = this.client.sendSms(model);
+            if (request.isValidate() && response.getBody().getMessage().equals(OK)) {
+                store(model.getPhoneNumbers(), model.getTemplateCode());
+            }
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -128,7 +127,7 @@ public class AliSmsTemplate implements SmsTemplate {
         return Result.data(ServiceStatusCode.SUCCESS.getCode(), response.getBody().message, response);
     }
 
-	@Override
+    @Override
     public Result<Object> sendBatch(SmsSendRequest request) {
         SendBatchSmsRequest model = (SendBatchSmsRequest) CONVERTER.convert(request);
         SendBatchSmsResponse response;
@@ -380,9 +379,9 @@ public class AliSmsTemplate implements SmsTemplate {
         return false;
     }
 
+    private void store(String phoneNumbers, String templateCode) {
+        String cacheKey = cacheKey(this.smsProperties.getCacheKey(), phoneNumbers);
+        this.redisUtils.setExpire(cacheKey, templateCode, this.smsProperties.getTimeout().toMillis());
+    }
 
-	private void store(String phoneNumbers, String templateCode) {
-		String cacheKey = cacheKey(this.smsProperties.getCacheKey(),phoneNumbers);
-		this.redisUtils.setExpire(cacheKey, templateCode, this.smsProperties.getTimeout().toMillis());
-	}
 }

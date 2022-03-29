@@ -36,77 +36,79 @@ public class AliSmsTest {
     @Autowired
     private SmsTemplate template;
 
-	public final String phone1 = "15529021191";
-	public final String phone2 = "18515892938";
-	public final String phone3 = "13152088219";
+    public final String phone1 = "15529021191";
 
-	@Test
-	void testSmsSendRequestSuccess() {
-		SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones(phone1).signs("玄武科技")
-				.templateCode("SMS_167745198").templateParams("code", RandomUtils::number);
-		Assertions.assertThat(((SendSmsResponse)this.template.send(request).getData()).getBody().getCode()).isEqualTo("OK");
-	}
+    public final String phone2 = "18515892938";
 
-	@Test
-	void testSmsSendRequestWithMultiPhoneFail() {
-		SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones(phone1, phone3).signs("玄武科技")
-				.templateCode("SMS_167745198").templateParams("code", RandomUtils::number);
-		Assertions.assertThatExceptionOfType(IndexOutOfBoundsException.class)
-				.isThrownBy(() ->this.template.send(request))
-				.withMessage("手机号只能有一个！");
-	}
+    public final String phone3 = "13152088219";
 
-	@Test
-	void testSmsSendRequestWithOutSignSuccess() {
-		SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones(phone1)
-				.templateCode("SMS_167745198").templateParams("code", RandomUtils::number);
-		Assertions.assertThat(((SendSmsResponse)this.template.send(request).getData()).getBody().getCode()).isEqualTo("OK");
-	}
+    @Test
+    void testSmsSendRequestSuccess() {
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones(this.phone1).signs("玄武科技")
+                .templateCode("SMS_167745198").templateParams("code", RandomUtils::number);
+        Assertions.assertThat(((SendSmsResponse) this.template.send(request).getData()).getBody().getCode())
+                .isEqualTo("OK");
+    }
+
+    @Test
+    void testSmsSendRequestWithMultiPhoneFail() {
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones(this.phone1, this.phone3).signs("玄武科技")
+                .templateCode("SMS_167745198").templateParams("code", RandomUtils::number);
+        Assertions.assertThatExceptionOfType(IndexOutOfBoundsException.class)
+                .isThrownBy(() -> this.template.send(request)).withMessage("手机号只能有一个！");
+    }
+
+    @Test
+    void testSmsSendRequestWithOutSignSuccess() {
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_SMS).phones(this.phone1)
+                .templateCode("SMS_167745198").templateParams("code", RandomUtils::number);
+        Assertions.assertThat(((SendSmsResponse) this.template.send(request).getData()).getBody().getCode())
+                .isEqualTo("OK");
+    }
 
     @Test
     void testSmsSendBatchRequestWithOneSignSuccess() {
-        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS).phones(phone1,phone3)
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS).phones(this.phone1, this.phone3)
                 .signs("玄武科技").templateCode("SMS_167745198").templateParams("code", RandomUtils::number).validate(true);
-		Assertions.assertThat(((SendBatchSmsResponse)this.template.sendBatch(request).getData()).getBody().getCode()).isEqualTo("OK");
+        Assertions.assertThat(((SendBatchSmsResponse) this.template.sendBatch(request).getData()).getBody().getCode())
+                .isEqualTo("OK");
     }
 
-	@Test
-	void testSmsSendBatchRequestWithMultiSignSuccess() {
-		SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS).phones(phone1,phone3)
-				.signs("玄武科技","壹肆零伍").templateCode("SMS_167745198").templateParams("code", RandomUtils::number).validate(true);
-		Assertions.assertThat(((SendBatchSmsResponse)this.template.sendBatch(request).getData()).getBody().getCode()).isEqualTo("OK");
-	}
+    @Test
+    void testSmsSendBatchRequestWithMultiSignSuccess() {
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS).phones(this.phone1, this.phone3)
+                .signs("玄武科技", "壹肆零伍").templateCode("SMS_167745198").templateParams("code", RandomUtils::number)
+                .validate(true);
+        Assertions.assertThat(((SendBatchSmsResponse) this.template.sendBatch(request).getData()).getBody().getCode())
+                .isEqualTo("OK");
+    }
 
-	@Test
-	void testSmsSendBatchRequestWithMultiSignFail() {
-		SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS).phones(phone1,phone2,phone3)
-				.signs("玄武科技","壹肆零伍").templateCode("SMS_167745198").templateParams("code", RandomUtils::number).validate(true);
-		Assertions.assertThatExceptionOfType(SmsException.class)
-				.isThrownBy(() ->this.template.sendBatch(request))
-				.withMessage("签名和手机号数量不匹配！");
-	}
+    @Test
+    void testSmsSendBatchRequestWithMultiSignFail() {
+        SmsSendRequest request = new SmsSendRequest(SmsAction.SEND_BATCH_SMS)
+                .phones(this.phone1, this.phone2, this.phone3).signs("玄武科技", "壹肆零伍").templateCode("SMS_167745198")
+                .templateParams("code", RandomUtils::number).validate(true);
+        Assertions.assertThatExceptionOfType(SmsException.class).isThrownBy(() -> this.template.sendBatch(request))
+                .withMessage("签名和手机号数量不匹配！");
+    }
 
     @Test
     void testSmsQueryDetailsRequest() {
         SmsQueryDetailsRequest request = new SmsQueryDetailsRequest(SmsAction.QUERY_SMS_DETAILS)
-                .bizId("843218948437350699^0").phone(phone1)
-				.sendDate(DateTimeUtils.simpleToday().replace("-","")).pageIndex(1L).pageSize(1L);
-		Assertions.assertThat(((QuerySendDetailsResponse)this.template.querySmsDetails(request).getData())
-				.getBody()
-				.getSmsSendDetailDTOs()
-				.getSmsSendDetailDTO()).hasSizeGreaterThan(0);
+                .bizId("843218948437350699^0").phone(this.phone1).sendDate(DateTimeUtils.simpleToday().replace("-", ""))
+                .pageIndex(1L).pageSize(1L);
+        Assertions.assertThat(((QuerySendDetailsResponse) this.template.querySmsDetails(request).getData()).getBody()
+                .getSmsSendDetailDTOs().getSmsSendDetailDTO()).hasSizeGreaterThan(0);
     }
 
-	@Test
-	void testAliSmsQueryDetailStatistics() {
-		SmsQueryDetailsRequest request = new SmsQueryDetailsRequest(SmsAction.QUERY_SMS_STATISTICS)
-				.bizId("843218948437350699^0").phone(phone1)
-				.startDate(DateTimeUtils.simpleToday().replace("-",""))
-				.endDate(DateTimeUtils.simpleToday().replace("-","")).pageIndex(1L).pageSize(1L);
-		Assertions.assertThat(((QuerySendStatisticsResponse)this.template.querySmsStatistics(request).getData())
-				.getBody()
-				.getData()
-				.getTargetList()).hasSizeGreaterThan(0);
-	}
+    @Test
+    void testAliSmsQueryDetailStatistics() {
+        SmsQueryDetailsRequest request = new SmsQueryDetailsRequest(SmsAction.QUERY_SMS_STATISTICS)
+                .bizId("843218948437350699^0").phone(this.phone1)
+                .startDate(DateTimeUtils.simpleToday().replace("-", ""))
+                .endDate(DateTimeUtils.simpleToday().replace("-", "")).pageIndex(1L).pageSize(1L);
+        Assertions.assertThat(((QuerySendStatisticsResponse) this.template.querySmsStatistics(request).getData())
+                .getBody().getData().getTargetList()).hasSizeGreaterThan(0);
+    }
 
 }
