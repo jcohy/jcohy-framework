@@ -1,0 +1,10 @@
+	plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "RabbitMQ module"
+
+dependencies {
+
+}

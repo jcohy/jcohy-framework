@@ -1206,7 +1206,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
 
         int separatorIndex = path.lastIndexOf(StringPools.FOLDER_SEPARATOR);
-        return (separatorIndex != -1) ? path.substring(separatorIndex + 1) : path;
+        return (sxeparatorIndex != -1) ? path.substring(separatorIndex + 1) : path;
     }
 
     /**
