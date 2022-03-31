@@ -8,5 +8,6 @@ include "jcohy-framework-projects:jcohy-framework-launch"
 include "jcohy-framework-starters:jcohy-framework-starter-oss"
 include "jcohy-framework-starters:jcohy-framework-starter-redis"
 include "jcohy-framework-starters:jcohy-framework-starter-sms"
+include "jcohy-framework-starters:jcohy-framework-starter-rabbitmq"
 
 include "jcohy-framework-docs"
