@@ -14,7 +14,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 描述: .
  * <p>
- * Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
  *
  * @author jiac
@@ -26,27 +27,27 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(RabbitProperties.class)
 public class RabbitConfig implements SmartInitializingSingleton {
 
-	private final RabbitProperties rabbitProperties;
+    private final RabbitProperties rabbitProperties;
 
-	private final RabbitAdmin rabbitAdmin;
+    private final RabbitAdmin rabbitAdmin;
 
-	public RabbitConfig(RabbitProperties rabbitProperties, RabbitAdmin rabbitAdmin) {
-		this.rabbitProperties = rabbitProperties;
-		this.rabbitAdmin = rabbitAdmin;
-	}
+    public RabbitConfig(RabbitProperties rabbitProperties, RabbitAdmin rabbitAdmin) {
+        this.rabbitProperties = rabbitProperties;
+        this.rabbitAdmin = rabbitAdmin;
+    }
 
-	private void createQueue(RabbitProperties.Rabbit rabbit) {
-		Queue queue = new Queue(rabbit.getQueueName(), rabbit.isDurable());
-		DirectExchange directExchange = new DirectExchange(rabbit.getExchange());
-		Binding binding = BindingBuilder.bind(queue).to(directExchange).with(rabbit.getRoutingKey());
-		this.rabbitAdmin.declareQueue(queue);
-		this.rabbitAdmin.declareExchange(directExchange);
-		this.rabbitAdmin.declareBinding(binding);
-	}
+    private void createQueue(RabbitProperties.Rabbit rabbit) {
+        Queue queue = new Queue(rabbit.getQueueName(), rabbit.isDurable());
+        DirectExchange directExchange = new DirectExchange(rabbit.getExchange());
+        Binding binding = BindingBuilder.bind(queue).to(directExchange).with(rabbit.getRoutingKey());
+        this.rabbitAdmin.declareQueue(queue);
+        this.rabbitAdmin.declareExchange(directExchange);
+        this.rabbitAdmin.declareBinding(binding);
+    }
 
-	@Override
-	public void afterSingletonsInstantiated() {
-		this.rabbitProperties.getRabbits().forEach(this::createQueue);
-	}
+    @Override
+    public void afterSingletonsInstantiated() {
+        this.rabbitProperties.getRabbits().forEach(this::createQueue);
+    }
 
 }
