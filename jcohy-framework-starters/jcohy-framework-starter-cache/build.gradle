@@ -1,0 +1,12 @@
+plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "Cache"
+
+dependencies {
+	api (project(":saga-boot-projects:saga-boot-utils"))
+//	api (project(":saga-boot-starters:saga-boot-starter-auth"))
+	api ("org.springframework.boot:spring-boot-starter-cache")
+}
