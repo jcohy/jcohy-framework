@@ -1,0 +1,15 @@
+plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "Saga Boot Auth Description"
+
+dependencies {
+	api (project(":jcohy-framework-projects:jcohy-framework-utils"))
+	api (project(":jcohy-framework-projects:jcohy-framework-launch"))
+	api (project(":jcohy-framework-projects:jcohy-framework-configuration-processor"))
+	api ("org.springframework.boot:spring-boot-starter-log4j2")
+	api ("com.baomidou:mybatis-plus-boot-starter")
+	api ("com.lmax:disruptor")
+}
