@@ -1,0 +1,92 @@
+plugins {
+    id "java"
+    id "com.jcohy.docs"
+    id "com.jcohy.module"
+}
+
+description = "Docs"
+
+jar {
+    enabled = false
+}
+
+javadoc {
+    enabled = false
+}
+
+
+task aggregatedJavadoc(type: Javadoc) {
+
+    project.rootProject.gradle.projectsEvaluated {
+//        Set<Project> excludedProjects = ['saga-boot-dependencies']
+        Set<Project> publishedProjects = rootProject.subprojects.findAll {it != project }
+                .findAll { it.plugins.hasPlugin(JavaPlugin) && it.plugins.hasPlugin(MavenPublishPlugin) }
+                .findAll { !excludedProjects.contains(it.name) }
+
+        dependsOn publishedProjects.javadoc
+        source publishedProjects.javadoc.source
+        classpath = project.files(publishedProjects.javadoc.classpath)
+        destinationDir = project.file "${buildDir}/docs/javadoc"
+        options {
+            author = true
+            docTitle = "Jcohy Framework ${project.version} API"
+            encoding = "UTF-8"
+            memberLevel = "protected"
+            outputLevel = "quiet"
+            source = "1.8"
+            splitIndex = true
+            stylesheetFile = file("src/main/javadoc/spring-javadoc.css")
+            use = true
+            windowTitle = "Jcohy Framework ${project.version} API"
+        }
+
+        doFirst {
+            options.links = [
+//					"https://docs.oracle.com/en/java/javase/11/docs/api/",
+"https://docs.oracle.com/javase/8/docs/api/",
+"https://docs.spring.io/spring-boot/docs/2.4.5/api/",
+//					"https://docs.spring.io/spring-framework/docs/5.3.6/javadoc-api/",
+"https://docs.spring.io/spring-security/site/docs/5.4.6/api/",
+"https://docs.spring.io/spring-data/jpa/docs/2.4.8/api/"
+            ] as String[]
+        }
+    }
+}
+
+asciidoctor {
+    sources {
+        include "index.adoc"
+    }
+}
+
+task zip(type: Zip) {
+    dependsOn aggregatedJavadoc,
+            asciidoctor,
+            asciidoctorPdf
+
+    duplicatesStrategy "fail"
+    from(asciidoctor.outputDir) {
+        into "reference/htmlsingle"
+    }
+    from(asciidoctorPdf.outputDir) {
+        into "reference/pdf"
+        include "index.pdf"
+        rename { "saga-boot-reference.pdf" }
+    }
+
+    from(aggregatedJavadoc) {
+        into "api"
+    }
+}
+
+artifacts {
+    archives zip
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact zip
+        }
+    }
+}
