@@ -18,7 +18,7 @@ javadoc {
 task aggregatedJavadoc(type: Javadoc) {
 
     project.rootProject.gradle.projectsEvaluated {
-//        Set<Project> excludedProjects = ['saga-boot-dependencies']
+        Set<Project> excludedProjects = ['jcohy-framework-dependencies']
         Set<Project> publishedProjects = rootProject.subprojects.findAll {it != project }
                 .findAll { it.plugins.hasPlugin(JavaPlugin) && it.plugins.hasPlugin(MavenPublishPlugin) }
                 .findAll { !excludedProjects.contains(it.name) }
@@ -33,7 +33,7 @@ task aggregatedJavadoc(type: Javadoc) {
             encoding = "UTF-8"
             memberLevel = "protected"
             outputLevel = "quiet"
-            source = "1.8"
+            source = "11"
             splitIndex = true
             stylesheetFile = file("src/main/javadoc/spring-javadoc.css")
             use = true
