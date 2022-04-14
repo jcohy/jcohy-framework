@@ -8,6 +8,7 @@
 	<suppress files=".+(Utils|Util|Converter|Helper|Properties|Prop|Filter|Dto|Excel|Builder).java$" checks="MagicNumberCheck" />
 	<suppress files="[\\/]jcohy-framework-configuration-processor[\\/]" checks="AbstractClassNameCheck" />
 	<suppress files="[\\/]jcohy-framework-utils[\\/]" checks="MagicNumberCheck" />
+	<suppress files="[\\/]jcohy-framework-starter-redis[\\/]" checks="MagicNumberCheck" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="MagicNumberCheck" />
 
 </suppressions>

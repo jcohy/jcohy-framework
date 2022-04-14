@@ -7,8 +7,10 @@ import javax.lang.model.element.AnnotationMirror;
 /**
  * 描述: 属性提取器.
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
+ *
  * @author jiac
  * @version 2022.0.1 2022/2/11:11:01
  * @since 2022.0.1

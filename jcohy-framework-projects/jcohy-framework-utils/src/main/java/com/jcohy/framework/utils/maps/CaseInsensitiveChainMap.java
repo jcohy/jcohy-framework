@@ -14,8 +14,10 @@ import com.jcohy.framework.utils.constant.StringPools;
 /**
  * 描述: 不区分大小写的有序 map. 提供获取指定值的通用方法 {@link LinkedCaseInsensitiveMap} .
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
+ *
  * @author jiac
  * @version 2022.0.1 3/9/22:16:13
  * @since 2022.0.1

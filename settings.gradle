@@ -5,4 +5,12 @@ include "jcohy-framework-projects:jcohy-framework-dependencies"
 include "jcohy-framework-projects:jcohy-framework-configuration-processor"
 include "jcohy-framework-projects:jcohy-framework-utils"
 include "jcohy-framework-projects:jcohy-framework-launch"
+include "jcohy-framework-projects:jcohy-framework-log4j2"
+
 include "jcohy-framework-starters:jcohy-framework-starter-oss"
+include "jcohy-framework-starters:jcohy-framework-starter-redis"
+include "jcohy-framework-starters:jcohy-framework-starter-sms"
+include "jcohy-framework-starters:jcohy-framework-starter-rabbitmq"
+include "jcohy-framework-starters:jcohy-framework-starter-mongodb"
+
+include "jcohy-framework-docs"

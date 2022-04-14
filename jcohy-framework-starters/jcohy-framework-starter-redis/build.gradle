@@ -1,0 +1,17 @@
+plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "Redis"
+
+dependencies {
+	api (project(":jcohy-framework-projects:jcohy-framework-utils"))
+	api ("org.springframework.boot:spring-boot-starter-data-redis")
+	api ("org.springframework.boot:spring-boot-starter-json")
+	api ("com.alibaba:fastjson")
+	api ("org.redisson:redisson")
+	api ("org.springframework.boot:spring-boot-starter-aop")
+	api ("io.protostuff:protostuff-core")
+	api ("io.protostuff:protostuff-runtime")
+}

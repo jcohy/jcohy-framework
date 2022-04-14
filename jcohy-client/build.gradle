@@ -1,0 +1,24 @@
+plugins {
+	id 'com.github.node-gradle.node' version '3.2.1'
+	id 'java'
+}
+
+node {
+	version = '16.14.0'
+//	npmVersion = '6.14.4'
+	download = true
+	distBaseUrl = 'https://npm.taobao.org/mirrors/node/'
+}
+
+def jsBuildDir = project.buildDir.absolutePath + '/dist'
+
+jar {
+	from jsBuildDir
+	eachFile { details ->
+		details.path = details.path.startsWith('META-INF') ?: 'META-INF/resources/'+details.path
+	}
+	includeEmptyDirs = false
+}
+
+npm_run_build.dependsOn(yarn_install)
+jar.dependsOn npm_run_build

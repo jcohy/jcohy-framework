@@ -1,0 +1,9 @@
+jcohy:
+  sms:
+    name: tencent
+    accessKey: AKIDZvHcedXO8kEZqz0shQ3b2NbhfXGqIdqu
+    secretKey: 2whKqDRXUIyUt7INLCydDjAUhWEtRq37
+    signName: 壹肆零伍
+    regionId: ap-beijing
+    endpoint: sms.tencentcloudapi.com
+    sms-sdk-app-id: 1400530571

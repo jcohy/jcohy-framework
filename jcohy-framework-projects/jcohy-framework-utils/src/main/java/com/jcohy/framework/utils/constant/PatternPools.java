@@ -8,8 +8,10 @@ import com.jcohy.framework.utils.SimpleCache;
  * 描述: 常用正则表达式集合，更多正则见: <a href="https://any86.github.io/any-rule/" target=
  * "_blank">https://any86.github.io/any-rule/</a>.
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
+ *
  * @author jiac
  * @version 2022.0.1 3/3/22:17:17
  * @since 2022.0.1
@@ -83,7 +85,9 @@ public final class PatternPools {
      * 邮件，符合 RFC 5322 规范，正则来自：http://emailregex.com/. What is the maximum length of a
      * valid email address?
      * https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address/44317754
-     * <p>注意 email 要宽松一点。比如 jetz.chong@hutool.cn、jetz-chong@</p>
+     * <p>
+     * 注意 email 要宽松一点。比如 jetz.chong@hutool.cn、jetz-chong@
+     * </p>
      */
     public static final String EMAIL_STRING = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+"
             + "(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\""

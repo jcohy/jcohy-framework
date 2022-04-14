@@ -1,0 +1,11 @@
+plugins {
+	id "com.jcohy.module"
+	id "com.jcohy.auto-configuration"
+}
+
+description = "RabbitMQ module"
+
+dependencies {
+	implementation ("org.springframework.boot:spring-boot-starter-amqp")
+	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+}

@@ -12,8 +12,10 @@ import com.jcohy.framework.utils.constant.StringPools;
 /**
  * 描述: .
  * <p>
- *     Copyright © 2022 <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
+ * Copyright © 2022
+ * <a href="https://www.jcohy.com" target= "_blank">https://www.jcohy.com</a>
  * </p>
+ *
  * @author jiac
  * @version 2022.0.1 3/9/22:14:31
  * @since 2022.0.1
@@ -142,6 +144,18 @@ public final class DateTimeUtils {
      */
     public static long toMilliseconds() {
         return LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    /**
+     * String 类型的日期格式转换成毫秒数.
+     * @param date 日期
+     * @param pattern 日期格式
+     * @return long
+     * @since 2022.0.1
+     */
+    public static long toMilliseconds(String date, String pattern) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern(pattern);
+        return toMilliseconds(LocalDateTime.from(format.parse(date)));
     }
 
     /**
