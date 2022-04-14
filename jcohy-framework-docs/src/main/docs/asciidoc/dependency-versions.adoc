@@ -1,0 +1,14 @@
+[[saga-dependency]]
+= 依赖版本
+
+本节提供了 Spring Boot 和 Saga Boot 管理的依赖的详细信息.
+
+下表提供了 Spring Boot Maven 依赖管理和 Gradle 插件中提供的所有依赖版本的详细信息. 当您的依赖声明了 artifacts 而未声明版本时,将使用表中列出的版本.
+
+include::dependency/saga-pom.adoc[]
+
+include::dependency/effective-pom.adoc[]
+
+include::dependency/spring-boot-aliyun.adoc[]
+
+include::dependency/spring-cloud-alibaba.adoc[]
